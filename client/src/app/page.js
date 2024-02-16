@@ -1,20 +1,11 @@
-import * as React from "react";
-import { NextUIProvider } from "@nextui-org/react";
-import Image from "next/image";
+import React from "react";
+import CustomNavbar from "./navbar";
 
-function Home() {
+export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main>
       {/* Your content here */}
+      <CustomNavbar />
     </main>
-  );
-}
-
-// Wrap your Home component with NextUIProvider
-export default function App() {
-  return (
-    <NextUIProvider>
-      <Home />
-    </NextUIProvider>
   );
 }
