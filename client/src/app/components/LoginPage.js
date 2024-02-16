@@ -1,10 +1,10 @@
-
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage({ onLoginSuccess }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleUsernameChange = (event) => setUsername(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
@@ -13,10 +13,16 @@ function LoginPage({ onLoginSuccess }) {
     event.preventDefault();
 
     fetch("http://localhost:8000/api/home")
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         if (username === data.username && password === data.password) {
           onLoginSuccess();
+          navigate('/profile');
         } else {
           alert('Invalid username or password');
         }
