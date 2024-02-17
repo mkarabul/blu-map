@@ -2,13 +2,17 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 
-export default function CustomNavbar() {
+export default function Navbar() {
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 bg-white w-100vw">
       {/* Left Section */}
       <div className="left-section flex-1">
         <a className="btn btn-ghost text-xl">
-          <img src="../public/blu-map-logo.png" className="mr-2" />
+          <img
+            src="/blu-map-logo.jpeg"
+            className="mr-2"
+            style={{ width: "49px", height: "45px" }}
+          />
           Blu-Map
         </a>
         <input
@@ -54,12 +58,9 @@ export default function CustomNavbar() {
           >
             <li>
               <a className="justify-between">
-                Profile
+                Settings
                 <span className="badge">New</span>
               </a>
-            </li>
-            <li>
-              <a>Settings</a>
             </li>
             <li>
               <a>Logout</a>
