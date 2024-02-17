@@ -1,5 +1,3 @@
-// Home.js
-
 import React from "react";
 import Navbar from "./navbar";
 import Footer from "./footer";
@@ -12,7 +10,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-grow font-serif">
+      <main className="flex-grow font-serif" style={{ overflowY: "auto" }}>
         <div className="container py-5 px-8 max-w-full flex flex-wrap md:flex-nowrap justify-center mx-auto gap-16 content-center items-center">
           {/* Left Section */}
           <div className="left text-4xl flex flex-col justify-center">
