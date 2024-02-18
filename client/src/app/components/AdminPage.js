@@ -89,7 +89,8 @@ function AdminPage() {
       backgroundColor: '#0056b3',
       border: 'none',
       borderRadius: '5px',
-      color: 'white',
+      color: 'black',
+
     },
     searchInput: {
       marginBottom: '20px',
