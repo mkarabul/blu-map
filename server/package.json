@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node --env-file=.env src/index.js"
+    "start": "node --env-file=.env.local src/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
