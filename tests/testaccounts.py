@@ -2,6 +2,7 @@
 
 
 # Example of test accounts stored in a dictionary
+# Access the database here
 TEST_ACCOUNTS = {
     "valid_user": {
         "username": "example",

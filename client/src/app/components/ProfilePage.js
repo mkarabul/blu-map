@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 function ProfilePage() {
-  const [profileData, setProfileData] = useState(null);
+  const [usersData, setUsersData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -14,7 +14,9 @@ function ProfilePage() {
         return response.json();
       })
       .then((data) => {
-        setProfileData(data);
+        if(data && data.users) {
+          setUsersData(data.users);
+        }
         setLoading(false);
       })
       .catch((error) => {
@@ -25,25 +27,29 @@ function ProfilePage() {
   }, []);
 
   if (loading) {
-    return <div>Loading profile...</div>;
+    return <div>Loading profiles...</div>;
   }
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
-  if (!profileData) {
+  if (!usersData || usersData.length === 0) {
     return <div>No profile data found.</div>;
   }
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Profile</h1>
-      <div><strong>Username:</strong> {profileData.username}</div>
-      <div><strong>Name:</strong> {profileData.name}</div>
-      <div><strong>Followers:</strong> {profileData.followers}</div>
-      <div><strong>Following:</strong> {profileData.following}</div>
-      <div><strong>Description:</strong> {profileData.profile_description}</div>
+      <h1>Profiles</h1>
+      {usersData.map((user, index) => (
+        <div key={index} style={{ marginBottom: '20px' }}>
+          <div><strong>Username:</strong> {user.username}</div>
+          <div><strong>Name:</strong> {user.name}</div>
+          <div><strong>Followers:</strong> {user.followers}</div>
+          <div><strong>Following:</strong> {user.following}</div>
+          <div><strong>Description:</strong> {user.profile_description}</div>
+        </div>
+      ))}
     </div>
   );
 }

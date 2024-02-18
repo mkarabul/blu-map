@@ -20,11 +20,12 @@ function LoginPage({ onLoginSuccess }) {
         return response.json();
       })
       .then(data => {
-        if (username === data.username && password === data.password) {
+        const isAdmin = data.admin.username === username && data.admin.password === password;
+        if (isAdmin) {
+          navigate('/admin');
+        } else {
           onLoginSuccess();
           navigate('/profile');
-        } else {
-          alert('Invalid username or password');
         }
       })
       .catch(error => {
@@ -39,11 +40,11 @@ function LoginPage({ onLoginSuccess }) {
       <form onSubmit={handleSubmit}>
         <div>
           <label>Username:</label>
-          <input type="text" value={username} onChange={handleUsernameChange} />
+          <input id="userName" type="text" value={username} onChange={handleUsernameChange} />
         </div>
         <div>
           <label>Password:</label>
-          <input type="password" value={password} onChange={handlePasswordChange} />
+          <input id="passWord" type="password" value={password} onChange={handlePasswordChange} />
         </div>
         <button type="submit">Login</button>
       </form>
