@@ -4,7 +4,7 @@ import { faUsers } from "@fortawesome/free-solid-svg-icons";
 
 export default function Navbar() {
   return (
-    <div className="navbar bg-base-100 bg-white w-100vw">
+    <div className="navbar bg-base-200 w-100vw">
       {/* Left Section */}
       <div className="left-section flex-1">
         <a className="btn btn-ghost text-xl">
