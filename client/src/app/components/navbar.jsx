@@ -1,10 +1,11 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <div className="navbar bg-base-200 w-100vw">
+    <header className="navbar bg-base-200 w-100vw">
       {/* Left Section */}
       <div className="left-section flex-1">
         <a className="btn btn-ghost text-xl">
@@ -57,10 +58,9 @@ export default function Navbar() {
             className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
           >
             <li>
-              <a className="justify-between">
+              <Link className="justify-between" href="/settings">
                 Settings
-                <span className="badge">New</span>
-              </a>
+              </Link>
             </li>
             <li>
               <a>Logout</a>
@@ -68,6 +68,6 @@ export default function Navbar() {
           </ul>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
