@@ -8,14 +8,14 @@ export default function Navbar() {
     <header className="navbar bg-base-200 w-100vw">
       {/* Left Section */}
       <div className="left-section flex-1">
-        <a className="btn btn-ghost text-xl">
+        <Link className="btn btn-ghost text-xl" href="/">
           <img
             src="/blu-map-logo.jpeg"
             className="mr-2"
             style={{ width: "49px", height: "45px" }}
           />
           Blu-Map
-        </a>
+        </Link>
         <input
           type="text"
           placeholder="Search"
@@ -28,15 +28,21 @@ export default function Navbar() {
       <div className="right-section flex-none gap-2">
         <div className="form-control"></div>
         <div className="dropdown dropdown-end" style={{ paddingTop: "0rem" }}>
-          <button className="btn btn-outline mr-4" style={{ width: "10rem" }}>
-            Social
-          </button>
-          <button className="btn btn-outline mr-4" style={{ width: "10rem" }}>
-            Trip
-          </button>
-          <button className="btn btn-outline" style={{ width: "10rem" }}>
-            Profile
-          </button>
+          <Link href="/social">
+            <button className="btn btn-outline mr-4" style={{ width: "10rem" }}>
+              Social
+            </button>
+          </Link>
+          <Link href="/trip">
+            <button className="btn btn-outline mr-4" style={{ width: "10rem" }}>
+              Trip
+            </button>
+          </Link>
+          <Link href="/profile">
+            <button className="btn btn-outline" style={{ width: "10rem" }}>
+              Profile
+            </button>
+          </Link>
         </div>
 
         {/* Profile Section */}
