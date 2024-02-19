@@ -1,39 +1,56 @@
 import Option from "./components/option";
+import Profile from "./components/settings-profile";
+import {
+  faServer,
+  faUser,
+  faBell,
+  faGlobe,
+  faHeadphones,
+  faRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Page() {
   return (
     <div className="container mx-auto p-4">
-      <div className="flex-col items-left mb-8">
-        <img
-          src="/default-pfp.png"
-          alt="User Avatar"
-          className="w-24 h-24 rounded-full object-cover mb-4"
-        />
-        <label
-          htmlFor="avatar-upload"
-          className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
-        >
-          Change Avatar
-          <input id="avatar-upload" type="file" className="hidden" />
-        </label>
-      </div>
+      <Profile />
       <h1 className="text-2xl font-semibold mb-6">Settings</h1>
       <div className="space-y-4">
         <Option
+          icon={faUser}
           header="Account"
           context="Privacy, security, change email or number"
+          link="settings"
         />
-        <Option header="Notifications" context="Message & Trip Notifications" />
         <Option
+          icon={faBell}
+          header="Notifications"
+          context="Message & Trip Notifications"
+          link="settings"
+        />
+        <Option
+          icon={faServer}
           header="Data & Preferences"
           context="User Data, Preferencesm Downloaded Trips"
+          link="settings"
         />
-        <Option header="Region and Language" context="Region & Language" />
         <Option
+          icon={faGlobe}
+          header="Region and Language"
+          context="Region & Language"
+          link="settings"
+        />
+        <Option
+          icon={faHeadphones}
           header="Customer Support"
           context="Contact Us, About Us, FAQs"
+          link="settings"
         />
-        <Option header="Log Out" context="Log Out of Account" />
+        <Option
+          icon={faRightToBracket}
+          header="Log Out"
+          context="Log Out of Account"
+          link="settings"
+        />
       </div>
     </div>
   );
