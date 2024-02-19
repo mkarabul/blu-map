@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <div className="footer-container bg-base-200 text-base-content">
+    <footer className="footer-container bg-base-200 text-base-content">
       <footer className="footer p-10">
         <aside>
           <svg
@@ -43,7 +43,7 @@ function Footer() {
           <a className="link link-hover">Cookie policy</a>
         </nav>
       </footer>
-    </div>
+    </footer>
   );
 }
 

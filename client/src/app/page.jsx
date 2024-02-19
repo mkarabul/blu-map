@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
@@ -9,7 +8,6 @@ import { faCar } from "@fortawesome/free-solid-svg-icons";
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
       <main className="flex-grow font-serif" style={{ overflowY: "auto" }}>
         <div className="container py-5 px-8 max-w-full flex flex-wrap md:flex-nowrap justify-center mx-auto gap-16 content-center items-center">
           {/* Left Section */}
