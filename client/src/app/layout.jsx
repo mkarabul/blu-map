@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-timport { UserProvider } from "@auth0/nextjs-auth0/client";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 import "./globals.css";
 import Navbar from "./components/navbar";
 
