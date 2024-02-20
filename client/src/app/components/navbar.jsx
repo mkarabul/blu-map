@@ -33,9 +33,9 @@ export default function Navbar() {
               Social
             </button>
           </Link>
-          <Link href="/trip">
+          <Link href="/trips">
             <button className="btn btn-outline mr-4" style={{ width: "10rem" }}>
-              Trip
+              Trips
             </button>
           </Link>
           <Link href="/profile">
