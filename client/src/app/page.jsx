@@ -20,7 +20,7 @@ export default function Home() {
               <FontAwesomeIcon
                 icon={faLocationDot}
                 style={{ width: "50px", height: "50px" }}
-                className="text-primary"
+                className="text-white" // change this in the future to app theme
               />
               <div className="ml-4">
                 <p className="text-2xl font-bold">Choose Destination</p>
@@ -35,7 +35,7 @@ export default function Home() {
               <FontAwesomeIcon
                 icon={faPersonHiking}
                 style={{ width: "50px", height: "50px" }}
-                className="text-primary"
+                className="text-white" // change this in the future to app theme
               />
               <div className="ml-4">
                 <p className="text-2xl font-bold">Choose Activities</p>
@@ -50,7 +50,7 @@ export default function Home() {
               <FontAwesomeIcon
                 icon={faCar}
                 style={{ width: "50px", height: "50px" }}
-                className="text-primary"
+                className="text-white" // change this in the future to app theme
               />
               <div className="ml-4">
                 <p className="text-2xl font-bold">Get a Complete Trip</p>
