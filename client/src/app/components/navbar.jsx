@@ -38,7 +38,7 @@ export default function Navbar() {
               Trips
             </button>
           </Link>
-          <Link href="/profile">
+          <Link href="/profile" passHref>
             <button className="btn btn-outline" style={{ width: "10rem" }}>
               Profile
             </button>
