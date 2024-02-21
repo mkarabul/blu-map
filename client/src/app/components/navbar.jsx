@@ -2,16 +2,14 @@
 
 import React from "react";
 import Link from "next/link";
-import { useState } from "react";
 import { RiMenu3Line } from "@react-icons/all-files/ri/RiMenu3Line.js";
-import { RiCloseLine } from "@react-icons/all-files/ri/RiCloseLine.js";
 
 export default function Navbar() {
   return (
     <header className="flex flex-row bg-base-200 w-full min-h-16 p-2">
       {/* Left Section */}
       <div className="left-section flex-1 flex flex-row basis-3/5">
-        <Link className="btn btn-ghost text-xl" href="/">
+        <Link className="btn btn-ghost text-xl mr-4" href="/">
           <img
             src="/blu-map-logo.jpeg"
             className="mr-2"
