@@ -8,8 +8,11 @@ import {
   faHeadphones,
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import { FiToggleLeft, FiToggleRight } from 'react-icons/fi';
+
 
 export default function Page() {
+  const isDarkMode = true;
   return (
     <div className="container mx-auto p-4">
       <Profile />
@@ -45,6 +48,14 @@ export default function Page() {
           context="Contact Us, About Us, FAQs"
           link="settings"
         />
+        <Option
+            icon={faHeadphones}
+            header="Dark Mode"
+            context="Toggle dark mode"
+            link="#"
+          >
+            {isDarkMode ? <FiToggleRight/> : <FiToggleLeft />}
+          </Option>
         <Option
           icon={faRightToBracket}
           header="Log Out"
