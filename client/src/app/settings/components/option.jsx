@@ -9,7 +9,7 @@ export default function Option({ icon, header, context, link }) {
           <div className="flex items-center space-x-3">
             <FontAwesomeIcon
               icon={icon}
-              style={{ width: "50px", height: "50px", color: "blue-950" }}
+              style={{ width: "50px", height: "50px" }}
               className="text-primary"
             />
             <div>
