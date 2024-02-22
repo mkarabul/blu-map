@@ -1,7 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShareFromSquare } from "@fortawesome/free-solid-svg-icons";
+
+import {
+  faShareFromSquare,
+  faEnvelope,
+} from "@fortawesome/free-solid-svg-icons";
+
+import { faSnapchat, faInstagram } from "@fortawesome/free-brands-svg-icons";
+
 import { sendToEmail } from "./email-share";
 
 export default function Page() {
@@ -17,6 +24,20 @@ export default function Page() {
     modal.close();
     const emailModal = document.getElementById("share_email_modal");
     emailModal.showModal();
+  }
+
+  function openShareWithInstagram() {
+    const modal = document.getElementById("share_modal");
+    modal.close();
+    // open instagram share
+    window.open("https://instagram.com/direct/inbox/", "_blank");
+  }
+
+  function openShareWithSnapchat() {
+    const modal = document.getElementById("share_modal");
+    modal.close();
+    // open instagram share
+    window.open("https://web.snapchat.com/", "_blank");
   }
 
   return (
@@ -39,7 +60,22 @@ export default function Page() {
           <h3 className="font-bold text-lg">Share Itinerary</h3>
           <p className="py-4">
             <button className="btn rounded-full" onClick={openShareWitHEmail}>
+              <FontAwesomeIcon icon={faEnvelope} className="mr-1" />
               Email
+            </button>
+            <button
+              className="btn rounded-full ml-2"
+              onClick={openShareWithInstagram}
+            >
+              <FontAwesomeIcon icon={faInstagram} className="mr-1" />
+              Instagram
+            </button>
+            <button
+              className="btn rounded-full ml-2"
+              onClick={openShareWithSnapchat}
+            >
+              <FontAwesomeIcon icon={faSnapchat} className="mr-1" />
+              Snapchat
             </button>
           </p>
         </div>
