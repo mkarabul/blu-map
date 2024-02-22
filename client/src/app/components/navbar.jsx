@@ -2,8 +2,12 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import { getSession } from "@auth0/nextjs-auth0";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const session = await getSession();
+  const user = session?.user;
+
   return (
     <header className="navbar bg-base-200 w-100vw">
       {/* Left Section */}
@@ -46,31 +50,45 @@ export default function Navbar() {
         </div>
 
         {/* Profile Section */}
-        <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar mt-0"
-          >
-            <div className="w-10 rounded-full top-5">
-              <img alt="Tailwind CSS Navbar component" src="/default-pfp.png" />
-            </div>
-          </div>
-          <ul
-            tabIndex={0}
-            className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
-          >
-            <li>
-              <Link className="justify-between" href="/settings">
-                Settings
-              </Link>
-            </li>
-            <li>
-              <a>Logout</a>
-            </li>
-          </ul>
-        </div>
+        {user ? <UserDropdown /> : <LogInButton />}
       </div>
     </header>
   );
 }
+
+const LogInButton = () => {
+  return (
+    <a href="/api/auth/login" className="btn btn-ghost">
+      Sign In
+    </a>
+  );
+};
+
+const UserDropdown = () => {
+  return (
+    <div className="dropdown dropdown-end">
+      <div
+        tabIndex={0}
+        role="button"
+        className="btn btn-ghost btn-circle avatar mt-0"
+      >
+        <div className="w-10 rounded-full top-5">
+          <img alt="Tailwind CSS Navbar component" src="/default-pfp.png" />
+        </div>
+      </div>
+      <ul
+        tabIndex={0}
+        className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+      >
+        <li>
+          <Link className="justify-between" href="/settings">
+            Settings
+          </Link>
+        </li>
+        <li>
+          <a href="/api/auth/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  );
+};
