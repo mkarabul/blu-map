@@ -7,7 +7,11 @@ import {
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { faSnapchat, faInstagram } from "@fortawesome/free-brands-svg-icons";
+import {
+  faSnapchat,
+  faInstagram,
+  faWhatsapp,
+} from "@fortawesome/free-brands-svg-icons";
 
 import { sendToEmail } from "./email-share";
 
@@ -38,6 +42,13 @@ export default function Page() {
     modal.close();
     // open instagram share
     window.open("https://web.snapchat.com/", "_blank");
+  }
+
+  function openShareWithWhatsApp() {
+    const modal = document.getElementById("share_modal");
+    modal.close();
+    // open instagram share
+    window.open("https://web.whatsapp.com/", "_blank");
   }
 
   return (
@@ -76,6 +87,13 @@ export default function Page() {
             >
               <FontAwesomeIcon icon={faSnapchat} className="mr-1" />
               Snapchat
+            </button>
+            <button
+              className="btn rounded-full ml-2"
+              onClick={openShareWithWhatsApp}
+            >
+              <FontAwesomeIcon icon={faWhatsapp} className="mr-1" />
+              WhatsApp
             </button>
           </p>
         </div>
