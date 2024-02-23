@@ -4,7 +4,13 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const Activity = sequelize.define("Activity", {
+const FrequentlyPlannedActivity = sequelize.define("Activity", {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+  },
   activityId: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -27,4 +33,4 @@ const Activity = sequelize.define("Activity", {
   },
 });
 
-module.exports = Activity;
+module.exports = FrequentlyPlannedActivity;
