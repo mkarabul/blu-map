@@ -1,14 +1,6 @@
-const express = require("express");
-const cors = require("cors");
+const { app } = require("./app");
 
-const apiRoutes = require("./routes/apiRouter");
-
-const app = express();
-const port = process.env.port || 3000;
-
-app.use(cors());
-
-app.use("/api", apiRoutes);
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
