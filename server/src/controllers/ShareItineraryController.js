@@ -18,6 +18,7 @@ const ShareItineraryController = {
         preferences,
       });
 
+      // 201 status code indicates that a new resource has been created
       res.status(201).json(sharedActivity);
     } catch (error) {
       console.error("Error sharing activity:", error);
