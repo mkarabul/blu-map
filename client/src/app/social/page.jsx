@@ -25,8 +25,6 @@ function SocialPage() {
           <button className="btn btn-outline w-full mb-2 rounded-full">
             West Lafayette
           </button>
-
-          {/* Add content here */}
         </div>
 
         {/* Middle Column: Posts */}
@@ -39,13 +37,11 @@ function SocialPage() {
               <div>Date: {sampleTrip.date}</div>
             </div>
           </div>
-          {/* More posts could be added here */}
         </div>
 
         {/* Right Column: Interests */}
         <div className="w-1/5 p-4 border-l">
           <h2 className="font-bold mb-4">Interests</h2>
-          {/* Add content here */}
         </div>
       </div>
     </div>
