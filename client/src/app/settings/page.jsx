@@ -1,3 +1,7 @@
+"use client"
+
+import { useState, useEffect } from 'react';
+
 import Option from "./components/option";
 import Profile from "./components/settings-profile";
 import {
@@ -7,12 +11,28 @@ import {
   faGlobe,
   faHeadphones,
   faRightToBracket,
+  faMoon,
+  faSun
 } from "@fortawesome/free-solid-svg-icons";
-import { FiToggleLeft, FiToggleRight } from 'react-icons/fi';
-
 
 export default function Page() {
-  const isDarkMode = true;
+
+  const [theme, setTheme] = useState('dark');
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }, []);
+
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+  };
+  
   return (
     <div className="container mx-auto p-4">
       <Profile />
@@ -23,6 +43,14 @@ export default function Page() {
           header="Account"
           context="Privacy, security, change email or number"
           link="settings"
+        />
+         <Option
+          icon={theme === 'dark' ? faSun : faMoon}
+          header="Dark Mode"
+          context="Toggle between Light and Dark mode"
+          link="settings"
+          onClick={toggleTheme}
+          isToggle={true}
         />
         <Option
           icon={faBell}
@@ -48,14 +76,7 @@ export default function Page() {
           context="Contact Us, About Us, FAQs"
           link="settings"
         />
-        <Option
-            icon={faHeadphones}
-            header="Dark Mode"
-            context="Toggle dark mode"
-            link="#"
-          >
-            {isDarkMode ? <FiToggleRight/> : <FiToggleLeft />}
-          </Option>
+        
         <Option
           icon={faRightToBracket}
           header="Log Out"
