@@ -1,4 +1,4 @@
-const FrequentlyPlannedActivity = require("../models/frequentlyPlannedActivities");
+const Activity = require("../models/Activity");
 
 const ShareItineraryController = {
   async shareActivity(req, res) {
@@ -10,7 +10,7 @@ const ShareItineraryController = {
       const formattedContent = `User ${userId} is planning ${activityType} ${frequency}.`;
 
       // save the shared activity to the database
-      const sharedActivity = await FrequentlyPlannedActivity.create({
+      const sharedActivity = await Activity.create({
         activityId,
         userId,
         activityType,
