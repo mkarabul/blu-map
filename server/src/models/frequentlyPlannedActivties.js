@@ -28,8 +28,8 @@ const FrequentlyPlannedActivity = sequelize.define("Activity", {
     allowNull: false,
   },
   preferences: {
-    type: DataTypes.JSON, // JSON data type to store preferences
-    allowNull: true, // allow null as it might not always be provided
+    type: DataTypes.JSON,
+    allowNull: true,
   },
 });
 

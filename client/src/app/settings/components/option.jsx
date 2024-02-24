@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Option({ icon, header, context, link, onClick }) {
   if (onClick) {
-    // Option for clickable actions like toggling theme
     return (
       <div className="mb-4" onClick={onClick}>
         <div className="block border p-2 rounded-lg shadow hover:bg-gray-600 transition duration-150 ease-in-out">
@@ -22,7 +21,6 @@ export default function Option({ icon, header, context, link, onClick }) {
       </div>
     );
   } else {
-    // Option for navigation
     return (
       <div className="mb-4">
         <Link href={link} passHref>
