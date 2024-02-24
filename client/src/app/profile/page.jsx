@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
@@ -16,6 +16,14 @@ import {
 import { sendToEmail } from "./email-share";
 
 export default function Page() {
+
+  const [theme, setTheme] = useState('dark');
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }, []);
+
   const [emailAddress, setEmailAddress] = useState("");
 
   function openShareModal() {

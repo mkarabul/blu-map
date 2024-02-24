@@ -1,11 +1,24 @@
+"use client"
+
 import React from "react";
 import Footer from "./components/footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faPersonHiking } from "@fortawesome/free-solid-svg-icons";
 import { faCar } from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect } from 'react';
 
 export default function Home() {
+
+
+  const [theme, setTheme] = useState('dark');
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }, []);
+
+
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow font-serif" style={{ overflowY: "auto" }}>
@@ -20,7 +33,7 @@ export default function Home() {
               <FontAwesomeIcon
                 icon={faLocationDot}
                 style={{ width: "50px", height: "50px" }}
-                className="text-white" // change this in the future to app theme
+                className="text-white"
               />
               <div className="ml-4">
                 <p className="text-2xl font-bold">Choose Destination</p>
@@ -35,7 +48,7 @@ export default function Home() {
               <FontAwesomeIcon
                 icon={faPersonHiking}
                 style={{ width: "50px", height: "50px" }}
-                className="text-white" // change this in the future to app theme
+                className="text-white"
               />
               <div className="ml-4">
                 <p className="text-2xl font-bold">Choose Activities</p>
@@ -50,7 +63,7 @@ export default function Home() {
               <FontAwesomeIcon
                 icon={faCar}
                 style={{ width: "50px", height: "50px" }}
-                className="text-white" // change this in the future to app theme
+                className="text-white"
               />
               <div className="ml-4">
                 <p className="text-2xl font-bold">Get a Complete Trip</p>
