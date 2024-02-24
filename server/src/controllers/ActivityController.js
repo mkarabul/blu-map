@@ -1,6 +1,4 @@
-const {
-  FrequentlyPlannedActivity,
-} = require("../models/FrequentlyPlannedActivity");
+const { Activity } = require("../models/Activity");
 
 const getFrequentlyPlannedActivities = async (req, res) => {
   try {
@@ -9,7 +7,7 @@ const getFrequentlyPlannedActivities = async (req, res) => {
     const sortBy = req.query.sortBy;
 
     // fetch frequently planned activities for the user from the database
-    let activities = await FrequentlyPlannedActivity.findAll({
+    let activities = await Activity.findAll({
       where: { userId },
     });
 
