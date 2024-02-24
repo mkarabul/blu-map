@@ -15,7 +15,7 @@ function Footer() {
           <p>
             Blu-Map
             <br />
-            Social Media Links will go here! Refer to UI MOCKUPS!
+            {/* Social Media Links will go here! Refer to UI MOCKUPS! */}
           </p>
         </aside>
         <nav>
