@@ -4,7 +4,7 @@ const sequelize = require("../config/database");
 const ProfileTrips = sequelize.define("ProfileTrips", {
   tripID: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     primaryKey: true,
     autoIncrement: true,
   },
