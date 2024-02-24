@@ -15,6 +15,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@nextui-org/react": "^2.2.9",
     "@react-icons/all-files": "^4.1.0",
+    "@types/eslint": "^8.56.3",
     "framer-motion": "^11.0.5",
     "next": "14.1.0",
     "react": "^18",
