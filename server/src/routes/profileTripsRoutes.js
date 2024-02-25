@@ -1,4 +1,5 @@
 const express = require("express");
+const ProfileTripsController = require("../controllers/ProfileTripsController");
 
 const router = express.Router();
 

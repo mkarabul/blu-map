@@ -38,7 +38,9 @@ const Itinerary = sequelize.define("Itinerary", {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,
-  }
+  },
 });
+
+Itinerary.sync();
 
 module.exports = Itinerary;
