@@ -25,4 +25,6 @@ const Post = sequelize.define("Post", {
   },
 });
 
+Post.sync();
+
 module.exports = Post;

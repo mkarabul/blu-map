@@ -1,12 +1,23 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const ProfileTrips = sequelize.define("ProfileTrips", {
-  tripID: {
+const ProfileTrip = sequelize.define("ProfileTrip", {
+  id: {
     type: DataTypes.INTEGER,
-    allowNull: true,
+    allowNull: false,
     primaryKey: true,
     autoIncrement: true,
+    defaultValue: 0,
+    unique: true,
+  },
+  uuid: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isUUID: 4,
+    },
+    defaultValue: DataTypes.UUIDV4,
   },
   userID: {
     type: DataTypes.INTEGER,
@@ -24,10 +35,13 @@ const ProfileTrips = sequelize.define("ProfileTrips", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  date: {
-    type: DataTypes.DATEONLY,
+  creationTime: {
+    type: DataTypes.DATE,
     allowNull: false,
+    defaultValue: DataTypes.NOW,
   },
 });
 
-module.exports = ProfileTrips;
+ProfileTrip.sync();
+
+module.exports = ProfileTrip;
