@@ -1,11 +1,11 @@
 const express = require("express");
 
 const userRoutes = require("./userRoutes");
-const profileTripsRoutes = require("./profileTripsRoutes");
+const profileTripRoutes = require("./profileTripRoutes");
 
 const router = express.Router();
 
 router.use("/users", userRoutes);
-router.use("/profile-trips", profileTripsRoutes);
+router.use("/profile-trip", profileTripRoutes);
 
 module.exports = router;
