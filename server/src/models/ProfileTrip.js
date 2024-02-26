@@ -39,6 +39,11 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
     allowNull: false,
     defaultValue: DataTypes.NOW,
   },
+  isPublic: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
 });
 
 ProfileTrip.sync();
