@@ -22,7 +22,7 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  tripName: {
+  userName: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -34,7 +34,7 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  tripTime: {
+  tripDate: {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,
