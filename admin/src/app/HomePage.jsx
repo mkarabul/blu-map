@@ -128,7 +128,6 @@ const getReportsData = () => {
 
 // Function to get the data for user creation chart
 const getUserCreationData = () => {
-  // Create an object to count users created per month/year, etc.
   const creationCounts = {}; // e.g., { 'Jan 2021': 20, 'Feb 2021': 25, ... }
   usersData.forEach(user => {
     const monthYear = new Date(user.created_at).toLocaleString('default', { month: 'short', year: 'numeric' });
@@ -139,7 +138,6 @@ const getUserCreationData = () => {
     datasets: [{
       label: 'Sign Ups',
       data: Object.values(creationCounts),
-      // add other dataset properties required by your charting library
     }],
   };
 };
@@ -153,7 +151,6 @@ const HomePage = ({ toggleTheme, themeClasses, toggleButtonClass }) => {
   const suspendedUsersChartData = getSuspendedUsersData();
   const genderDistributionData = getGenderDistributionData();
 
-  // Options for charts with conditional styling for light/dark mode
   const chartOptions = {
     responsive: true,
     animation: {
