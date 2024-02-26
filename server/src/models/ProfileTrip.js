@@ -7,7 +7,6 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
     allowNull: false,
     primaryKey: true,
     autoIncrement: true,
-    defaultValue: 0,
     unique: true,
   },
   uuid: {
@@ -19,7 +18,7 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
     },
     defaultValue: DataTypes.UUIDV4,
   },
-  userID: {
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
@@ -35,10 +34,15 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  creationTime: {
+  tripTime: {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,
+  },
+  isPublic: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
   },
 });
 
