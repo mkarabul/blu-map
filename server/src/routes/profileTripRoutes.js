@@ -3,6 +3,8 @@ const ProfileTripController = require("../controllers/ProfileTripController");
 
 const router = express.Router();
 
+router.get("", ProfileTripController.getPublicProfileTrips);
+
 router.get("/:userId", ProfileTripController.getProfileTrips);
 
 router.post("", ProfileTripController.createProfileTrip);

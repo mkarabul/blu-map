@@ -27,6 +27,17 @@ const ProfileTripsController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async getPublicProfileTrips(req, res) {
+    try {
+      const profileTrips = await ProfileTrip.findAll({
+        where: { isPublic: true },
+      });
+      res.status(200).json(profileTrips);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 };
 
 module.exports = ProfileTripsController;
