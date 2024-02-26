@@ -1,15 +1,6 @@
-const express = require("express");
-const cors = require("cors");
-const { checkJwt } = require("./middleware/authMiddleware");
+const { app } = require("./app");
 
-const apiRoutes = require("./routes/apiRouter");
-
-const app = express();
-const port = process.env.port || 3000;
-
-app.use(cors());
-
-app.use("/api", checkJwt, apiRoutes);
+const port = process.env.PORT || 6000;
 
 app.listen(port, () => {
   console.log(`API listening on port ${port}`);
