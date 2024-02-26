@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import SocialPost from "./components/social-post";
+import ListPosts from "./components/list-posts";
 
 function SocialPage() {
   const [isAccordionOpenforDestination, setIsAccordionOpenforDestination] =
@@ -198,7 +199,7 @@ function SocialPage() {
           <hr className="border-t mx-auto w-full my-2" />
         </div>
 
-        <SocialPost />
+        <ListPosts />
 
         {/* Right Column: Interests */}
         <div className="w-1/5 p-4 border-l hidden md:block">

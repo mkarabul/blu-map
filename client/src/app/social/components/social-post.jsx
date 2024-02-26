@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp,
@@ -9,21 +8,12 @@ import {
   faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
 
-const sampleTrip = {
-  title: "Trip to West Lafayette",
-  description:
-    "West Lafayette is beautiful city! This trip allowed me to explore Purdue University's stunning campus, enjoy a delicious steak at Irish Brothers, unwind at Celery Bog Nature Area, and catch a stunning sunset at Prophetstown State Park.",
-  maker: "Mert Karabulut",
-  date: "15 April 2023",
-};
-
-export default function SocialPost(props) {
-  const [posts, setPosts] = useState();
-
-  useEffect(() => {
-    setPosts([sampleTrip]);
-  }, []);
-
+export default function SocialPost({
+  header,
+  description,
+  tripDate,
+  userName,
+}) {
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
       <div className="card-body p-5">
@@ -49,12 +39,10 @@ export default function SocialPost(props) {
           />
         </div>
         {/* Trip description */}
-        <div className="text-lg text-gray-700">{sampleTrip.description}</div>
-        <div className="text-2xl text-bold text-gray-700 mt-3">
-          {sampleTrip.title}
-        </div>
+        <div className="text-lg text-gray-700">{description}</div>
+        <div className="text-2xl text-bold text-gray-700 mt-3">{header}</div>
         <div className="text-xl text-sm font-medium text-gray-600 mt-1">
-          Date: {sampleTrip.date} | Posted by: {sampleTrip.maker}
+          Date: {tripDate} | Posted by: {userName}
         </div>
         {/* Buttons on the bottom of a post */}
         <div className="flex flex-col md:flex-row justify-start items-center mt-4">

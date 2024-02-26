@@ -3,13 +3,15 @@ const ProfileTrip = require("../models/ProfileTrip");
 const ProfileTripsController = {
   async createProfileTrip(req, res) {
     try {
-      const { userId, tripName, description, header, tripTime } = req.body;
+      const { userId, userName, description, header, tripDate, isPublic } =
+        req.body;
       const newProfileTrip = await ProfileTrip.create({
         userId,
-        tripName,
+        userName,
         description,
         header,
-        tripTime,
+        tripDate,
+        isPublic,
       });
       res.status(201).json(newProfileTrip);
     } catch (error) {
@@ -20,7 +22,16 @@ const ProfileTripsController = {
   async getProfileTrips(req, res) {
     try {
       const { userId } = req.params;
-      const profileTrips = await ProfileTrip.findAll({ where: { userId } });
+      const profileTrips = await ProfileTrip.findAll({
+        where: { userId },
+        attributes: [
+          "userName",
+          "description",
+          "header",
+          "tripDate",
+          "isPublic",
+        ],
+      });
       res.status(200).json(profileTrips);
     } catch (error) {
       console.error(error);
@@ -31,6 +42,7 @@ const ProfileTripsController = {
     try {
       const profileTrips = await ProfileTrip.findAll({
         where: { isPublic: true },
+        attributes: ["userName", "description", "header", "tripDate"],
       });
       res.status(200).json(profileTrips);
     } catch (error) {
