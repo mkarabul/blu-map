@@ -18,7 +18,7 @@ function SocialPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row mt-20">
         {/* Accordion sections for smaller screens */}
         <div className="md:hidden">
           {/* Popular Destinations Accordion */}
@@ -147,7 +147,7 @@ function SocialPage() {
         </div>
 
         {/* Left Column: Popular Destinations */}
-        <div className="w-1/5 p-4 border-r pl-0 flex flex-col items-center hidden md:block">
+        <div className="md:fixed md:left-4 lg:left-8 md:top-4 md:w-1/5 p-4 border-r md:pl-0 md:h-screen overflow-auto hidden md:block mt-12">
           <h2 className="font-bold text-xl mb-4">Popular Destinations</h2>
 
           {/* North America Section */}
@@ -199,10 +199,13 @@ function SocialPage() {
           <hr className="border-t mx-auto w-full my-2" />
         </div>
 
-        <ListPosts />
+        {/* Middle Column: Posts */}
+        <div className="flex-1 justify-center mt-0">
+          <ListPosts />
+        </div>
 
         {/* Right Column: Interests */}
-        <div className="w-1/5 p-4 border-l hidden md:block">
+        <div className="md:fixed md:right-4 lg:right-8 md:top-4 md:w-1/5 p-4 border-l md:h-screen overflow-auto hidden md:block mt-12">
           <h2 className="font-bold text-xl mb-4">Interests</h2>
           {/* Attractions Section */}
           <h3 className="font-semibold text-lg mb-2">Attractions</h3>

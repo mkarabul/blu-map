@@ -9,7 +9,10 @@ export default async function Navbar() {
   const user = session?.user;
 
   return (
-    <header className="navbar bg-base-200 w-100vw">
+    <header
+      className="navbar bg-base-200 w-100vw z-50"
+      style={{ position: "fixed" }}
+    >
       {/* Left Section */}
       <div className="left-section flex-1">
         <Link className="btn btn-ghost text-xl" href="/">
