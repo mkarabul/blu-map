@@ -13,15 +13,14 @@ import {
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
 
-import { sendToEmail } from "./email-share";
+import { sendToEmail } from "./components/email-share";
 
 export default function Page() {
-
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState("dark");
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const savedTheme = localStorage.getItem("theme") || "dark";
     setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
 
   const [emailAddress, setEmailAddress] = useState("");
