@@ -1,17 +1,13 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const Itinerary = sequelize.define("Itinerary", {
+const ProfileTrip = sequelize.define("ProfileTrip", {
   id: {
-    type: DataTypes.INTEGER.UNSIGNED,
+    type: DataTypes.INTEGER,
     allowNull: false,
-    unique: true,
-    autoIncrement: true,
-    validate: {
-      isInt: true,
-    },
-    defaultValue: 0,
     primaryKey: true,
+    autoIncrement: true,
+    unique: true,
   },
   uuid: {
     type: DataTypes.UUID,
@@ -22,25 +18,34 @@ const Itinerary = sequelize.define("Itinerary", {
     },
     defaultValue: DataTypes.UUIDV4,
   },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    defaultValue: "New Itinerary",
-  },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  creationTime: {
+  userName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  header: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  tripDate: {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,
   },
+  isPublic: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
 });
 
-Itinerary.sync();
+ProfileTrip.sync();
 
-module.exports = Itinerary;
+module.exports = ProfileTrip;

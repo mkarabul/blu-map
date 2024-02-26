@@ -76,4 +76,6 @@ const Activity = sequelize.define("Activity", {
   },
 });
 
+Activity.sync();
+
 module.exports = Activity;
