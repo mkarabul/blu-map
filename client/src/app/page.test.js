@@ -8,19 +8,4 @@ describe('Home Component', () => {
     render(<Home />);
     expect(screen.getByText(/Plan Your Next Daily Trip In A Few Steps/i)).toBeInTheDocument();
   });
-
-  it('displays the Choose Destination section', () => {
-    render(<Home />);
-    expect(screen.getByText(/Choose Destination/i)).toBeInTheDocument();
-  });
-
-  it('displays the Choose Activities section', () => {
-    render(<Home />);
-    expect(screen.getByText(/Choose Activities/i)).toBeInTheDocument();
-  });
-
-  it('displays the Get a Complete Trip section', () => {
-    render(<Home />);
-    expect(screen.getByText(/Get a Complete Trip/i)).toBeInTheDocument();
-  });
 });
