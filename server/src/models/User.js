@@ -2,6 +2,11 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
 const User = sequelize.define("User", {
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -10,6 +15,24 @@ const User = sequelize.define("User", {
       isEmail: true,
     },
   },
+  age: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      isInt: true,
+      min: 0,
+    },
+  },
+  gender: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  isSuspended: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  
 });
 
 User.sync();

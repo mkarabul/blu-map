@@ -227,20 +227,17 @@ const HomePage = ({ toggleTheme, themeClasses, toggleButtonClass }) => {
         </div>
       </div>
 
-      {/* Second Row of Content */}
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-        {/* User Creation Card */}
+      {/* <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
         <div className='bg-white shadow rounded p-4'>
             <h3 className='text-xl font-semibold mb-2 text-black'>User Sign Ups</h3>
             <Line data={userCreationChartData} options={userCreationChartOptions} />
         </div>
 
-        {/* Reports Card */}
         <div className='bg-white shadow rounded p-4'>
             <h3 className='text-xl font-semibold mb-2 text-black'>Reports</h3>
             <Bar data={reportsChartData} options={reportsChartOptions} />
         </div>
-        </div>
+        </div> */}
 
         <Footer theme={themeClasses.includes('bg-gray-900') ? 'dark' : 'light'} />
 
