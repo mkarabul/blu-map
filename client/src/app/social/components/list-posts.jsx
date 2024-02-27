@@ -7,7 +7,6 @@ export default function ListPosts() {
   const getPosts = async () => {
     const response = await fetch("/api/profile-trip/");
     const data = await response.json();
-    console.log(data);
     setPosts(data);
   };
 
@@ -15,10 +14,11 @@ export default function ListPosts() {
     getPosts();
   }, []);
 
-  return (
+  return posts !== null ? (
     <>
       {posts.map((post) => (
         <SocialPost
+          key={post.id}
           header={post.header}
           description={post.description}
           tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
@@ -30,5 +30,7 @@ export default function ListPosts() {
         />
       ))}
     </>
+  ) : (
+    ""
   );
 }
