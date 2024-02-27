@@ -11,7 +11,9 @@ const Trips = () => {
     document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
 
- 
+  const themeClasses =
+    theme === "dark" ? "text-white bg-black" : "text-black bg-white";
+
   return (
     <div>
       <h3>Trips</h3>

@@ -34,10 +34,12 @@ const Navbar = ({ toggleTheme, theme }) => {
         </Link>
         <button
           onClick={toggleTheme}
+          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'} // Add this line
           className={`ml-4 px-4 py-2 rounded-full shadow-inner flex items-center justify-center ${textColor} ${hoverBgColor} transition duration-150 ease-in-out`}
         >
           <FontAwesomeIcon icon={themeIcon} />
         </button>
+
       </div>
     </nav>
   );
