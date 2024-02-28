@@ -37,7 +37,7 @@ const UserController = {
     try {
       const { userName, email, age, gender, isSuspended } = req.body;
 
-      if (!userName || !email || !age || !gender) {
+      if (!userName || !email) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
