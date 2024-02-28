@@ -25,31 +25,35 @@ const SearchPage = ({ themeClasses, toggleTheme }) => {
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
-
   const toggleSuspend = async (username, isSuspended) => {
     try {
-      await axios.patch(`http://localhost:5000/api/users/${username}/toggle-suspend`);
-      
-      const message = isSuspended ? 'User suspended successfully.' : 'User unsuspended successfully.';
-      alert(message);
-      setUsersData((prevUsers) => {
-        const updatedUsers = prevUsers.map((user) => {
-          if (user.username === username) {
-            const isNowSuspended = !user.isSuspended;
-            return { ...user, isSuspended: isNowSuspended };
-          }
-          return user;
+        await axios.patch(`http://localhost:5000/api/users/${username}/toggle-suspend`);
+
+        let message;
+        if (isSuspended) {
+            message = `${username} is unsuspended successfully`;
+        } else {
+            message = `${username} is suspended successfully`;
+        }
+        alert(message);
+        setUsersData((prevUsers) => {
+            const updatedUsers = prevUsers.map((user) => {
+                if (user.username === username) {
+                    const isNowSuspended = !user.isSuspended;
+                    return { ...user, isSuspended: isNowSuspended };
+                }
+                return user;
+            });
+
+            return updatedUsers;
+
         });
-        
-        return updatedUsers;
-        
-      });
     } catch (error) {
-      console.error('Error toggling user suspension:', error);
-      alert(`Error toggling user suspension: ${error}`);
+        console.error('Error toggling user suspension:', error);
+        alert(`Error toggling user suspension for ${username}: ${error}`);
     }
-  };
-  
+};
+
   
 
 
@@ -130,15 +134,17 @@ const SearchPage = ({ themeClasses, toggleTheme }) => {
           {paginatedUsers.length > 0 ? (
             paginatedUsers.map((user, index) => (
               <div
+                id="search-users"
                 key={index}
-                className={`mb-4 p-4 rounded shadow-lg ${cardBgColor} ${textColor} space-y-2`}
+                className={`username-class mb-4 p-4 rounded shadow-lg ${cardBgColor} ${textColor} space-y-2`}
               >
-                <h2 className="text-2xl font-bold">{user.username}</h2>
+                <h2 className="username-name text-2xl font-bold">{user.username}</h2>
                 <p>Email: {user.email}</p>
                 <p>Age: {user.age}</p>
                 <p>Gender: {user.gender}</p>
                 <p>Status: {user.isSuspended ? 'Suspended' : 'Active'}</p>
                 <button
+                  id="suspendOrUnsuspend"
                   onClick={() => toggleSuspend(user.username, user.isSuspended)}
                   className={`px-4 py-2 rounded ${
                     user.isSuspended ? 'bg-green-500' : 'bg-yellow-500'

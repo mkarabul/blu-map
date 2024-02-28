@@ -12,13 +12,11 @@ const MockNavbar = ({ theme, toggleTheme }) => (
 );
 
 describe('Navbar', () => {
-  // Test for displaying the text "Admin Dashboard"
   test('displays the text "Admin Dashboard"', () => {
     render(<MockNavbar theme="light" toggleTheme={() => {}} />);
     expect(screen.getByText('Admin Dashboard')).toBeInTheDocument();
   });
 
-  // Test for link to the homepage
   test('contains a link to the homepage', () => {
     render(<MockNavbar theme="light" toggleTheme={() => {}} />);
     const homeLink = screen.getByRole('link', { name: /home/i });
@@ -26,7 +24,6 @@ describe('Navbar', () => {
     expect(homeLink).toHaveAttribute('href', '/');
   });
 
-  // Test for link to the search page
   test('contains a link to the search page', () => {
     render(<MockNavbar theme="light" toggleTheme={() => {}} />);
     const searchLink = screen.getByRole('link', { name: /search/i });
@@ -34,7 +31,6 @@ describe('Navbar', () => {
     expect(searchLink).toHaveAttribute('href', '/search');
   });
 
-  // Test for theme toggle button visibility
   test('displays the theme toggle button', () => {
     render(<MockNavbar theme="light" toggleTheme={() => {}} />);
     const toggleButton = screen.getByRole('button');
