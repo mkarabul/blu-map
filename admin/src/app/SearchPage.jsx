@@ -1,44 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import axios from 'axios'; // Import Axios library
+import axios from 'axios';
 
 const SearchPage = ({ themeClasses, toggleTheme }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('none');
   const [showingUsers, setShowingUsers] = useState(15);
-  const [usersData, setUsersData] = useState([]); // State to store fetched users data
+  const [usersData, setUsersData] = useState([]);
 
   useEffect(() => {
-    // Function to fetch users data from the API
     const fetchUsersData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/users/');
-        setUsersData(response.data); // Set fetched users data to state
+        setUsersData(response.data);
       } catch (error) {
         console.error('Error fetching users data:', error);
       }
     };
 
-    fetchUsersData(); // Fetch users data when component mounts
-  }, []); // Empty dependency array ensures the effect runs only once
+    fetchUsersData();
+  }, []);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const toggleSuspend = (username) => {
-    alert('Suspend user here');
+  const toggleSuspend = async (username, isSuspended) => {
+    try {
+      await axios.patch(`http://localhost:5000/api/users/${username}/toggle-suspend`);
+      
+      const message = isSuspended ? 'User suspended successfully.' : 'User unsuspended successfully.';
+      alert(message);
+      setUsersData((prevUsers) => {
+        const updatedUsers = prevUsers.map((user) => {
+          if (user.username === username) {
+            const isNowSuspended = !user.isSuspended;
+            return { ...user, isSuspended: isNowSuspended };
+          }
+          return user;
+        });
+        
+        return updatedUsers;
+        
+      });
+    } catch (error) {
+      console.error('Error toggling user suspension:', error);
+      alert(`Error toggling user suspension: ${error}`);
+    }
   };
+  
+  
+
 
   const forceDelete = async (username) => {
     try {
-      alert(`http://localhost:5000/api/users/${username}`);
       await axios.delete(`http://localhost:5000/api/users/${username}`);
-      alert("at least here?");
-
       setUsersData((prevUsers) => prevUsers.filter((user) => user.username !== username));
-      console.log('User deleted successfully');
       alert("Deleted the user");
     } catch (error) {
       alert(error);
@@ -51,7 +69,6 @@ const SearchPage = ({ themeClasses, toggleTheme }) => {
     user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Sorting logic based on selected option
   const sortedUsers = [...filteredUsers].sort((a, b) => {
     if (sortBy === 'alphabetical') {
       return a.username.localeCompare(b.username);
@@ -60,7 +77,6 @@ const SearchPage = ({ themeClasses, toggleTheme }) => {
     } else if (sortBy === 'suspended') {
       return b.isSuspended - a.isSuspended;
     }
-    // Default sorting: no sorting applied
     return 0;
   });
 
@@ -123,7 +139,7 @@ const SearchPage = ({ themeClasses, toggleTheme }) => {
                 <p>Gender: {user.gender}</p>
                 <p>Status: {user.isSuspended ? 'Suspended' : 'Active'}</p>
                 <button
-                  onClick={() => toggleSuspend(user.username)}
+                  onClick={() => toggleSuspend(user.username, user.isSuspended)}
                   className={`px-4 py-2 rounded ${
                     user.isSuspended ? 'bg-green-500' : 'bg-yellow-500'
                   } text-white mr-2`}

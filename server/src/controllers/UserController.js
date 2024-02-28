@@ -14,6 +14,7 @@ const UserController = {
     }
   },
 
+  // Method to get a user by username
   async getUserByUsername(req, res) {
     try {
       const { username } = req.params;
@@ -50,15 +51,42 @@ const UserController = {
   },
   async deleteUserByUsername(req, res) {
     try {
-      const { username } = req.body;
-      const user = await User.findOne({ where: { username } } );
-      await user.destroy();
-      return res.status(200).json({ message: 'User deleted successfully' });
+        const { username } = req.params;
+        const user = await User.findOne({
+            where: { username },
+        });
+        if (user) {
+            await user.destroy();
+            res.status(200).json({ message: 'User deleted successfully' });
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
     } catch (error) {
-      return res.status(500).json({ error: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ error: error });
+    }
+  },
+
+  async toggleUserSuspension(req, res) {
+    try {
+      const { username } = req.params;
+      const user = await User.findOne({ where: { username } });
+  
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      user.isSuspended = !user.isSuspended;
+      await user.save();
+  
+      res.status(200).json({ message: `User ${user.isSuspended ? 'suspended' : 'unsuspended'} successfully` });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+
   
-};
+}
 
 module.exports = UserController;
