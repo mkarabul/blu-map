@@ -2,8 +2,8 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const axios = require('axios');
 
-const testemail = "testianag211a5@example.com"
-const password = "Testing132315"
+const testemail = "testianaag211a5@example.com"
+const password = "Testing1a32315"
 describe('Login Page Tests', () => {
   let driver;
 
@@ -90,6 +90,20 @@ describe('Login Page Tests', () => {
     expect(await driver.getCurrentUrl()).toContain('localhost');
 
     // test that user is actually logged in after
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Click on the dropdown button to open the menu
+    const dropdownButton = await driver.findElement(By.id('dropdown-button'));
+    await dropdownButton.click();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Click on the logout link
+    const logoutLink = await driver.findElement(By.css('#dropdown-menu a[href="/api/auth/logout"]'));
+    await logoutLink.click();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // check that user is actually logged out after
+    
         // also delete the user completely for every new test
 
 

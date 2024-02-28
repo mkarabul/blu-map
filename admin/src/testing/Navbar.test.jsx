@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import Navbar from './Navbar';
+import Navbar from '../app/Navbar';
 import '@testing-library/jest-dom';
 
 const MockNavbar = ({ theme, toggleTheme }) => (
