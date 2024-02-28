@@ -3,17 +3,11 @@ const chrome = require('selenium-webdriver/chrome');
 const axios = require('axios');
 
 const testuserName = 'testUser';
-let testUserID = 9;
+const testUserID = '9';
 
-const baseApiUrl = 'http://localhost:5000/api/users/';
+const userApiUrl = `http://localhost:5000/api/users/${testUserID}`;
 
 
-async function getUserIdByUserName(userName) {
-  const response = await axios.get(baseApiUrl);
-  const users = response.data;
-  const user = users.find(user => user.userName === userName);
-  return user ? user.userId : null;
-}
 
 describe('SearchPage Component Tests', () => {
   let driver;
@@ -21,7 +15,6 @@ describe('SearchPage Component Tests', () => {
   beforeEach(async () => {
     const chromeOptions = new chrome.Options();
     chromeOptions.headless = true;
-    testUserID = getUserIdByUserName(testuserName);
     driver = await new Builder()
       .forBrowser('chrome')
       .setChromeOptions(chromeOptions)
@@ -35,8 +28,6 @@ describe('SearchPage Component Tests', () => {
   });
 
   test('suspends a user successfully', async () => {
-    const userApiUrl = `http://localhost:5000/api/users/${testUserID}`;
-
     await driver.get('http://localhost:3000');
     
     // Click search button
@@ -73,8 +64,6 @@ describe('SearchPage Component Tests', () => {
 
 
   test('unsuspends a user successfully', async () => {
-    const userApiUrl = `http://localhost:5000/api/users/${testUserID}`;
-
     await driver.get('http://localhost:3000');
     
     // Click search button
@@ -110,8 +99,6 @@ describe('SearchPage Component Tests', () => {
   }, 999999);
 
   test('delete a user successfully and add the user back after deletion', async () => {
-    const userApiUrl = `http://localhost:5000/api/users/${testUserID}`;
-
     let responseBeforeDeletion;
     try {
       responseBeforeDeletion = await axios.get(userApiUrl);
