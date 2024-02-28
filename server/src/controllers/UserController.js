@@ -14,7 +14,6 @@ const UserController = {
     }
   },
 
-  // Method to get a user by username
   async getUserByUsername(req, res) {
     try {
       const { username } = req.params;
@@ -48,7 +47,18 @@ const UserController = {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
+  },
+  async deleteUserByUsername(req, res) {
+    try {
+      const { username } = req.body;
+      const user = await User.findOne({ where: { username } } );
+      await user.destroy();
+      return res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+      return res.status(500).json({ error: 'Internal server error' });
+    }
   }
+  
 };
 
 module.exports = UserController;
