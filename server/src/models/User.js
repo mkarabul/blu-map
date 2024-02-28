@@ -5,13 +5,13 @@ const User = sequelize.define("User", {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    primaryKey: true,
     autoIncrement: true,
     unique: true,
   },
   userId: {
     type: DataTypes.UUID,
     allowNull: false,
+    primaryKey: true,
     unique: true,
     validate: {
       isUUID: 4,
