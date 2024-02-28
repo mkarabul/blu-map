@@ -3,29 +3,34 @@ const chrome = require('selenium-webdriver/chrome');
 const axios = require('axios');
 
 const testuserName = 'testUser';
-let testUserID = 9;
+const testUserID = '9';
 
-const baseApiUrl = 'http://localhost:5000/api/users/';
+let userApiUrl = `http://localhost:5000/api/users/${testUserID}`;
+let baseApiUrl = `http://localhost:5000/api/users/`;
 
 
 async function getUserIdByUserName(userName) {
-  const response = await axios.get(baseApiUrl);
-  const users = response.data;
-  const user = users.find(user => user.userName === userName);
-  return user ? user.userId : null;
+  try {
+    const response = await axios.get(baseApiUrl);
+    const users = response.data;
+    const user = users.find(user => user.userName === userName);
+    return user.userId;
+  } catch (error) {
+    console.error('Failed to fetch user ID:', error);
+    return null;
+  }
 }
 
 describe('SearchPage Component Tests', () => {
   let driver;
+  let testUserID; 
 
   beforeEach(async () => {
     const chromeOptions = new chrome.Options();
     chromeOptions.headless = true;
-    testUserID = getUserIdByUserName(testuserName);
-    driver = await new Builder()
-      .forBrowser('chrome')
-      .setChromeOptions(chromeOptions)
-      .build();
+    driver = await new Builder().forBrowser('chrome').setChromeOptions(chromeOptions).build();
+
+    testUserID = await getUserIdByUserName(testuserName);
   });
 
   afterEach(async () => {
@@ -35,9 +40,8 @@ describe('SearchPage Component Tests', () => {
   });
 
   test('suspends a user successfully', async () => {
-    const userApiUrl = `http://localhost:5000/api/users/${testUserID}`;
-
     await driver.get('http://localhost:3000');
+    const userApiUrl = `http://localhost:5000/api/users/${testUserID}`;
     
     // Click search button
     const searchButton = await driver.findElement(By.id("search-button"));
@@ -73,9 +77,9 @@ describe('SearchPage Component Tests', () => {
 
 
   test('unsuspends a user successfully', async () => {
+    await driver.get('http://localhost:3000');
     const userApiUrl = `http://localhost:5000/api/users/${testUserID}`;
 
-    await driver.get('http://localhost:3000');
     
     // Click search button
     const searchButton = await driver.findElement(By.id("search-button"));

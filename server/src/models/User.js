@@ -36,12 +36,14 @@ const User = sequelize.define("User", {
     allowNull: false,
     validate: {
       isInt: true,
-      min: 0,
+      min: -1,
     },
+    defaultValue: -1,
   },
   gender: {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: "",
   },
   isSuspended: {
     type: DataTypes.BOOLEAN,

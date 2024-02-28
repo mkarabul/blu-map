@@ -51,8 +51,9 @@ const UserController = {
     try {
       const { userName, email, age, gender, isSuspended } = req.body;
 
-      if (!userName || !email || !age || !gender) {
-        return res.status(400).json({ error: "Missing required fields" });
+
+      if (!userName || !email) {
+        return res.status(400).json({ error: 'Missing required fields' });
       }
 
       const user = await User.create({
