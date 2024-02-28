@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.ejs": "html",
+        "stdexcept": "cpp",
+        "string": "cpp"
+    }
+}

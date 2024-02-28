@@ -15,7 +15,6 @@ const Trips = () => {
     theme === "dark" ? "text-white bg-black" : "text-black bg-white";
 
   return (
-    // <div className={themeClasses}>
     <div>
       <h3>Trips</h3>
       <p>Here you can see all the trips</p>
