@@ -2,16 +2,26 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
 const User = sequelize.define("User", {
-  userId: {
+  id: {
     type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true, 
     allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
+    unique: true,
+  },
+  userId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isUUID: 4,
+    },
+    defaultValue: DataTypes.UUIDV4,
   },
   userName: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true, 
+    unique: true,
   },
   email: {
     type: DataTypes.STRING,
@@ -38,7 +48,6 @@ const User = sequelize.define("User", {
     allowNull: false,
     defaultValue: false,
   },
-  
 });
 
 User.sync({ alter: true });
