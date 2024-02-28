@@ -5,7 +5,7 @@ const UserController = {
   async getAllUsers(req, res) {
     try {
       const users = await User.findAll({
-        attributes: ['username', 'email', 'age', 'gender', 'isSuspended']
+        attributes: ['userId', 'userName', 'email', 'age', 'gender', 'isSuspended']
       });
       res.status(200).json(users);
     } catch (error) {
@@ -14,13 +14,13 @@ const UserController = {
     }
   },
 
-  // Method to get a user by username
-  async getUserByUsername(req, res) {
+  // Method to get a user by userId
+  async getUserByUserId(req, res) {
     try {
-      const { username } = req.params;
+      const { userId } = req.params;
       const user = await User.findOne({
-        where: { username },
-        attributes: ['username', 'email', 'age', 'gender', 'isSuspended']
+        where: { userId },
+        attributes: ['userId', 'userName', 'email', 'age', 'gender', 'isSuspended']
       });
       if (user) {
         res.status(200).json(user);
@@ -35,13 +35,13 @@ const UserController = {
 
   async createUser(req, res) {
     try {
-      const { username, email, age, gender, isSuspended } = req.body;
+      const { userName, email, age, gender, isSuspended } = req.body;
 
-      if (!username || !email || !age || !gender) {
+      if (!userName || !email || !age || !gender) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
-      const user = await User.create({ username, email, age, gender, isSuspended });
+      const user = await User.create({ userName, email, age, gender, isSuspended });
 
       res.status(201).json({ message: 'User created successfully', user });
     } catch (error) {
@@ -49,28 +49,28 @@ const UserController = {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   },
-  async deleteUserByUsername(req, res) {
+
+  async deleteUserByUserId(req, res) {
     try {
-        const { username } = req.params;
-        const user = await User.findOne({
-            where: { username },
+        const { userId } = req.params;
+        const user = await User.destroy({
+            where: { userId },
         });
         if (user) {
-            await user.destroy();
             res.status(200).json({ message: 'User deleted successfully' });
         } else {
             res.status(404).json({ error: 'User not found' });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: error });
+        res.status(500).json({ error: 'Internal Server Error' });
     }
   },
 
-  async toggleUserSuspension(req, res) {
+  async toggleUserSuspensionById(req, res) {
     try {
-      const { username } = req.params;
-      const user = await User.findOne({ where: { username } });
+      const { userId } = req.params;
+      const user = await User.findOne({ where: { userId } });
   
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
@@ -85,8 +85,6 @@ const UserController = {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
-
-  
 }
 
 module.exports = UserController;

@@ -2,8 +2,18 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const axios = require('axios');
 
-const testUsername = 'testUser';
-const userApiUrl = `http://localhost:5000/api/users/${testUsername}`;
+const testuserName = 'testUser';
+let testUserID = 9;
+
+const baseApiUrl = 'http://localhost:5000/api/users/';
+
+
+async function getUserIdByUserName(userName) {
+  const response = await axios.get(baseApiUrl);
+  const users = response.data;
+  const user = users.find(user => user.userName === userName);
+  return user ? user.userId : null;
+}
 
 describe('SearchPage Component Tests', () => {
   let driver;
@@ -11,6 +21,7 @@ describe('SearchPage Component Tests', () => {
   beforeEach(async () => {
     const chromeOptions = new chrome.Options();
     chromeOptions.headless = true;
+    testUserID = getUserIdByUserName(testuserName);
     driver = await new Builder()
       .forBrowser('chrome')
       .setChromeOptions(chromeOptions)
@@ -24,6 +35,8 @@ describe('SearchPage Component Tests', () => {
   });
 
   test('suspends a user successfully', async () => {
+    const userApiUrl = `http://localhost:5000/api/users/${testUserID}`;
+
     await driver.get('http://localhost:3000');
     
     // Click search button
@@ -31,12 +44,12 @@ describe('SearchPage Component Tests', () => {
     await searchButton.click();
     await new Promise(resolve => setTimeout(resolve, 1000));
   
-    const userElements = await driver.findElements(By.className('username-class'));
+    const userElements = await driver.findElements(By.className('userName-class'));
 
     for (const userElement of userElements) {
-        const element = await userElement.findElement(By.className('username-name'));
-        const username = await element.getText();
-        if (username === testUsername) {
+        const element = await userElement.findElement(By.className('userName-name'));
+        const userName = await element.getText();
+        if (userName === testuserName) {
             const suspendButton = await userElement.findElement(By.id('suspendOrUnsuspend'));
             await suspendButton.click();
             await new Promise(resolve => setTimeout(resolve, 2000));
@@ -51,7 +64,7 @@ describe('SearchPage Component Tests', () => {
             expect(response.data.isSuspended).toBe(true);
 
             // Verify alert content
-            expect(alertContent).toBe(`${testUsername} is suspended successfully`);
+            expect(alertContent).toBe(`User is suspended successfully`);
             return;
           } 
     }
@@ -60,6 +73,8 @@ describe('SearchPage Component Tests', () => {
 
 
   test('unsuspends a user successfully', async () => {
+    const userApiUrl = `http://localhost:5000/api/users/${testUserID}`;
+
     await driver.get('http://localhost:3000');
     
     // Click search button
@@ -67,12 +82,12 @@ describe('SearchPage Component Tests', () => {
     await searchButton.click();
     await new Promise(resolve => setTimeout(resolve, 1000));
   
-    const userElements = await driver.findElements(By.className('username-class'));
+    const userElements = await driver.findElements(By.className('userName-class'));
 
     for (const userElement of userElements) {
-        const element = await userElement.findElement(By.className('username-name'));
-        const username = await element.getText();
-        if (username === testUsername) {
+        const element = await userElement.findElement(By.className('userName-name'));
+        const userName = await element.getText();
+        if (userName === testuserName) {
             const suspendButton = await userElement.findElement(By.id('suspendOrUnsuspend'));
             await suspendButton.click();
             await new Promise(resolve => setTimeout(resolve, 2000));
@@ -87,38 +102,20 @@ describe('SearchPage Component Tests', () => {
             expect(response.data.isSuspended).toBe(false);
 
             // Verify alert content
-            expect(alertContent).toBe(`${testUsername} is unsuspended successfully`);
+            expect(alertContent).toBe(`User is unsuspended successfully`);
             return;
           } 
     }
     throw new Error('User not found');
   }, 999999);
 
-
-  
-describe('Delete User Component Tests', () => {
-  let driver;
-
-  beforeEach(async () => {
-    const chromeOptions = new chrome.Options();
-    chromeOptions.headless = true;
-    driver = await new Builder()
-      .forBrowser('chrome')
-      .setChromeOptions(chromeOptions)
-      .build();
-  });
-
-  afterEach(async () => {
-    if (driver) {
-      await driver.quit();
-    }
-  });
-
   test('delete a user successfully and add the user back after deletion', async () => {
+    const userApiUrl = `http://localhost:5000/api/users/${testUserID}`;
+
     let responseBeforeDeletion;
     try {
       responseBeforeDeletion = await axios.get(userApiUrl);
-      expect(responseBeforeDeletion.data.username).toBe(testUsername);
+      expect(responseBeforeDeletion.data.userName).toBe(testuserName);
     } catch (error) {
       throw new Error('User not found before deletion');
     }
@@ -130,12 +127,12 @@ describe('Delete User Component Tests', () => {
     await searchButton.click();
     await new Promise(resolve => setTimeout(resolve, 1000));
   
-    const userElements = await driver.findElements(By.className('username-class'));
+    const userElements = await driver.findElements(By.className('userName-class'));
   
     for (const userElement of userElements) {
-        const element = await userElement.findElement(By.className('username-name'));
-        const username = await element.getText();
-        if (username === testUsername) {
+        const element = await userElement.findElement(By.className('userName-name'));
+        const userName = await element.getText();
+        if (userName === testuserName) {
             const deleteButton = await userElement.findElement(By.id('delete_user'));
             await deleteButton.click();
             await new Promise(resolve => setTimeout(resolve, 2000));
@@ -154,18 +151,18 @@ describe('Delete User Component Tests', () => {
               
               try {
                 const responseAfterDeletion = await axios.post('http://localhost:5000/api/users', {
-                  username: testUsername,
+                  userName: testuserName,
                   email: 'testUser@example.net',
                   age: 44,
-                  gender: 'Other',
+                  gender: 'Female',
                   isSuspended: false
                 });
                 expect(responseAfterDeletion.status).toBe(201);
-                expect(responseAfterDeletion.data.user.username).toBe(testUsername);
+                expect(responseAfterDeletion.data.user.userName).toBe(testuserName);
               } catch (error) {
                 throw new Error('Failed to add user back after deletion');
               }
-              expect(alertContent).toBe(`${testUsername} is deleted successfully`);
+              expect(alertContent).toBe(`User is deleted successfully`);
 
   
               return;
@@ -175,5 +172,4 @@ describe('Delete User Component Tests', () => {
     throw new Error('User not found');
   }, 999999);
   
-});
 });
