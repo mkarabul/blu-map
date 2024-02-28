@@ -115,11 +115,9 @@ describe('Delete User Component Tests', () => {
   });
 
   test('delete a user successfully and add the user back after deletion', async () => {
-    // Verify user exists before deletion
     let responseBeforeDeletion;
     try {
       responseBeforeDeletion = await axios.get(userApiUrl);
-      // Verify user exists before deletion
       expect(responseBeforeDeletion.data.username).toBe(testUsername);
     } catch (error) {
       throw new Error('User not found before deletion');
@@ -177,7 +175,5 @@ describe('Delete User Component Tests', () => {
     throw new Error('User not found');
   }, 999999);
   
-
- 
 });
 });

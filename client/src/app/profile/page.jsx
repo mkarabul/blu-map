@@ -60,7 +60,7 @@ export default function Page() {
 
   return (
     <div>
-      <button className="btn rounded-full" onClick={openShareModal}>
+      <button id="sharefromsquare-button" className="btn rounded-full" onClick={openShareModal}>
         <FontAwesomeIcon
           icon={faShareFromSquare}
           style={{ width: "20px", height: "20px" }}
@@ -77,11 +77,12 @@ export default function Page() {
           </form>
           <h3 className="font-bold text-lg">Share Itinerary</h3>
           <p className="py-4">
-            <button className="btn rounded-full" onClick={openShareWitHEmail}>
+            <button id="send-email" className="btn rounded-full" onClick={openShareWitHEmail}>
               <FontAwesomeIcon icon={faEnvelope} className="mr-1" />
               Email
             </button>
             <button
+              id="instagram"
               className="btn rounded-full ml-2"
               onClick={openShareWithInstagram}
             >
@@ -89,6 +90,7 @@ export default function Page() {
               Instagram
             </button>
             <button
+              id="snapchat"
               className="btn rounded-full ml-2"
               onClick={openShareWithSnapchat}
             >
@@ -96,6 +98,7 @@ export default function Page() {
               Snapchat
             </button>
             <button
+              id="whatsapp"
               className="btn rounded-full ml-2"
               onClick={openShareWithWhatsApp}
             >
@@ -119,6 +122,7 @@ export default function Page() {
               Click the button below to send the itinerary to an email.
             </p>
             <button
+              id=""
               className="btn rounded-full"
               onClick={() => sendToEmail(emailAddress)}
             >
