@@ -46,6 +46,6 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
   },
 });
 
-ProfileTrip.sync();
+ProfileTrip.sync({ alter: true });
 
 module.exports = ProfileTrip;
