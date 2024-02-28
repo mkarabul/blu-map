@@ -57,16 +57,19 @@ const SearchPage = ({ themeClasses, toggleTheme }) => {
   
 
 
-  const forceDelete = async (username) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/users/${username}`);
-      setUsersData((prevUsers) => prevUsers.filter((user) => user.username !== username));
-      alert("Deleted the user");
-    } catch (error) {
-      alert(error);
-      console.error('Error deleting user:', error);
-    }
-  };
+const forceDelete = async (username) => {
+  let message;
+  try {
+    await axios.delete(`http://localhost:5000/api/users/${username}`);
+    setUsersData((prevUsers) => prevUsers.filter((user) => user.username !== username));
+    message = `${username} is deleted successfully`;
+    alert(message);
+  } catch (error) {
+    alert(error);
+    console.error('Error deleting user:', error);
+  }
+};
+
   
 
   const filteredUsers = usersData.filter((user) =>
@@ -153,7 +156,8 @@ const SearchPage = ({ themeClasses, toggleTheme }) => {
                   {user.isSuspended ? 'Unsuspend' : 'Suspend'}
                 </button>
                 <button
-                  onClick={() => forceDelete(user.username)} // Call forceDelete function on button click
+                  id="delete_user"
+                  onClick={() => forceDelete(user.username)}
                   className="px-4 py-2 rounded bg-red-500 text-white"
                 >
                   Force Delete

@@ -6,14 +6,12 @@ import HomePage from './HomePage';
 import SearchPage from './SearchPage';
 
 function page() {
-  const [theme, setTheme] = useState('dark'); // Start with the 'dark' mode by default
+  const [theme, setTheme] = useState('dark'); 
 
-  // Function to toggle theme
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
   };
 
-  // Conditional classes based on the theme state
   const themeClasses = theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900';
   const toggleButtonClass = theme === 'dark' ? 'bg-blue-600 text-white' : 'bg-blue-200 text-blue-900';
 
