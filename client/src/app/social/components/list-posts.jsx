@@ -14,7 +14,7 @@ export default function ListPosts() {
     getPosts();
   }, []);
 
-  return posts !== null ? (
+  return posts && posts.length ? (
     <>
       {posts.map((post) => (
         <SocialPost
@@ -31,6 +31,6 @@ export default function ListPosts() {
       ))}
     </>
   ) : (
-    ""
+    <div>{console.log(posts)}</div>
   );
 }
