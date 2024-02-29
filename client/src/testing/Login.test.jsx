@@ -2,8 +2,8 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const axios = require('axios');
 
-const testemail = "testianaag211a5@example.com"
-const password = "Testing1a32315"
+const testemail = "teanaag211a5@example.com"
+const password = "Tesing1a32315"
 describe('Login Page Tests', () => {
   let driver;
 
