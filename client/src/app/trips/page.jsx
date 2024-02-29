@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Trips from "./components/Trips";
+import UseItineraryButton from "./components/NewItineraryButton";
 
-const Trips = () => {
+
+const page = () => {
   const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
@@ -14,13 +17,15 @@ const Trips = () => {
   const themeClasses =
     theme === "dark" ? "text-white bg-black" : "text-black bg-white";
 
+
+
   return (
-    <div>
-      <h3>Trips</h3>
-      <p>Here you can see all the trips</p>
-      <p>You currently have no trips</p>
+    <div className="container mx-auto px-8 my-8">
+      <h1 className="text-center text-4xl font-bold mb-4">Trips</h1>
+      <Trips />
+      <UseItineraryButton />
     </div>
   );
 };
 
-export default Trips;
+export default page;
