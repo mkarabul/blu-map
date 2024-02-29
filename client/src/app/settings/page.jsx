@@ -12,10 +12,9 @@ import {
   faMoon,
   faSun
 } from "@fortawesome/free-solid-svg-icons";
-import axios from 'axios';
 
 export default function Page() {
-  let currUser = "testUser3"; // Placeholder for current user
+  let currUser = "auth0|65df5cc6f0c1754329eca25c";
 
   const [theme, setTheme] = useState('dark');
   const [isLoading, setIsLoading] = useState(true);
@@ -23,8 +22,12 @@ export default function Page() {
   useEffect(() => {
     const fetchTheme = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/users/${currUser}`);
-        const isDarkMode = response.data.isDarkMode;
+        const response = await fetch(`http://localhost:5000/api/users/${currUser}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const data = await response.json();
+        const isDarkMode = data.isDarkMode;
         setTheme(isDarkMode ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
       } catch (error) {
@@ -36,23 +39,30 @@ export default function Page() {
 
     fetchTheme();
   }, []);
-
   if (isLoading) return <div>Loading...</div>;
-
 
   const toggleTheme = async () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     try {
-      await axios.patch(`http://localhost:5000/api/users/${currUser}/toggle-darkmode`, {
-        isDarkMode: newTheme === 'dark'
+      const response = await fetch(`http://localhost:5000/api/users/${currUser}/toggle-darkmode`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ isDarkMode: newTheme === 'dark' })
       });
+  
+      if (!response.ok) {
+        throw new Error('Failed to toggle dark mode');
+      }
+  
       setTheme(newTheme);
       document.documentElement.setAttribute('data-theme', newTheme);
     } catch (error) {
       console.error('Error toggling dark mode via API:', error);
     }
   };
-
+  
 
   return (
     <div className="container mx-auto p-4">

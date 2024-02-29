@@ -5,10 +5,8 @@
 // const password = "Testing132315"
 // const testUsername = 'testUser';
 // const userApiUrl = `http://localhost:5000/api/users/${testUsername}`;
-
 // describe('Settings Page Tests', () => {
 //   let driver;
-
 //   beforeEach(async () => {
 //     const chromeOptions = new chrome.Options();
 //     chromeOptions.headless = true;
@@ -17,22 +15,17 @@
 //       .setChromeOptions(chromeOptions)
 //       .build();
 //   });
-
 //   afterEach(async () => {
 //     if (driver) {
 //       await driver.quit();
 //     }
 //   });
-
-
 //   test('light mode dark mode', async () => {
 //     await driver.get('http://localhost:3000');
 //     await new Promise(resolve => setTimeout(resolve, 500));
-  
 //     const loginButton = await driver.findElement(By.id("login"));
 //     await loginButton.click();
 //     await new Promise(resolve => setTimeout(resolve, 300));
-
 //     const emailInput = await driver.findElement(By.id("username"));
 //     await emailInput.sendKeys(testemail);
 //     const passwordInput = await driver.findElement(By.id("password"));
@@ -51,7 +44,6 @@
 //     }
 
 //     expect(await driver.getCurrentUrl()).toContain('localhost');
-
 //     const dropdownButton = await driver.findElement(By.id('dropdown-button'));
 //     await dropdownButton.click();
 //     await new Promise(resolve => setTimeout(resolve, 300));
@@ -60,9 +52,7 @@
 //     await settings.click();
 //     await new Promise(resolve => setTimeout(resolve, 300));
 //     expect(await driver.getCurrentUrl()).toContain('settings');
-
 //     let theme = await driver.executeScript("return document.documentElement.getAttribute('data-theme');");
-    
 //     const toggleThemeOption = await driver.wait(until.elementLocated(By.xpath("//h1[contains(text(), 'Toggle between Light and Dark mode')]/ancestor::div[contains(@class, 'block border p-2 rounded-lg shadow')]")), 10000);
 //     await toggleThemeOption.click();
 //     let newTheme = await driver.executeScript("return document.documentElement.getAttribute('data-theme');");

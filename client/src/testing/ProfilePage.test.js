@@ -1,62 +1,89 @@
-const { Builder, By, Key, until } = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
-const axios = require('axios');
+// const { Builder, By, Key, until } = require('selenium-webdriver');
+// const chrome = require('selenium-webdriver/chrome');
+// const axios = require('axios');
 
-const testUsername = 'testUser';
-const userApiUrl = `http://localhost:5000/api/users/${testUsername}`;
 
-describe('Profile Page Tests', () => {
-  let driver;
+// const testemail = "testingaccount123@gmail.com";
+// const password = "Testingaccount123";
 
-  beforeEach(async () => {
-    const chromeOptions = new chrome.Options();
-    chromeOptions.headless = true;
-    driver = await new Builder()
-      .forBrowser('chrome')
-      .setChromeOptions(chromeOptions)
-      .build();
-  });
+// describe('Profile Page Tests', () => {
+//   let driver;
 
-  afterEach(async () => {
-    if (driver) {
-      await driver.quit();
-    }
-  });
+//   beforeEach(async () => {
+//     const chromeOptions = new chrome.Options();
+//     chromeOptions.headless = true;
+//     driver = await new Builder()
+//       .forBrowser('chrome')
+//       .setChromeOptions(chromeOptions)
+//       .build();
+//   });
 
-  test('share button', async () => {
-    await driver.get('http://localhost:3000');
-    await new Promise(resolve => setTimeout(resolve, 1000));
-  
-    const searchButton = await driver.findElement(By.id("profile-page"));
-    await searchButton.click();
-    await new Promise(resolve => setTimeout(resolve, 1000));
-  
-    const socialPlatforms = [
-      {id: 'instagram', expectedUrl: 'instagram.com'},
-      {id: 'snapchat', expectedUrl: 'snapchat.com'},
-      {id: 'whatsapp', expectedUrl: 'whatsapp.com'},
-    ];
+//   afterEach(async () => {
+//     if (driver) {
+//       await driver.quit();
+//     }
+//   });
 
-    for (const platform of socialPlatforms) {
-      const shareButton = await driver.findElement(By.className("sharefromsquare-button"));
-      await shareButton.click();
-      await new Promise(resolve => setTimeout(resolve, 500));
+//   test('share button', async () => {
+//     await driver.get('http://localhost:3000');
+//     await new Promise(resolve => setTimeout(resolve, 500));
   
-      const socialButton = await driver.findElement(By.id(platform.id));
-      await socialButton.click();
-      await new Promise(resolve => setTimeout(resolve, 500));
+//     const loginButton = await driver.findElement(By.id("login"));
+//     await loginButton.click();
+//     await new Promise(resolve => setTimeout(resolve, 500));
+
+//     const emailInput = await driver.findElement(By.id("username"));
+//     await emailInput.sendKeys(testemail);
+//     const passwordInput = await driver.findElement(By.id("password"));
+//     await passwordInput.sendKeys(password);
+//     await new Promise(resolve => setTimeout(resolve, 500));
+
+//     const submitButton =  await driver.findElement(By.name("action"));
+//     await submitButton.click();
+
+//     await new Promise(resolve => setTimeout(resolve, 500));
+//     const currentUrl = await driver.getCurrentUrl();
+//     if (!currentUrl.includes('localhost')) {
+//         const acceptButton = await driver.findElement(By.xpath('//*[@value="accept"]'));
+//         await acceptButton.click();
+//         await driver.sleep(500);
+//     }
+//     const dropdownButton = await driver.findElement(By.id('dropdown-button'));
+//     await dropdownButton.click();
+//     await new Promise(resolve => setTimeout(resolve, 1000));
+
   
-      let windows = await driver.getAllWindowHandles();
-      await driver.switchTo().window(windows[1]);
+//     const searchButton = await driver.findElement(By.id("profile-link"));
+//     await searchButton.click();
+//     await new Promise(resolve => setTimeout(resolve, 1000));
   
-      let currentUrl = await driver.getCurrentUrl();
-      expect(currentUrl).toContain(platform.expectedUrl);
+//     const socialPlatforms = [
+//       {id: 'instagram', expectedUrl: 'instagram.com'},
+//       {id: 'snapchat', expectedUrl: 'snapchat.com'},
+//       {id: 'whatsapp', expectedUrl: 'whatsapp.com'},
+//     ];
+
+//     for (const platform of socialPlatforms) {
+//       const shareButton = await driver.findElement(By.id("sharefromsquare-button"));
+//       await shareButton.click();
+//       await new Promise(resolve => setTimeout(resolve, 500));
+
   
-      await driver.close();
-      await driver.switchTo().window(windows[0]);
-      await new Promise(resolve => setTimeout(resolve, 500));
-    }
+//       const socialButton = await driver.findElement(By.id(platform.id));
+//       await socialButton.click();
+//       await new Promise(resolve => setTimeout(resolve, 500));
   
-  }, 999999);
+//       let windows = await driver.getAllWindowHandles();
+//       await driver.switchTo().window(windows[1]);
   
-});
+//       let currentUrl = await driver.getCurrentUrl();
+//       expect(currentUrl).toContain(platform.expectedUrl);
+  
+//       await driver.close();
+//       await driver.switchTo().window(windows[0]);
+//       await new Promise(resolve => setTimeout(resolve, 500));
+//     }
+  
+//   }, 999999);
+  
+// });

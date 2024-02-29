@@ -13,7 +13,7 @@ import {
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
 
-import { sendToEmail } from "./email-share";
+import { sendToEmail } from "./EmailShare";
 
 export default function ShareButton() {
   const [theme, setTheme] = useState("dark");
@@ -60,7 +60,7 @@ export default function ShareButton() {
 
   return (
     <div>
-      <button className="btn rounded-full" onClick={openShareModal}>
+      <button id="sharefromsquare-button" className="btn rounded-full" onClick={openShareModal}>
         <FontAwesomeIcon
           icon={faShareFromSquare}
           style={{ width: "20px", height: "20px" }}
@@ -82,6 +82,7 @@ export default function ShareButton() {
               Email
             </button>
             <button
+              id="instagram"
               className="btn rounded-full ml-2"
               onClick={openShareWithInstagram}
             >
@@ -89,6 +90,7 @@ export default function ShareButton() {
               Instagram
             </button>
             <button
+              id="snapchat"
               className="btn rounded-full ml-2"
               onClick={openShareWithSnapchat}
             >
@@ -96,6 +98,7 @@ export default function ShareButton() {
               Snapchat
             </button>
             <button
+              id="whatsapp"
               className="btn rounded-full ml-2"
               onClick={openShareWithWhatsApp}
             >

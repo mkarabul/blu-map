@@ -5,7 +5,7 @@ import ListPosts from "./components/list-posts";
 import axios from "axios";
 function SocialPage() {
 
-  let currUser = "testUser3"; // Placeholder for current user
+  let currUser = "auth0|65df5cc6f0c1754329eca25c"; // Placeholder for current user
 
   const [theme, setTheme] = useState('dark');
   const [isLoading, setIsLoading] = useState(true);

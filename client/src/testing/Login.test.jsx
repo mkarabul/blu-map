@@ -2,8 +2,8 @@
 // const chrome = require('selenium-webdriver/chrome');
 // const axios = require('axios');
 
-// const testemail = "teanaag211a5@example.com"
-// const password = "Tesing1a32315"
+// const testemail = "testingaccount123@gmail.com"
+// const password = "Testingaccount123"
 // describe('Login Page Tests', () => {
 //   let driver;
 
@@ -51,14 +51,8 @@
 //   //       await driver.sleep(500);
 //   //   }
 //   //   await new Promise(resolve => setTimeout(resolve, 500));
-
-
 //   //   expect(await driver.getCurrentUrl()).toContain('localhost');
 //   //   // Gotta change the email every new test
-
-
-    
-
 //   // }, 999999);
 
 //   test('login logout', async () => {

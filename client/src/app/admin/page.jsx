@@ -1,7 +1,5 @@
-"use client"
-
+"use client";
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import SearchPage from './components/SearchPage';
 import { Bar, Pie, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement, ArcElement } from 'chart.js';
@@ -19,42 +17,43 @@ ChartJS.register(
 );
 
 const HomePage = ({ themeClasses }) => {
-
-
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState([]);
-
-  let currUser = "testUser3"; // Placeholder for current user
-
   const [theme, setTheme] = useState('dark');
+  const [isLoadingTheme, setIsLoadingTheme] = useState(true);
+  const [hasAccess, setAccess] = useState(false);
 
   useEffect(() => {
     const fetchTheme = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/users/${currUser}`);
-        const isDarkMode = response.data.isDarkMode;
+        const response = await fetch(`http://localhost:5000/api/users/auth0|65df5cc6f0c1754329eca25c`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const data = await response.json();
+        const isDarkMode = data.isDarkMode;
         setTheme(isDarkMode ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
       } catch (error) {
         console.error('Error fetching user data for theme:', error);
       } finally {
-        setLoading(false);
+        setIsLoadingTheme(false);
       }
     };
 
     fetchTheme();
   }, []);
 
-
-
-  const [hasAccess, setAccess] = useState(false);
-
   useEffect(() => {
     const fetchUsersData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users/');
-        setUserData(response.data);
-        const currentUserData = response.data.find(user => user.userId === currUser);
+        const response = await fetch('http://localhost:5000/api/users/');
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const data = await response.json();
+        setUserData(data);
+        const currentUserData = data.find(user => user.userId === 'auth0|65df5cc6f0c1754329eca25c');
         if (currentUserData && currentUserData.isAdmin) {
           setAccess(true);
         } else {
@@ -64,7 +63,7 @@ const HomePage = ({ themeClasses }) => {
       } catch (error) {
         console.error(error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
     fetchUsersData();

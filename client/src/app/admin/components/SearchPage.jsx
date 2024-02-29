@@ -7,7 +7,7 @@ const SearchPage = ({ themeClasses, toggleTheme }) => {
   const [sortBy, setSortBy] = useState('none');
   const [showingUsers, setShowingUsers] = useState(15);
   const [usersData, setUsersData] = useState([]);
-  let currUser = "testUser3" // CHANGE THIS LATER
+  let currUser = "auth0|65df5cc6f0c1754329eca25c" // CHANGE THIS LATER
  
 
   useEffect(() => {
