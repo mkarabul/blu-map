@@ -1,8 +1,6 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-// import Navbar from './components/Navbar';
-// import Footer from './components/Footer';
 import axios from 'axios';
 import SearchPage from './components/SearchPage';
 import { Bar, Pie, Doughnut } from 'react-chartjs-2';
@@ -24,18 +22,32 @@ const HomePage = ({ themeClasses }) => {
 
 
   const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState([]);
+
+  let currUser = "testUser3"; // Placeholder for current user
 
   const [theme, setTheme] = useState('dark');
+
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    const fetchTheme = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/users/${currUser}`);
+        const isDarkMode = response.data.isDarkMode;
+        setTheme(isDarkMode ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+      } catch (error) {
+        console.error('Error fetching user data for theme:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTheme();
   }, []);
-  const [userData, setUserData] = useState([]);
+
 
 
   const [hasAccess, setAccess] = useState(false);
-  let currUser = "testUser3" // CHANGE THIS LATER
 
   useEffect(() => {
     const fetchUsersData = async () => {
