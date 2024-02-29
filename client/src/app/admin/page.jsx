@@ -20,7 +20,10 @@ ChartJS.register(
   ArcElement
 );
 
-const HomePage = ({ toggleTheme, themeClasses }) => {
+const HomePage = ({ themeClasses }) => {
+
+
+  const [loading, setLoading] = useState(true);
 
   const [theme, setTheme] = useState('dark');
   useEffect(() => {
@@ -30,19 +33,31 @@ const HomePage = ({ toggleTheme, themeClasses }) => {
   }, []);
   const [userData, setUserData] = useState([]);
 
+
+  const [hasAccess, setAccess] = useState(false);
+  let currUser = "testUser3" // CHANGE THIS LATER
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUsersData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users');
+        const response = await axios.get('http://localhost:5000/api/users/');
         setUserData(response.data);
+        const currentUserData = response.data.find(user => user.userId === currUser);
+        if (currentUserData && currentUserData.isAdmin) {
+          setAccess(true);
+        } else {
+          setUserData(null);
+          throw new Error("Not Admin");
+        }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error(error);
+      } finally {
+        setLoading(false); 
       }
     };
-
-    fetchData();
+    fetchUsersData();
   }, []);
-
+  
   const getAgeDemographicsData = () => {
     const ageGroups = {
       '18-24': 0,
@@ -165,6 +180,22 @@ const HomePage = ({ toggleTheme, themeClasses }) => {
     aspectRatio: 1,
   };
 
+  if (loading) {
+    return (
+      <div className="p-5 min-h-screen flex justify-center items-center">
+        <h2 className="text-xl font-bold">Checking access permissions...</h2>
+      </div>
+    );
+  }
+
+  if (!hasAccess) {
+    return (
+      <div className="p-5 min-h-screen flex justify-center items-center">
+        <h2 className="text-xl font-bold">You do not have permission to access this page.</h2>
+      </div>
+    );
+  }
+  if (!loading && hasAccess) {
   return (
     <div className={`p-5 min-h-screen ${themeClasses} transition-colors duration-500`}>
 
@@ -196,4 +227,5 @@ const HomePage = ({ toggleTheme, themeClasses }) => {
   );
 };
 
+};
 export default HomePage;
