@@ -57,23 +57,16 @@ const UserController = {
 
   async createUser(req, res) {
     try {
-      const { userId, email, age, gender, isSuspended, isDarkMode, isAdmin } = req.body;
+      const { sub: userId, email } = req.user;
 
       const userName = generateUsername("", 3);
 
-      if (!userId || !email) {
+      if (!email || !userId) {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
       const user = await User.create({
-        userId,
-        userName,
-        email,
-        age,
-        gender,
-        isSuspended,
-        isDarkMode,
-        isAdmin,
+        userId, email, userName,
       });
 
       res.status(201).json({ message: "User created successfully", user });
@@ -155,6 +148,11 @@ const UserController = {
       user.isSuspended = !user.isSuspended;
       await user.save();
 
+      res.status(200).json({
+        message: `User ${
+          user.isSuspended ? "suspended" : "unsuspended"
+        } successfully`,
+      });
       res.status(200).json({
         message: `User ${
           user.isSuspended ? "suspended" : "unsuspended"
