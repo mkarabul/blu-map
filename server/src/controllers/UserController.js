@@ -1,4 +1,8 @@
 const User = require("../models/User");
+const {
+  generateFromEmail,
+  generateUsername,
+} = require("unique-username-generator");
 
 const UserController = {
   // Method to get all users
@@ -49,19 +53,16 @@ const UserController = {
 
   async createUser(req, res) {
     try {
-      const { userName, email, age, gender, isSuspended } = req.body;
+      const { sub: userId, email } = req.user;
 
+      const userName = generateUsername("", 3);
 
-      if (!userName || !email) {
-        return res.status(400).json({ error: 'Missing required fields' });
+      if (!email || !userId) {
+        return res.status(400).json({ error: "Missing required fields" });
       }
 
       const user = await User.create({
-        userName,
-        email,
-        age,
-        gender,
-        isSuspended,
+        userId, email, userName,
       });
 
       res.status(201).json({ message: "User created successfully", user });
@@ -100,13 +101,16 @@ const UserController = {
       user.isSuspended = !user.isSuspended;
       await user.save();
 
-      res
-        .status(200)
-        .json({
-          message: `User ${
-            user.isSuspended ? "suspended" : "unsuspended"
-          } successfully`,
-        });
+      res.status(200).json({
+        message: `User ${
+          user.isSuspended ? "suspended" : "unsuspended"
+        } successfully`,
+      });
+      res.status(200).json({
+        message: `User ${
+          user.isSuspended ? "suspended" : "unsuspended"
+        } successfully`,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
