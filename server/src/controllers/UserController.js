@@ -12,6 +12,8 @@ const UserController = {
           "age",
           "gender",
           "isSuspended",
+          "isDarkMode",
+          "isAdmin",
         ],
       });
       res.status(200).json(users);
@@ -34,6 +36,8 @@ const UserController = {
           "age",
           "gender",
           "isSuspended",
+          "isDarkMode",
+          "isAdmin",
         ],
       });
       if (user) {
@@ -49,9 +53,9 @@ const UserController = {
 
   async createUser(req, res) {
     try {
-      const { userName, email, age, gender, isSuspended } = req.body;
+      const { userName, email, age, gender, isSuspended, isDarkMode, isAdmin } = req.body;
 
-      if (!userName || !email || !age || !gender) {
+      if (!userName || !email ) {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
@@ -61,6 +65,8 @@ const UserController = {
         age,
         gender,
         isSuspended,
+        isDarkMode,
+        isAdmin,
       });
 
       res.status(201).json({ message: "User created successfully", user });
