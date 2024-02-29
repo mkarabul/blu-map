@@ -19,7 +19,7 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
     defaultValue: DataTypes.UUIDV4,
   },
   userId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   userName: {
