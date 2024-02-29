@@ -44,7 +44,7 @@ export default async function Navbar() {
           </Link>
           <Link href="/profile">
             <button id="profile-page" className="btn btn-outline" style={{ width: "10rem" }}>
-              Profile
+              Profile {user.sub} 
             </button>
           </Link>
         </div>
@@ -56,10 +56,12 @@ export default async function Navbar() {
   );
 }
 
+
 const LogInButton = () => {
+
   return (
     <a id="login" href="/api/auth/login" className="btn btn-ghost">
-      Sign In
+      Sign in
     </a>
   );
 };

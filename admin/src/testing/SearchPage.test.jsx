@@ -126,7 +126,6 @@ describe('SearchPage Component Tests', () => {
   
     await driver.get('http://localhost:3000');
     
-    // Click search button
     const searchButton = await driver.findElement(By.id("search-button"));
     await searchButton.click();
     await new Promise(resolve => setTimeout(resolve, 1000));
