@@ -21,7 +21,7 @@ const User = sequelize.define("User", {
   userName: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: false,
     defaultValue: generateUsername("", 3),
   },
   email: {
@@ -39,7 +39,8 @@ const User = sequelize.define("User", {
       isInt: true,
       min: -1,
     },
-    defaultValue: -1
+
+    defaultValue: -1,
   },
   gender: {
     type: DataTypes.STRING,
@@ -59,7 +60,7 @@ const User = sequelize.define("User", {
   isAdmin: {
     type: DataTypes.BOOLEAN,
     allowNULL: false,
-    defaultValue: false
+    defaultValue: true
   }
 });
 

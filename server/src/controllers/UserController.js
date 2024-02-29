@@ -54,6 +54,7 @@ const UserController = {
   async createUser(req, res) {
     try {
 
+
       const { userId, userName, email, age, gender, isSuspended, isDarkMode, isAdmin } = req.body;
 
       if (!userId || !email) {
