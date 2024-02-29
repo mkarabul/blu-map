@@ -1,24 +1,31 @@
-import React, { useState, useEffect } from "react";
+"use client";
 
-const Trips = () => {
-  const [theme, setTheme] = useState('dark');
+import React, { useState, useEffect } from "react";
+import Trips from "./components/Trips";
+import UseItineraryButton from "./components/NewItineraryButton";
+
+
+const page = () => {
+  const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const savedTheme = localStorage.getItem("theme") || "dark";
     setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
 
+  const themeClasses =
+    theme === "dark" ? "text-white bg-black" : "text-black bg-white";
 
-  const themeClasses = theme === 'dark' ? 'text-white bg-black' : 'text-black bg-white';
+
 
   return (
-    <div className={themeClasses}>
-      <h3>Trips</h3>
-      <p>Here you can see all the trips</p>
-      <p>You currently have no trips</p>
+    <div className="container mx-auto px-8 my-8">
+      <h1 className="text-center text-4xl font-bold mb-4">Trips</h1>
+      <Trips />
+      <UseItineraryButton />
     </div>
   );
 };
 
-export default Trips;
+export default page;

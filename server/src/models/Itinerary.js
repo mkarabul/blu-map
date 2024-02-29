@@ -10,8 +10,6 @@ const Itinerary = sequelize.define("Itinerary", {
     validate: {
       isInt: true,
     },
-    defaultValue: 0,
-    primaryKey: true,
   },
   uuid: {
     type: DataTypes.UUID,
@@ -21,8 +19,15 @@ const Itinerary = sequelize.define("Itinerary", {
       isUUID: 4,
     },
     defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
   },
-  name: {
+
+  userId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+
+  title: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
@@ -30,15 +35,12 @@ const Itinerary = sequelize.define("Itinerary", {
     },
     defaultValue: "New Itinerary",
   },
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
+  activities: {
+    type: DataTypes.JSON,
+    allowNull: true,
   },
-  creationTime: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW,
-  }
 });
+
+Itinerary.sync();
 
 module.exports = Itinerary;

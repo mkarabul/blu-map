@@ -37,13 +37,13 @@ export default async function Navbar() {
               Social
             </button>
           </Link>
-          <Link href="/trip">
+          <Link href="/trips">
             <button className="btn btn-outline mr-4" style={{ width: "10rem" }}>
-              Trip
+              Trips
             </button>
           </Link>
           <Link href="/profile">
-            <button className="btn btn-outline" style={{ width: "10rem" }}>
+            <button id="profile-page" className="btn btn-outline" style={{ width: "10rem" }}>
               Profile
             </button>
           </Link>
@@ -58,12 +58,11 @@ export default async function Navbar() {
 
 const LogInButton = () => {
   return (
-    <a href="/api/auth/login" className="btn btn-ghost">
+    <a id="login" href="/api/auth/login" className="btn btn-ghost">
       Sign In
     </a>
   );
 };
-
 const UserDropdown = () => {
   return (
     <div className="dropdown dropdown-end">
@@ -71,6 +70,7 @@ const UserDropdown = () => {
         tabIndex={0}
         role="button"
         className="btn btn-ghost btn-circle avatar mt-0"
+        id="dropdown-button"
       >
         <div className="w-10 rounded-full top-5">
           <img alt="Tailwind CSS Navbar component" src="/default-pfp.png" />
@@ -79,9 +79,10 @@ const UserDropdown = () => {
       <ul
         tabIndex={0}
         className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+        id="dropdown-menu"
       >
         <li>
-          <Link className="justify-between" href="/settings">
+          <Link id="settings-link" className="justify-between" href="/settings">
             Settings
           </Link>
         </li>
@@ -91,4 +92,5 @@ const UserDropdown = () => {
       </ul>
     </div>
   );
+
 };

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-
 import Option from "./components/option";
 import Profile from "./components/settings-profile";
 import {
@@ -16,9 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Page() {
-
   const [theme, setTheme] = useState('dark');
-
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') || 'dark';
     setTheme(savedTheme);
@@ -76,7 +73,6 @@ export default function Page() {
           context="Contact Us, About Us, FAQs"
           link="settings"
         />
-        
         <Option
           icon={faRightToBracket}
           header="Log Out"
