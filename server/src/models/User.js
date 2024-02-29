@@ -1,17 +1,13 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-const {
-  generateFromEmail,
-  generateUsername,
-} = require("unique-username-generator");
 
 const User = sequelize.define("User", {
-  id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    autoIncrement: true,
-    unique: true,
-  },
+  // id: {
+  //   type: DataTypes.INTEGER,
+  //   allowNull: false,
+  //   autoIncrement: true,
+  //   unique: true,
+  // },
   userId: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -21,8 +17,7 @@ const User = sequelize.define("User", {
   userName: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: false,
-    defaultValue: generateUsername("", 3),
+    unique: true,
   },
   email: {
     type: DataTypes.STRING,

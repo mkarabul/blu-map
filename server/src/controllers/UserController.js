@@ -1,4 +1,8 @@
 const User = require("../models/User");
+const {
+  generateFromEmail,
+  generateUsername,
+} = require("unique-username-generator");
 
 const UserController = {
   // Method to get all users
@@ -53,9 +57,9 @@ const UserController = {
 
   async createUser(req, res) {
     try {
+      const { userId, email, age, gender, isSuspended, isDarkMode, isAdmin } = req.body;
 
-
-      const { userId, userName, email, age, gender, isSuspended, isDarkMode, isAdmin } = req.body;
+      const userName = generateUsername("", 3);
 
       if (!userId || !email) {
         return res.status(400).json({ error: "Missing required fields" });
