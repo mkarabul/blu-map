@@ -21,7 +21,7 @@ const NewItineraryButton = () => {
       return;
     }
 
-    router.push(`/itineraries/${itinerary.uuid}`);
+    router.push(`/trips/${itinerary.uuid}`);
   };
 
   return (

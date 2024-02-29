@@ -8,7 +8,7 @@ const Trip = ({ trip }) => {
       <div className="card-body">
         <h2 className="card-title">{title}</h2>
         <div className="card-actions justify-end">
-          <Link className="btn btn-primary" href={`/itinerary/${uuid}`}>View</Link>
+          <Link className="btn btn-primary" href={`/trips/${uuid}`}>View</Link>
         </div>
       </div>
     </div>
