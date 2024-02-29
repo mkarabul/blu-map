@@ -2,8 +2,32 @@
 import React, { useState, useEffect } from "react";
 import SocialPost from "./components/social-post";
 import ListPosts from "./components/list-posts";
-
+import axios from "axios";
 function SocialPage() {
+
+  let currUser = "testUser3"; // Placeholder for current user
+
+  const [theme, setTheme] = useState('dark');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTheme = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/users/${currUser}`);
+        const isDarkMode = response.data.isDarkMode;
+        setTheme(isDarkMode ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+      } catch (error) {
+        console.error('Error fetching user data for theme:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTheme();
+  }, []);
+
+  
   const [isAccordionOpenforDestination, setIsAccordionOpenforDestination] =
     useState(false);
   const [isAccordionOpenforInterests, setIsAccordionOpenforInterests] =

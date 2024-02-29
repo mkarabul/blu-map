@@ -20,11 +20,14 @@ router.patch(
   "/:userId/toggle-suspend",
   UserController.toggleUserSuspensionById
 );
+
 router.put(
   "/:userId",
   checkJwt,
   getUserInfoMiddleware,
   UserController.updateUserByUserId
 );
+router.patch('/:userId/toggle-admin', UserController.toggleUserAdminStatusById);
+router.patch('/:userId/toggle-darkmode', UserController.toggleUserDarkModeById);
 
 module.exports = router;

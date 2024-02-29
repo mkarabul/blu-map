@@ -38,7 +38,7 @@ describe('Profile Page Tests', () => {
     ];
 
     for (const platform of socialPlatforms) {
-      const shareButton = await driver.findElement(By.id("sharefromsquare-button"));
+      const shareButton = await driver.findElement(By.className("sharefromsquare-button"));
       await shareButton.click();
       await new Promise(resolve => setTimeout(resolve, 500));
   
