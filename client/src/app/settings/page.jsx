@@ -1,5 +1,4 @@
 "use client"
-
 import { useState, useEffect } from 'react';
 import Option from "./components/option";
 import Profile from "./components/settings-profile";
@@ -13,24 +12,48 @@ import {
   faMoon,
   faSun
 } from "@fortawesome/free-solid-svg-icons";
-
+import axios from 'axios';
 
 export default function Page() {
+  let currUser = "auth0|65df5cc6f0c1754329eca25c"; // Placeholder for current user
+
   const [theme, setTheme] = useState('dark');
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    const fetchTheme = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/users/${currUser}`);
+        const isDarkMode = response.data.isDarkMode;
+        setTheme(isDarkMode ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+      } catch (error) {
+        console.error('Error fetching user data for theme:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTheme();
   }, []);
 
+  if (isLoading) return <div>Loading...</div>;
 
-  const toggleTheme = () => {
+
+  const toggleTheme = async () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
+    try {
+      await axios.patch(`http://localhost:5000/api/users/${currUser}/toggle-darkmode`, {
+        isDarkMode: newTheme === 'dark'
+      });
+      setTheme(newTheme);
+      document.documentElement.setAttribute('data-theme', newTheme);
+    } catch (error) {
+      console.error('Error toggling dark mode via API:', error);
+    }
   };
-  
+
+
   return (
     <div className="container mx-auto p-4">
       <Profile />

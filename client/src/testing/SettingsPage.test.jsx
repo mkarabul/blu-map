@@ -58,7 +58,11 @@
 
 //     const settings = await driver.findElement(By.id('settings-link'));
 //     await settings.click();
+<<<<<<< HEAD
 //     await new Promise(resolve => setTimeout(resolve, 700));
+=======
+//     await new Promise(resolve => setTimeout(resolve, 300));
+>>>>>>> a23dc3215b9bd0a0eba5ed9873fd175ef389b716
 //     expect(await driver.getCurrentUrl()).toContain('settings');
 
 //     let theme = await driver.executeScript("return document.documentElement.getAttribute('data-theme');");

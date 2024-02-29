@@ -1,8 +1,6 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-// import Navbar from './components/Navbar';
-// import Footer from './components/Footer';
 import axios from 'axios';
 import SearchPage from './components/SearchPage';
 import { Bar, Pie, Doughnut } from 'react-chartjs-2';
@@ -20,29 +18,58 @@ ChartJS.register(
   ArcElement
 );
 
-const HomePage = ({ toggleTheme, themeClasses }) => {
+const HomePage = ({ themeClasses }) => {
 
-  const [theme, setTheme] = useState('dark');
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
-  }, []);
+
+  const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState([]);
 
+  let currUser = "auth0|65df5cc6f0c1754329eca25c"; // Placeholder for current user
+
+  const [theme, setTheme] = useState('dark');
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchTheme = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users');
-        setUserData(response.data);
+        const response = await axios.get(`http://localhost:5000/api/users/${currUser}`);
+        const isDarkMode = response.data.isDarkMode;
+        setTheme(isDarkMode ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching user data for theme:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchData();
+    fetchTheme();
   }, []);
 
+
+
+  const [hasAccess, setAccess] = useState(false);
+
+  useEffect(() => {
+    const fetchUsersData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/users/');
+        setUserData(response.data);
+        const currentUserData = response.data.find(user => user.userId === currUser);
+        if (currentUserData && currentUserData.isAdmin) {
+          setAccess(true);
+        } else {
+          setUserData(null);
+          throw new Error("Not Admin");
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false); 
+      }
+    };
+    fetchUsersData();
+  }, []);
+  
   const getAgeDemographicsData = () => {
     const ageGroups = {
       '18-24': 0,
@@ -165,35 +192,62 @@ const HomePage = ({ toggleTheme, themeClasses }) => {
     aspectRatio: 1,
   };
 
-  return (
-    <div className={`p-5 min-h-screen ${themeClasses} transition-colors duration-500`}>
-
-      {/* Content Section */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4'>
-        {/* Age Demographics Card */}
-        <div className='bg-white shadow rounded p-4'>
-          <h3 className='text-xl font-semibold mb-2 text-black'>Age Demographics</h3>
-          <div style={{ height: '400px' }}>
-            <Bar data={ageDemographicsChartData} options={rowOneChartOptions} />
+  if (loading) {
+    return (
+      <div className="p-5 min-h-screen flex justify-center items-center">
+        <h2 className="text-xl font-bold">Checking access permissions...</h2>
+      </div>
+    );
+  }
+  
+  if (!hasAccess) {
+    return (
+      <div className="p-5 min-h-screen flex justify-center items-center">
+        <h2 className="text-xl font-bold">You do not have permission to access this page.</h2>
+      </div>
+    );
+  }
+  
+  if (!loading && hasAccess) {
+    // Ensure userData is defined before accessing it
+    if (!userData) {
+      return (
+        <div className="p-5 min-h-screen flex justify-center items-center">
+          <h2 className="text-xl font-bold">Loading user data...</h2>
+        </div>
+      );
+    }
+  
+    return (
+      <div className={`p-5 min-h-screen ${themeClasses} transition-colors duration-500`}>
+  
+        {/* Content Section */}
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4'>
+          {/* Age Demographics Card */}
+          <div className='bg-white shadow rounded p-4'>
+            <h3 className='text-xl font-semibold mb-2 text-black'>Age Demographics</h3>
+            <div style={{ height: '400px' }}>
+              <Bar data={ageDemographicsChartData} options={rowOneChartOptions} />
+            </div>
+          </div>
+  
+          {/* Gender Demographics Card */}
+          <div className='bg-white shadow rounded p-4'>
+            <h3 className='text-xl font-semibold mb-2 text-black'>Gender Demographics</h3>
+            <Pie data={genderDistributionData} options={rowOneChartOptions} />
+          </div>
+  
+          {/* User Status Card */}
+          <div className='bg-white shadow rounded p-4'>
+            <h3 className='text-xl font-semibold mb-2 text-black'>User Status</h3>
+            <Doughnut data={suspendedUsersChartData} options={rowOneChartOptions} />
           </div>
         </div>
-
-        {/* Gender Demographics Card */}
-        <div className='bg-white shadow rounded p-4'>
-          <h3 className='text-xl font-semibold mb-2 text-black'>Gender Demographics</h3>
-          <Pie data={genderDistributionData} options={rowOneChartOptions} />
-        </div>
-
-        {/* User Status Card */}
-        <div className='bg-white shadow rounded p-4'>
-          <h3 className='text-xl font-semibold mb-2 text-black'>User Status</h3>
-          <Doughnut data={suspendedUsersChartData} options={rowOneChartOptions} />
-        </div>
+        <SearchPage></SearchPage>
+  
       </div>
-      <SearchPage></SearchPage>
+    );
+  };
 
-    </div>
-  );
 };
-
 export default HomePage;

@@ -7,30 +7,27 @@ const SearchPage = ({ themeClasses, toggleTheme }) => {
   const [sortBy, setSortBy] = useState('none');
   const [showingUsers, setShowingUsers] = useState(15);
   const [usersData, setUsersData] = useState([]);
+  let currUser = "testUser3" // CHANGE THIS LATER
+ 
 
-
-  const [theme, setTheme] = useState('dark');
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
-  }, []);
   useEffect(() => {
     const fetchUsersData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/users/');
         setUsersData(response.data);
       } catch (error) {
-        console.error('Error fetching users data:', error);
+        throw new Error(error);
       }
     };
-
     fetchUsersData();
   }, []);
 
+
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
-  };const toggleSuspend = async (userId, isSuspended) => {
+  };
+  
+  const toggleSuspend = async (userId, isSuspended) => {
     try {
       await axios.patch(`http://localhost:5000/api/users/${userId}/toggle-suspend`);
   
@@ -47,7 +44,23 @@ const SearchPage = ({ themeClasses, toggleTheme }) => {
       alert(`Error toggling user suspension: ${error}`);
     }
   };
+  const toggleAdminStatus = async (userId, isAdmin) => {
+    try {
+      await axios.patch(`http://localhost:5000/api/users/${userId}/toggle-admin`);
   
+      let message = isAdmin ? "User is demoted successfully" : "User is promoted to admin successfully";
+      alert(message);
+      setUsersData((prevUsers) => prevUsers.map((user) => {
+        if (user.userId === userId) {
+          return { ...user, isAdmin: !user.isAdmin };
+        }
+        return user;
+      }));
+    } catch (error) {
+      console.error('Error toggling user suspension:', error);
+      alert(`Error toggling user suspension: ${error}`);
+    }
+  };
   const forceDelete = async (userId) => {
     try {
       await axios.delete(`http://localhost:5000/api/users/${userId}`);
@@ -60,7 +73,6 @@ const SearchPage = ({ themeClasses, toggleTheme }) => {
   };
   
 
-  
 
   const filteredUsers = usersData.filter((user) =>
     user.userName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -131,41 +143,65 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
           </div>
         </div>
         <div className="mt-4">
-          {paginatedUsers.length > 0 ? (
-            paginatedUsers.map((user, index) => (
-              <div
-                id="search-users"
-                key={index}
-                className={`userName-class mb-4 p-4 rounded shadow-lg ${cardBgColor} ${textColor} space-y-2`}
+  {paginatedUsers.length > 0 ? (
+    paginatedUsers.map((user, index) => (
+      <div
+        id="search-users"
+        key={index}
+        className={`userName-class mb-4 p-4 rounded shadow-lg ${cardBgColor} ${textColor} space-y-2`}
+      >
+        <h2 className="userName-name text-2xl font-bold">{user.userName}</h2>
+        <p>User ID: {user.userId}</p>
+        <p>Email: {user.email}</p>
+        <p>Age: {user.age}</p>
+        <p>Gender: {user.gender}</p>
+        <p>Status: {user.isSuspended ? 'Suspended' : 'Active'}</p>
+        <p>Admin: {user.isAdmin ? 'True' : 'False'}</p>
+        
+        {/* Only show action buttons if the user is not the current user */}
+        {currUser !== user.userId && (
+          <>
+            {/* Only allow suspension/unsuspension if the user is not an admin */}
+            {!user.isAdmin && (
+              <button
+                id="suspendOrUnsuspend"
+                onClick={() => toggleSuspend(user.userId, user.isSuspended)}
+                className={`px-4 py-2 rounded ${user.isSuspended ? 'bg-green-500' : 'bg-yellow-500'} text-white mr-2`}
               >
-                <h2 className="userName-name text-2xl font-bold">{user.userName}</h2>
-                <p>User ID: {user.userId}</p>
-                <p>Email: {user.email}</p>
-                <p>Age: {user.age}</p>
-                <p>Gender: {user.gender}</p>
-                <p>Status: {user.isSuspended ? 'Suspended' : 'Active'}</p>
-                <button
-                  id="suspendOrUnsuspend"
-                  onClick={() => toggleSuspend(user.userId, user.isSuspended)}
-                  className={`px-4 py-2 rounded ${
-                    user.isSuspended ? 'bg-green-500' : 'bg-yellow-500'
-                  } text-white mr-2`}
-                >
-                  {user.isSuspended ? 'Unsuspend' : 'Suspend'}
-                </button>
-                <button
-                  id="delete_user"
-                  onClick={() => forceDelete(user.userId)}
-                  className="px-4 py-2 rounded bg-red-500 text-white"
-                >
-                  Force Delete
-                </button>
-              </div>
-            ))
-          ) : (
-            <p className={`${textColor}`}>No users found.</p>
-          )}
-        </div>
+                {user.isSuspended ? 'Unsuspend' : 'Suspend'}
+              </button>
+            )}
+            
+            {/* Toggle Admin Status Button, ensuring not to self-manage or to demote/promote other admins if not allowed */}
+            {currUser !== user.userId && (
+              <button
+                id="adminaccessornot"
+                onClick={() => toggleAdminStatus(user.userId, user.isAdmin)}
+                className={`px-4 py-2 rounded ${user.isAdmin ? 'bg-red-500' : 'bg-green-500'} text-white mr-2`}
+              >
+                {user.isAdmin ? 'Demote from Admin' : 'Promote to Admin'}
+              </button>
+            )}
+
+            {/* Delete Button, ensuring it's not possible to delete an admin */}
+            {!user.isAdmin && (
+              <button
+                id="delete_user"
+                onClick={() => forceDelete(user.userId)}
+                className="px-4 py-2 rounded bg-red-500 text-white"
+              >
+                Force Delete
+              </button>
+            )}
+          </>
+        )}
+      </div>
+    ))
+  ) : (
+    <p className={`${textColor}`}>No users found.</p>
+  )}
+</div>
+
       </div>
       <div className="max-w-4xl mx-auto mb-10">
         {filteredUsers.length > showingUsers && (

@@ -37,10 +37,17 @@
 //       {id: 'whatsapp', expectedUrl: 'whatsapp.com'},
 //     ];
 
+<<<<<<< HEAD
 //     for (const platform of socialPlatforms) {
 //       const shareButton = await driver.findElement(By.id("sharefromsquare-button"));
 //       await shareButton.click();
 //       await new Promise(resolve => setTimeout(resolve, 500));
+=======
+    for (const platform of socialPlatforms) {
+      const shareButton = await driver.findElement(By.className("sharefromsquare-button"));
+      await shareButton.click();
+      await new Promise(resolve => setTimeout(resolve, 500));
+>>>>>>> a23dc3215b9bd0a0eba5ed9873fd175ef389b716
   
 //       const socialButton = await driver.findElement(By.id(platform.id));
 //       await socialButton.click();
