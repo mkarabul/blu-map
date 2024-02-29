@@ -7,7 +7,12 @@ const {
 
 const router = express.Router();
 
-router.post("", ProfileTripController.createProfileTrip);
+router.post(
+  "",
+  checkJwt,
+  getUserInfoMiddleware,
+  ProfileTripController.createProfileTrip
+);
 
 router.get(
   "/:userId",

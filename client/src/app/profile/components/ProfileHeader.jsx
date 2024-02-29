@@ -1,7 +1,7 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
 import React, { useState } from "react";
 
-export default function ProfileHeader({ userName, postCount, gender, age }) {
+export default function ProfileHeader({ postCount, userName, gender, age }) {
   const { user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [genderNew, setGenderNew] = useState("");
@@ -10,7 +10,7 @@ export default function ProfileHeader({ userName, postCount, gender, age }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const updateUserResponse = await fetch(`/api/users/${user?.subd}`, {
+    const updateUserResponse = await fetch(`/api/users/${user?.sub}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ genderNew, ageNew }),

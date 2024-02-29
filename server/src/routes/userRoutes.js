@@ -27,7 +27,8 @@ router.put(
   getUserInfoMiddleware,
   UserController.updateUserByUserId
 );
-router.patch('/:userId/toggle-admin', UserController.toggleUserAdminStatusById);
-router.patch('/:userId/toggle-darkmode', UserController.toggleUserDarkModeById);
+
+router.patch("/:userId/toggle-admin", UserController.toggleUserAdminStatusById);
+router.patch("/:userId/toggle-darkmode", UserController.toggleUserDarkModeById);
 
 module.exports = router;

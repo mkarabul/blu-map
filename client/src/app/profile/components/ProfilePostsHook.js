@@ -5,10 +5,11 @@ const useLoadPosts = () => {
   const { user, isLoading: isUserLoading } = useUser();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [postCount, setPostCount] = useState(0);
-  const [gender, setGender] = useState("");
-  const [age, setAge] = useState(-1);
+  const [userData, setUserData] = useState({
+    userName: "",
+    gender: "",
+    age: -1,
+  });
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -18,8 +19,6 @@ const useLoadPosts = () => {
         const response = await fetch(`api/profile-trip/${userId}`);
         const data = await response.json();
         setPosts(data);
-        setPostCount(data.length);
-        setUserName(data[0].userName);
       } catch (error) {
         console.error("Error loading posts:", error);
       } finally {
@@ -29,8 +28,11 @@ const useLoadPosts = () => {
       try {
         const optionalResponse = await fetch(`api/users/${userId}`);
         const optionalData = await optionalResponse.json();
-        setGender(optionalData.gender);
-        setAge(optionalData.age);
+        setUserData({
+          gender: optionalData.gender,
+          age: optionalData.age,
+          userName: optionalData.userName,
+        });
       } catch (error) {
         console.error("Error loading optional user data:", error);
       }
@@ -43,11 +45,9 @@ const useLoadPosts = () => {
 
   return {
     posts,
-    userName,
-    postCount,
+    postCount: posts.length,
     isLoading: isLoading || isUserLoading,
-    gender,
-    age,
+    userData,
   };
 };
 
