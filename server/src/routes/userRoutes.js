@@ -8,12 +8,23 @@ const {
 const router = express.Router();
 
 router.get("/", UserController.getAllUsers);
-router.get("/:userId", UserController.getUserByUserId);
+router.get(
+  "/:userId",
+  checkJwt,
+  getUserInfoMiddleware,
+  UserController.getUserByUserId
+);
 router.post("/", checkJwt, getUserInfoMiddleware, UserController.createUser);
 router.delete("/:userId", UserController.deleteUserByUserId);
 router.patch(
   "/:userId/toggle-suspend",
   UserController.toggleUserSuspensionById
+);
+router.put(
+  "/:userId",
+  checkJwt,
+  getUserInfoMiddleware,
+  UserController.updateUserByUserId
 );
 
 module.exports = router;

@@ -13,11 +13,16 @@ export default function Page() {
     document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
 
-  const { posts, userName, postCount, isLoading } = useLoadPosts();
+  const { posts, userName, postCount, isLoading, gender, age } = useLoadPosts();
 
   return (
     <div>
-      <ProfileHeader postCount={postCount} userName={userName} />
+      <ProfileHeader
+        postCount={postCount}
+        userName={userName}
+        gender={gender}
+        age={age}
+      />
       <ListPosts posts={posts} isLoading={isLoading} />
     </div>
   );
