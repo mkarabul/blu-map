@@ -7,7 +7,7 @@ jest.mock("../../middleware/authMiddleware", () => ({
     next();
   }),
   getUserInfoMiddleware: jest.fn((req, res, next) => {
-    req.user = { sub: "testUserId" };
+    req.user = { sub: "testAdmin" };
     next();
   }),
 }));
@@ -29,8 +29,8 @@ describe("Admin Routes", () => {
       .post("/")
       .set("Content-Type", "application/json")
       .send({
-        userId: "testUserId",
-        email: "testUser@example.com",
+        userId: "testAdmin",
+        email: "testAdmin@example.com",
         age: 100,
         gender: "Male",
         isSuspended: true,
@@ -43,26 +43,26 @@ describe("Admin Routes", () => {
   });
 
   test("GET /:id", async () => {
-    const response = await request(app).get("/testUserId");
+    const response = await request(app).get("/testAdmin");
     expect(response.statusCode).toBe(200);
   });
 
   test("PATCH /:userId/toggle-suspend", async () => {
     const response = await request(app)
-      .patch("/testUserId/toggle-suspend")
+      .patch("/testAdmin/toggle-suspend")
       .send();
     expect(response.statusCode).toBe(200);
   });
 
   test("PATCH /:userId/toggle-admin", async () => {
     const response = await request(app)
-      .patch("/testUserId/toggle-admin")
+      .patch("/testAdmin/toggle-admin")
       .send();
     expect(response.statusCode).toBe(200);
   });
 
   test("DELETE /:id", async () => {
-    const response = await request(app).delete("/testUserId");
+    const response = await request(app).delete("/testAdmin");
     expect(response.statusCode).toBe(200);
   });
 });
