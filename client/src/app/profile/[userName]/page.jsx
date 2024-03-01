@@ -65,6 +65,7 @@ export default async function Page({ params }) {
         userName={userData.userName}
         gender={userData.gender}
         age={userData.age}
+        isOwner={false}
       />
       <ListPosts posts={posts} isLoading={false} />
     </div>
