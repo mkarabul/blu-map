@@ -31,7 +31,11 @@ export default function ProfilePost({
             alt="User Profile"
             className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
           />
-          <ShareButton />
+          <ShareButton
+            description={description}
+            header={header}
+            userName={userName}
+          />
         </div>
         {/* Images Row */}
         <div className="flex justify-between space-x-4 mb-4">
