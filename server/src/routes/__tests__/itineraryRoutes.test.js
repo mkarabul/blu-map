@@ -35,7 +35,7 @@ describe("Itinerary Routes", () => {
       .send({ userId: "testUserId" });
     expect(response.statusCode).toBe(201);
 
-    createdId = response.body.id;
+    createdId = response.body.uuid;
   });
 
   test("GET /:id", async () => {
