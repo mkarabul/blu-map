@@ -43,6 +43,19 @@ const ProfileTripsController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async getPublicProfileTrips(req, res) {
+    try {
+      const { userName } = req.params;
+      const publicProfileTrips = await ProfileTrip.findAll({
+        where: { userName, isPublic: true },
+        attributes: ["uuid", "userName", "description", "header", "tripDate"],
+      });
+      res.status(200).json(publicProfileTrips);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
   async getTripById(req, res) {
     try {
       const { uuid } = req.params;
