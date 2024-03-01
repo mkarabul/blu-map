@@ -10,15 +10,27 @@ const useFormState = ({ itinerary }) => {
   }, [itinerary]);
 
   const updateActivity = (activity) => {
+    const update = {
+      id: activity.id,
+      name: activity.name,
+      start: activity.start,
+      end: activity.end,
+    };
     console.log("updating activity", activity);
     const updatedActivities = activities.map((a) =>
-      a.id === activity.id ? activity : a
+      a.id === update.id ? update : a
     );
     setActivities(updatedActivities);
   };
 
   const addActivity = (activity) => {
-    setActivities([...activities, activity]);
+    const update = {
+      id: activity.id,
+      name: activity.name,
+      start: activity.start,
+      end: activity.end,
+    };
+    setActivities([...activities, update]);
   };
 
   const deleteActivity = (activity) => {
@@ -27,7 +39,14 @@ const useFormState = ({ itinerary }) => {
     console.log(activities.length);
   };
 
-  return { activities, title, setTitle, updateActivity, addActivity, deleteActivity };
+  return {
+    activities,
+    title,
+    setTitle,
+    updateActivity,
+    addActivity,
+    deleteActivity,
+  };
 };
 
 export default useFormState;

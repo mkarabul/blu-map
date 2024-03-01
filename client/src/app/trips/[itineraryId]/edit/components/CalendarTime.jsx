@@ -2,17 +2,17 @@
 
 import React from "react";
 
-const CalendarTime = ({ time, setTime, updateTime }) => {
+const CalendarTime = ({ timeString, setTimeString, updateTimeString }) => {
   return (
     <input
       type="text"
       name="name"
       className="input input-ghost max-w-24 text-sm"
-      value={time}
+      value={timeString}
       onChange={(event) => {
-        setTime(event.target.value);
+        setTimeString(event.target.value);
       }}
-      onBlur={() => updateTime(time)}
+      onBlur={() => updateTimeString(timeString)}
     />
   );
 };

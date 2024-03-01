@@ -29,8 +29,8 @@ const CalendarEditView = ({ activities, activityUtils }) => {
                   {activities.map((activity, index) => {
                     return (
                       <CalendarEditRow
+                        key={activity.id}
                         activity={activity}
-                        key={index}
                         activityUtils={activityUtils}
                       />
                     );
