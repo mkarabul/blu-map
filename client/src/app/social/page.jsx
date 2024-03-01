@@ -29,7 +29,6 @@ function SocialPage() {
   //     }
   //   };
 
-
   //   fetchTheme();
   // }, []);
 
@@ -76,9 +75,6 @@ function SocialPage() {
                 <button className="btn btn-outline w-full mb-2 rounded-full">
                   Los Angeles
                 </button>
-                <button className="btn btn-outline w-full mb-2 rounded-full">
-                  Houston
-                </button>
               </div>
               <hr className="border-t mx-auto w-full my-2" />
 
@@ -105,9 +101,6 @@ function SocialPage() {
                 </button>
                 <button className="btn btn-outline w-full mb-2 rounded-full">
                   Tokyo
-                </button>
-                <button className="btn btn-outline w-full mb-2 rounded-full">
-                  Seoul
                 </button>
               </div>
               <hr className="border-t mx-auto w-full my-2" />
@@ -166,9 +159,6 @@ function SocialPage() {
                 <button className="btn btn-outline w-full mb-2 rounded-full">
                   Restaurants
                 </button>
-                <button className="btn btn-outline w-full mb-2 rounded-full">
-                  Theaters
-                </button>
               </div>
               <hr className="border-t mx-auto w-full my-2" />
             </div>
@@ -190,9 +180,6 @@ function SocialPage() {
             </button>
             <button className="btn btn-outline w-full mb-2 rounded-full">
               Los Angeles
-            </button>
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Houston
             </button>
           </div>
           <hr className="border-t mx-auto w-full my-2" />
@@ -220,9 +207,6 @@ function SocialPage() {
             </button>
             <button className="btn btn-outline w-full mb-2 rounded-full">
               Tokyo
-            </button>
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Seoul
             </button>
           </div>
           <hr className="border-t mx-auto w-full my-2" />
@@ -274,9 +258,6 @@ function SocialPage() {
             </button>
             <button className="btn btn-outline w-full mb-2 rounded-full">
               Restaurants
-            </button>
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Theaters
             </button>
           </div>
           <hr className="border-t mx-auto w-full my-2" />
