@@ -77,7 +77,9 @@ const ItineraryController = {
         return res.status(403).json({ error: "User not authorized" });
       }
 
-      const [updated] = await Itinerary.update(req.body, { where: { uuid: id } });
+      const [updated] = await Itinerary.update(req.body, {
+        where: { uuid: id },
+      });
 
       const updatedItinerary = await Itinerary.findOne({ where: { uuid: id } });
       res.status(200).json(updatedItinerary);
