@@ -8,8 +8,6 @@ import { getSession } from "@auth0/nextjs-auth0";
 const getItinerary = async (itineraryId) => {
   const user = await getSession();
 
-  console.log(user.accessToken);
-
   const response = await fetch(
     `${process.env.API_URL}/api/itineraries/${itineraryId}`,
     {
@@ -21,8 +19,6 @@ const getItinerary = async (itineraryId) => {
     }
   );
 
-  console.log(response.status);
-
   return response.json();
 };
 
@@ -30,8 +26,6 @@ const Itinerary = async ({ params }) => {
   const { itineraryId } = params;
 
   const itinerary = await getItinerary(itineraryId);
-
-  console.log(itinerary);
 
   return (
     <>
