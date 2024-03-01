@@ -3,7 +3,7 @@ const ProfileTrip = require("../models/ProfileTrip");
 const ProfileTripsController = {
   async createProfileTrip(req, res) {
     try {
-      const { userId, userName, description, header, tripDate, isPublic } =
+      const { userId, userName, description, header, tripDate, tripId } =
         req.body;
       const newProfileTrip = await ProfileTrip.create({
         userId,
@@ -11,7 +11,7 @@ const ProfileTripsController = {
         description,
         header,
         tripDate,
-        isPublic,
+        tripId,
       });
       res.status(201).json(newProfileTrip);
     } catch (error) {
@@ -35,6 +35,7 @@ const ProfileTripsController = {
           "tripDate",
           "isPublic",
           "isSocial",
+          "tripId",
         ],
       });
       res.status(200).json(profileTrips);
@@ -69,6 +70,7 @@ const ProfileTripsController = {
           "tripDate",
           "isPublic",
           "isSocial",
+          "tripId",
         ],
       });
       // if (req.user.sub !== userId) {
@@ -94,6 +96,7 @@ const ProfileTripsController = {
           "description",
           "header",
           "tripDate",
+          "tripId",
         ],
       });
       res.status(200).json(profileTrips);
