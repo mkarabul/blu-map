@@ -1,7 +1,8 @@
-"use client"
-import { useState, useEffect } from 'react';
-import Option from "./components/option";
-import Profile from "./components/settings-profile";
+"use client";
+import { useState, useEffect } from "react";
+import Option from "./components/Option";
+import Profile from "./components/SettingsProfile";
+import NotificationButton from "./components/NotificationButton";
 import {
   faServer,
   faUser,
@@ -10,49 +11,47 @@ import {
   faHeadphones,
   faRightToBracket,
   faMoon,
-  faSun
+  faSun,
 } from "@fortawesome/free-solid-svg-icons";
-import axios from 'axios';
 
 export default function Page() {
-  let currUser = "testUser3"; // Placeholder for current user
+  // let currUser = "auth0|65df5cc6f0c1754329eca25c";
 
-  const [theme, setTheme] = useState('dark');
-  const [isLoading, setIsLoading] = useState(true);
+  // const [theme, setTheme] = useState('dark');
+  // const [isLoading, setIsLoading] = useState(true);
 
+  // useEffect(() => {
+  // Commented out API fetch to mimic local storage retrieval
+  // const fetchTheme = async () => {
+  //   try {
+  //     const response = await fetch(`http://localhost:5000/api/users/${currUser}`);
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch user data');
+  //     }
+  //     const data = await response.json();
+  //     const isDarkMode = data.isDarkMode;
+  //     setTheme(isDarkMode ? 'dark' : 'light');
+  //     document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+  //   } catch (error) {
+  //     console.error('Error fetching user data for theme:', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+  // fetchTheme();
+  const [theme, setTheme] = useState("dark");
   useEffect(() => {
-    const fetchTheme = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/users/${currUser}`);
-        const isDarkMode = response.data.isDarkMode;
-        setTheme(isDarkMode ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-      } catch (error) {
-        console.error('Error fetching user data for theme:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchTheme();
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    setTheme(savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
 
-  if (isLoading) return <div>Loading...</div>;
-
-
-  const toggleTheme = async () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    try {
-      await axios.patch(`http://localhost:5000/api/users/${currUser}/toggle-darkmode`, {
-        isDarkMode: newTheme === 'dark'
-      });
-      setTheme(newTheme);
-      document.documentElement.setAttribute('data-theme', newTheme);
-    } catch (error) {
-      console.error('Error toggling dark mode via API:', error);
-    }
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    localStorage.setItem("theme", newTheme);
+    setTheme(newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
   };
-
 
   return (
     <div className="container mx-auto p-4">
@@ -65,15 +64,21 @@ export default function Page() {
           context="Privacy, security, change email or number"
           link="settings"
         />
-         <Option
-          icon={theme === 'dark' ? faSun : faMoon}
+        <Option
+          icon={theme === "dark" ? faSun : faMoon}
           header="Dark Mode"
           context="Toggle between Light and Dark mode"
           link="settings"
           onClick={toggleTheme}
           isToggle={true}
         />
-        <Option
+        {/* <Option
+          icon={faBell}
+          header="Notifications"
+          context="Message & Trip Notifications"
+          link="settings"
+        /> */}
+        <NotificationButton
           icon={faBell}
           header="Notifications"
           context="Message & Trip Notifications"

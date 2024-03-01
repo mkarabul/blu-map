@@ -125,7 +125,8 @@ export default function ShareButton({ description, header, userName, uuid }) {
 
   return (
     <div>
-      <button className="btn rounded-full" onClick={openExternalShareModal}>
+      <button id="sharefromsquare-button" className="btn rounded-full" onClick={openExternalShareModal}>
+
         <FontAwesomeIcon
           icon={faShareFromSquare}
           style={{ width: "20px", height: "20px" }}
@@ -147,6 +148,7 @@ export default function ShareButton({ description, header, userName, uuid }) {
               Email
             </button>
             <button
+              id="instagram"
               className="btn rounded-full ml-2"
               onClick={openShareWithInstagram}
             >
@@ -154,6 +156,7 @@ export default function ShareButton({ description, header, userName, uuid }) {
               Instagram
             </button>
             <button
+              id="snapchat"
               className="btn rounded-full ml-2"
               onClick={openShareWithSnapchat}
             >
@@ -161,6 +164,7 @@ export default function ShareButton({ description, header, userName, uuid }) {
               Snapchat
             </button>
             <button
+              id="whatsapp"
               className="btn rounded-full ml-2"
               onClick={openShareWithWhatsApp}
             >

@@ -1,9 +1,7 @@
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
-const axios = require('axios');
-
-const testUsername = 'testUser';
-const userApiUrl = `http://localhost:5000/api/users/${testUsername}`;
+const testemail = "testingaccount123@gmail.com";
+const password = "Testingaccount123";
 
 describe('Profile Page Tests', () => {
   let driver;
@@ -25,9 +23,34 @@ describe('Profile Page Tests', () => {
 
   test('share button', async () => {
     await driver.get('http://localhost:3000');
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 500));
   
-    const searchButton = await driver.findElement(By.id("profile-page"));
+    const loginButton = await driver.findElement(By.id("login"));
+    await loginButton.click();
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const emailInput = await driver.findElement(By.id("username"));
+    await emailInput.sendKeys(testemail);
+    const passwordInput = await driver.findElement(By.id("password"));
+    await passwordInput.sendKeys(password);
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const submitButton =  await driver.findElement(By.name("action"));
+    await submitButton.click();
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const currentUrl = await driver.getCurrentUrl();
+    if (!currentUrl.includes('localhost')) {
+        const acceptButton = await driver.findElement(By.xpath('//*[@value="accept"]'));
+        await acceptButton.click();
+        await driver.sleep(500);
+    }
+    const dropdownButton = await driver.findElement(By.id('dropdown-button'));
+    await dropdownButton.click();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+  
+    const searchButton = await driver.findElement(By.id("profile-link"));
     await searchButton.click();
     await new Promise(resolve => setTimeout(resolve, 1000));
   
@@ -38,9 +61,10 @@ describe('Profile Page Tests', () => {
     ];
 
     for (const platform of socialPlatforms) {
-      const shareButton = await driver.findElement(By.className("sharefromsquare-button"));
+      const shareButton = await driver.findElement(By.id("sharefromsquare-button"));
       await shareButton.click();
       await new Promise(resolve => setTimeout(resolve, 500));
+
   
       const socialButton = await driver.findElement(By.id(platform.id));
       await socialButton.click();

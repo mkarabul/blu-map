@@ -22,7 +22,6 @@ const UserController = {
       });
       res.status(200).json(users);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -53,7 +52,6 @@ const UserController = {
         res.status(404).json({ error: "User not found" });
       }
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -64,7 +62,7 @@ const UserController = {
 
       const userName = generateUsername("", 3);
 
-      if (!email || !userId) {
+      if (!userId || !email) {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
@@ -76,7 +74,6 @@ const UserController = {
 
       res.status(201).json({ message: "User created successfully", user });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -93,7 +90,6 @@ const UserController = {
         res.status(404).json({ error: "User not found" });
       }
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -114,7 +110,6 @@ const UserController = {
         } successfully.`,
       });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -136,7 +131,6 @@ const UserController = {
         }`,
       });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -158,13 +152,7 @@ const UserController = {
           user.isSuspended ? "suspended" : "unsuspended"
         } successfully`,
       });
-      res.status(200).json({
-        message: `User ${
-          user.isSuspended ? "suspended" : "unsuspended"
-        } successfully`,
-      });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -185,7 +173,6 @@ const UserController = {
       await user.save();
       res.status(200).json({ message: "User updated successfully", user });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },

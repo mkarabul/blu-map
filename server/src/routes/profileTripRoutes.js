@@ -15,12 +15,14 @@ router.post(
 );
 
 router.get(
-  "/:userId",
+  "/user/:userId",
   checkJwt,
   getUserInfoMiddleware,
   ProfileTripController.getProfileTrips
 );
 
-router.get("", ProfileTripController.getPublicProfileTrips);
+router.get("/:uuid", ProfileTripController.getTripById);
+
+router.get("", ProfileTripController.getSocialProfileTrips);
 
 module.exports = router;

@@ -16,7 +16,7 @@ const useLoadPosts = () => {
     const loadPosts = async () => {
       const userId = user?.sub;
       try {
-        const response = await fetch(`api/profile-trip/${userId}`);
+        const response = await fetch(`api/profile-trip/user/${userId}`);
         const data = await response.json();
         setPosts(data);
       } catch (error) {
