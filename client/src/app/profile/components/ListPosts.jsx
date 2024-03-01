@@ -14,8 +14,11 @@ const ListPosts = ({ posts, isLoading }) => {
           {posts.map((post) => (
             <ProfilePost
               key={post.uuid}
+              uuid={post.uuid}
               header={post.header}
               description={post.description}
+              isPublic={post.isPublic}
+              isSocial={post.isSocial}
               tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",

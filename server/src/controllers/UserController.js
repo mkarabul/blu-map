@@ -31,6 +31,9 @@ const UserController = {
   async getUserByUserId(req, res) {
     try {
       const { userId } = req.params;
+      // if (req.user.sub !== userId) {
+      //   return res.status(403).json({ error: "User not authorized" });
+      // }
       const user = await User.findOne({
         where: { userId },
         attributes: [
@@ -44,9 +47,6 @@ const UserController = {
           "isAdmin",
         ],
       });
-      if (req.user.sub !== userId) {
-        return res.status(403).json({ error: "User not authorized" });
-      }
       if (user) {
         res.status(200).json(user);
       } else {
@@ -101,45 +101,45 @@ const UserController = {
     try {
       const { userId } = req.params;
       const user = await User.findOne({ where: { userId } });
-  
+
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-        user.isAdmin = !user.isAdmin;
+      user.isAdmin = !user.isAdmin;
       await user.save();
-  
+
       res.status(200).json({
-        message: `User has been ${user.isAdmin ? "granted admin rights" : "revoked admin rights"} successfully.`,
+        message: `User has been ${
+          user.isAdmin ? "granted admin rights" : "revoked admin rights"
+        } successfully.`,
       });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
-
-
 
   async toggleUserDarkModeById(req, res) {
     try {
       const { userId } = req.params;
       const user = await User.findOne({ where: { userId } });
-  
+
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-        user.isDarkMode = !user.isDarkMode;
+      user.isDarkMode = !user.isDarkMode;
       await user.save();
-  
+
       res.status(200).json({
-        message: `User is now in ${user.isDarkMode ? "Dark Mode" : "Light Mode"}`,
+        message: `User is now in ${
+          user.isDarkMode ? "Dark Mode" : "Light Mode"
+        }`,
       });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
-
-  
 
   async toggleUserSuspensionById(req, res) {
     try {
@@ -162,9 +162,6 @@ const UserController = {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
-    
-
-    
   },
   async updateUserByUserId(req, res) {
     try {

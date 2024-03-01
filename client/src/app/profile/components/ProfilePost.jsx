@@ -1,29 +1,37 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ShareButton from "../../profile/components/ShareButton";
 import {
   faThumbsUp,
   faThumbsDown,
   faMapMarkedAlt,
   faPaperPlane,
+  faUsers,
+  faUsersSlash,
   faPlus,
   faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
+import SocialTabShare from "./SocialTabShare";
 
 export default function ProfilePost({
+  uuid,
   header,
   description,
   tripDate,
   userName,
+  isPublic,
+  isSocial,
 }) {
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
       <div className="card-body p-5">
         {/* user profile icon */}
-        <div className="flex justify-start mb-4">
+        <div className="flex justify-between mb-4">
           <img
             src="/default-pfp.png"
             alt="User Profile"
             className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
           />
+          <ShareButton />
         </div>
         {/* Images Row */}
         <div className="flex justify-between space-x-4 mb-4">
@@ -56,9 +64,7 @@ export default function ProfilePost({
             <button className="btn btn-outline rounded-full">
               <FontAwesomeIcon icon={faMapMarkedAlt} />
             </button>
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faPaperPlane} />
-            </button>
+            <SocialTabShare isSocial={isSocial} uuid={uuid} />
             <button className="btn btn-outline rounded-full">
               <FontAwesomeIcon icon={faPlus} />
             </button>

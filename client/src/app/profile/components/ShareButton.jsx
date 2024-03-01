@@ -25,8 +25,8 @@ export default function ShareButton() {
 
   const [emailAddress, setEmailAddress] = useState("");
 
-  function openShareModal() {
-    const modal = document.getElementById("share_modal");
+  function openExternalShareModal() {
+    const modal = document.getElementById("share_external_modal");
     modal.showModal();
   }
 
@@ -60,14 +60,15 @@ export default function ShareButton() {
 
   return (
     <div>
-      <button id="sharefromsquare-button" className="btn rounded-full" onClick={openShareModal}>
+      <button id="sharefromsquare-button" className="btn rounded-full" onClick={openExternalShareModal}>
+
         <FontAwesomeIcon
           icon={faShareFromSquare}
           style={{ width: "20px", height: "20px" }}
           className="text-white" // change this in the future to app theme
         />
       </button>
-      <dialog id="share_modal" className="modal">
+      <dialog id="share_external_modal" className="modal">
         <div className="modal-box">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
