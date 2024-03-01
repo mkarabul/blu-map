@@ -28,6 +28,7 @@ export default function ListPosts() {
             day: "numeric",
           })}
           userName={post.userName}
+          tripId={post.tripId}
         />
       ))}
     </>

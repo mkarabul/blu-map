@@ -75,9 +75,11 @@ export default function ProfilePost({
               <FontAwesomeIcon icon={faMapMarkedAlt} />
             </button>
             <SocialTabShare isSocial={isSocial} uuid={uuid} />
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faPlus} />
-            </button>
+            <Link href={`/trips/${tripId}`}>
+              <button className="btn btn-outline rounded-full">
+                <FontAwesomeIcon icon={faPlus} />
+              </button>
+            </Link>
           </div>
           {/* Separate div for the last button (right-most) */}
           <div className="flex justify-end flex-grow">

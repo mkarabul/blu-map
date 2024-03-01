@@ -25,6 +25,7 @@ const ListPosts = ({ posts, isLoading }) => {
                 day: "numeric",
               })}
               userName={post.userName}
+              tripId={post.tripId}
             />
           ))}
         </>

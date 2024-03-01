@@ -16,6 +16,7 @@ export default function SocialPost({
   description,
   tripDate,
   userName,
+  tripId,
 }) {
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
@@ -66,9 +67,11 @@ export default function SocialPost({
             <button className="btn btn-outline rounded-full">
               <FontAwesomeIcon icon={faPaperPlane} />
             </button>
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faPlus} />
-            </button>
+            <Link href={`/trips/${tripId}`}>
+              <button className="btn btn-outline rounded-full">
+                <FontAwesomeIcon icon={faPlus} />
+              </button>
+            </Link>
           </div>
           {/* Separate div for the last button (right-most) */}
           <div className="flex justify-end flex-grow">
