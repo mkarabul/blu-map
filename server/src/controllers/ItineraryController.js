@@ -92,7 +92,7 @@ const ItineraryController = {
   async deleteItinerary(req, res) {
     try {
       const { id } = req.params;
-      const itinerary = await Itinerary.findOne({ where: { id } });
+      const itinerary = await Itinerary.findOne({ where: { uuid: id } });
 
       // Check if the itinerary exists
       if (!itinerary) {
@@ -104,9 +104,9 @@ const ItineraryController = {
         return res.status(403).json({ error: "User not authorized" });
       }
 
-      const deleted = await Itinerary.destroy({ where: { id } });
+      const deleted = await Itinerary.destroy({ where: { uuid: id } });
       if (deleted) {
-        res.status(204).send("Itinerary deleted");
+        res.status(204).send({ message: "Itinerary deleted" });
       }
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });

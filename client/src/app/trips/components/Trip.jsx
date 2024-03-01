@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faPlus } from "@fortawesome/free-solid-svg-icons";
 
-const Trip = ({ trip }) => {
+const Trip = ({ trip, deleteTrip }) => {
   const { uuid, title } = trip;
   return (
     <div className="card bg-base-100 shadow-xl">
@@ -14,7 +14,10 @@ const Trip = ({ trip }) => {
             <div className="btn btn-circle btn-sm btn-secondary">
               <FontAwesomeIcon icon={faPlus} />
             </div>
-            <button className="btn btn-error btn-sm btn-square">
+            <button
+              className="btn btn-error btn-sm btn-square"
+              onClick={() => deleteTrip(uuid)}
+            >
               <FontAwesomeIcon icon={faTrashCan} />
             </button>
           </div>
