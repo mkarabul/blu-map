@@ -18,18 +18,17 @@ const Form = ({ itinerary }) => {
   async function onSubmit(event) {
     event.preventDefault();
 
-    console.log("submitting", title, activities);
+    console.log("submitting", itinerary.uuid, title, activities);
+    const response = await fetch(`/api/itineraries/${itinerary.uuid}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title,
+        activities,
+      }),
+    });
 
-    // const formData = new FormData(event.currentTarget);
-    // const response = await fetch("/api/submit", {
-    //   method: "POST",
-    //   body: {
-    //     title: title,
-    //     activities: activities,
-    //   },
-    // });
-
-    // const data = await response.json();
+    const data = await response.json();
   }
 
   return (
