@@ -1,12 +1,28 @@
 const express = require("express");
 const ProfileTripController = require("../controllers/ProfileTripController");
+const {
+  checkJwt,
+  getUserInfoMiddleware,
+} = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.get("", ProfileTripController.getPublicProfileTrips);
+router.post(
+  "",
+  checkJwt,
+  getUserInfoMiddleware,
+  ProfileTripController.createProfileTrip
+);
 
-router.get("/:userId", ProfileTripController.getProfileTrips);
+router.get(
+  "/user/:userId",
+  checkJwt,
+  getUserInfoMiddleware,
+  ProfileTripController.getProfileTrips
+);
 
-router.post("", ProfileTripController.createProfileTrip);
+router.get("/post/:uuid", ProfileTripController.getTripById);
+
+router.get("", ProfileTripController.getSocialProfileTrips);
 
 module.exports = router;

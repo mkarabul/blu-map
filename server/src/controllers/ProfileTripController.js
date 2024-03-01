@@ -22,14 +22,19 @@ const ProfileTripsController = {
   async getProfileTrips(req, res) {
     try {
       const { userId } = req.params;
+      if (req.user.sub !== userId) {
+        return res.status(403).json({ error: "User not authorized" });
+      }
       const profileTrips = await ProfileTrip.findAll({
         where: { userId },
         attributes: [
+          "uuid",
           "userName",
           "description",
           "header",
           "tripDate",
           "isPublic",
+          "isSocial",
         ],
       });
       res.status(200).json(profileTrips);
@@ -38,10 +43,37 @@ const ProfileTripsController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
-  async getPublicProfileTrips(req, res) {
+  async getTripById(req, res) {
+    try {
+      const { uuid } = req.params;
+      const profileTrip = await ProfileTrip.findOne({
+        where: { uuid },
+        attributes: [
+          "uuid",
+          "userName",
+          "description",
+          "header",
+          "tripDate",
+          "isPublic",
+          "isSocial",
+        ],
+      });
+      // if (req.user.sub !== userId) {
+      //   return res.status(403).json({ error: "User not authorized" });
+      // }
+      if (!profileTrip.isPublic) {
+        return res.status(403).json({ error: "Trip is not public" });
+      }
+      res.status(200).json(profileTrip);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  async getSocialProfileTrips(req, res) {
     try {
       const profileTrips = await ProfileTrip.findAll({
-        where: { isPublic: true },
+        where: { isSocial: true },
         attributes: ["userName", "description", "header", "tripDate"],
       });
       res.status(200).json(profileTrips);

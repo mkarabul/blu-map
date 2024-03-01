@@ -2,8 +2,19 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const axios = require('axios');
 
-const testemail = "teanaag211a5@example.com"
-const password = "Tesing1a32315"
+const {
+  generateFromEmail,
+  generateUsername,
+} = require("unique-username-generator");
+
+const userName = generateUsername("", 8);
+const randomEmail = `${userName}@gmail.com`;
+const rand = generateUsername("", 10);
+const randomPassword = `${rand}32!?`;
+
+const testemail = "testingaccount123@gmail.com"
+const password = "Testingaccount123"
+
 describe('Login Page Tests', () => {
   let driver;
 
@@ -36,9 +47,12 @@ describe('Login Page Tests', () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     const emailInput = await driver.findElement(By.id("email"));
-    await emailInput.sendKeys(testemail);
+    await emailInput.sendKeys(randomEmail);
     const passwordInput = await driver.findElement(By.id("password"));
-    await passwordInput.sendKeys(password);
+    await passwordInput.sendKeys(randomPassword);
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     const continueButton = await driver.findElement(By.xpath("//button[contains(text(), 'Continue')]"));
     await continueButton.click();
 
@@ -51,13 +65,7 @@ describe('Login Page Tests', () => {
         await driver.sleep(500);
     }
     await new Promise(resolve => setTimeout(resolve, 500));
-
-
     expect(await driver.getCurrentUrl()).toContain('localhost');
-    // Gotta change the email every new test
-
-
-    
 
   }, 999999);
 
@@ -101,10 +109,7 @@ describe('Login Page Tests', () => {
     const logoutLink = await driver.findElement(By.css('#dropdown-menu a[href="/api/auth/logout"]'));
     await logoutLink.click();
     await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // check that user is actually logged out after
-    
-        // also delete the user completely for every new test
+    expect(await driver.getCurrentUrl()).toContain('localhost');
 
 
   }, 999999);  

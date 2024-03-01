@@ -91,7 +91,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-      {/* Include the Footer component */}
       <Footer />
     </div>
   );
