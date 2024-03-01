@@ -13,7 +13,7 @@ const ItineraryController = {
   async getItinerary(req, res) {
     try {
       const { id } = req.params;
-      const itinerary = await Itinerary.findOne({ where: { id } });
+      const itinerary = await Itinerary.findOne({ where: { uuid: id } });
 
       if (!itinerary) {
         res.status(404).json({ error: "Itinerary not found" });
@@ -25,6 +25,7 @@ const ItineraryController = {
 
       res.status(200).json(itinerary);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
