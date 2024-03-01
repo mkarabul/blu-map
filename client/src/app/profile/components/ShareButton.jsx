@@ -13,9 +13,9 @@ import {
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
 
-import { sendToEmail } from "./EmailShare";
+import SendToEmail from "./EmailShare";
 
-export default function ShareButton() {
+export default function ShareButton({ description, header, userName }) {
   const [theme, setTheme] = useState("dark");
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "dark";
@@ -120,7 +120,9 @@ export default function ShareButton() {
             </p>
             <button
               className="btn rounded-full"
-              onClick={() => sendToEmail(emailAddress)}
+              onClick={() =>
+                SendToEmail({ emailAddress, description, header, userName })
+              }
             >
               Send to Email
             </button>
