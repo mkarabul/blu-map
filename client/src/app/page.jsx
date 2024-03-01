@@ -1,44 +1,23 @@
 "use client"
-import React, { useState, useEffect } from "react";
+
+import React from "react";
 import Footer from "./components/footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faPersonHiking } from "@fortawesome/free-solid-svg-icons";
 import { faCar } from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect } from 'react';
 
 export default function Home() {
-  let currUser = "auth0|65df5cc6f0c1754329eca25c";
 
-  const [theme, setTheme] = useState("dark");
-  const [isLoading, setIsLoading] = useState(true);
 
+  const [theme, setTheme] = useState('dark');
   useEffect(() => {
-    const fetchTheme = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/users/${currUser}`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch");
-        }
-        const data = await response.json();
-        const isDarkMode = data.isDarkMode;
-        setTheme(isDarkMode ? "dark" : "light");
-        document.documentElement.setAttribute(
-          "data-theme",
-          isDarkMode ? "dark" : "light"
-        );
-      } catch (error) {
-        console.error("Error fetching user data for theme:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchTheme();
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
   }, []);
 
-  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="flex flex-col min-h-screen">

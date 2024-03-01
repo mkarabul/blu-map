@@ -57,11 +57,7 @@ const UserController = {
 
   async createUser(req, res) {
     try {
-<<<<<<< HEAD
-      const { userId, email, age, gender, isSuspended, isDarkMode, isAdmin } = req.body;
-=======
       const { sub: userId, email } = req.user;
->>>>>>> 2e094b5d9294b3cc5e395c1f23f8b77444221bd5
 
       const userName = generateUsername("", 3);
 
@@ -70,18 +66,7 @@ const UserController = {
       }
 
       const user = await User.create({
-<<<<<<< HEAD
-        userId,
-        userName,
-        email,
-        age,
-        gender,
-        isSuspended,
-        isDarkMode,
-        isAdmin,
-=======
         userId, email, userName,
->>>>>>> 2e094b5d9294b3cc5e395c1f23f8b77444221bd5
       });
 
       res.status(201).json({ message: "User created successfully", user });

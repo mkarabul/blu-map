@@ -1,105 +1,116 @@
-// const { Builder, By, Key, until } = require('selenium-webdriver');
-// const chrome = require('selenium-webdriver/chrome');
-// const axios = require('axios');
+const { Builder, By, Key, until } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+const axios = require('axios');
 
-// const testemail = "testingaccount123@gmail.com"
-// const password = "Testingaccount123"
-// describe('Login Page Tests', () => {
-//   let driver;
+const {
+  generateFromEmail,
+  generateUsername,
+} = require("unique-username-generator");
 
-//   beforeEach(async () => {
-//     const chromeOptions = new chrome.Options();
-//     chromeOptions.headless = true;
-//     driver = await new Builder()
-//       .forBrowser('chrome')
-//       .setChromeOptions(chromeOptions)
-//       .build();
-//   });
+const userName = generateUsername("", 8);
+const randomEmail = `${userName}@gmail.com`;
+const rand = generateUsername("", 10);
+const randomPassword = `${rand}32!?`;
 
-//   afterEach(async () => {
-//     if (driver) {
-//       await driver.quit();
-//     }
-//   });
+const testemail = "testingaccount123@gmail.com"
+const password = "Testingaccount123"
 
-//   // test('signup', async () => {
-//   //   await driver.get('http://localhost:3000');
-//   //   await new Promise(resolve => setTimeout(resolve, 1000));
+describe('Login Page Tests', () => {
+  let driver;
+
+  beforeEach(async () => {
+    const chromeOptions = new chrome.Options();
+    chromeOptions.headless = true;
+    driver = await new Builder()
+      .forBrowser('chrome')
+      .setChromeOptions(chromeOptions)
+      .build();
+  });
+
+  afterEach(async () => {
+    if (driver) {
+      await driver.quit();
+    }
+  });
+
+  test('signup', async () => {
+    await driver.get('http://localhost:3000');
+    await new Promise(resolve => setTimeout(resolve, 1000));
   
-//   //   const loginButton = await driver.findElement(By.id("login"));
-//   //   await loginButton.click();
-//   //   await new Promise(resolve => setTimeout(resolve, 1000));
+    const loginButton = await driver.findElement(By.id("login"));
+    await loginButton.click();
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-//   //   const signUpLink = await driver.findElement(By.linkText('Sign up'));
-//   //   await signUpLink.click();
+    const signUpLink = await driver.findElement(By.linkText('Sign up'));
+    await signUpLink.click();
     
-//   //   await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-//   //   const emailInput = await driver.findElement(By.id("email"));
-//   //   await emailInput.sendKeys(testemail);
-//   //   const passwordInput = await driver.findElement(By.id("password"));
-//   //   await passwordInput.sendKeys(password);
-//   //   const continueButton = await driver.findElement(By.xpath("//button[contains(text(), 'Continue')]"));
-//   //   await continueButton.click();
+    const emailInput = await driver.findElement(By.id("email"));
+    await emailInput.sendKeys(randomEmail);
+    const passwordInput = await driver.findElement(By.id("password"));
+    await passwordInput.sendKeys(randomPassword);
 
-//   //   await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-//   //   const currentUrl = await driver.getCurrentUrl();
-//   //   if (!currentUrl.includes('localhost')) {
-//   //       const acceptButton = await driver.findElement(By.xpath('//*[@value="accept"]'));
-//   //       await acceptButton.click();
-//   //       await driver.sleep(500);
-//   //   }
-//   //   await new Promise(resolve => setTimeout(resolve, 500));
-//   //   expect(await driver.getCurrentUrl()).toContain('localhost');
-//   //   // Gotta change the email every new test
-//   // }, 999999);
+    const continueButton = await driver.findElement(By.xpath("//button[contains(text(), 'Continue')]"));
+    await continueButton.click();
 
-//   test('login logout', async () => {
-//     await driver.get('http://localhost:3000');
-//     await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    const currentUrl = await driver.getCurrentUrl();
+    if (!currentUrl.includes('localhost')) {
+        const acceptButton = await driver.findElement(By.xpath('//*[@value="accept"]'));
+        await acceptButton.click();
+        await driver.sleep(500);
+    }
+    await new Promise(resolve => setTimeout(resolve, 500));
+    expect(await driver.getCurrentUrl()).toContain('localhost');
+
+  }, 999999);
+
+  test('login logout', async () => {
+    await driver.get('http://localhost:3000');
+    await new Promise(resolve => setTimeout(resolve, 500));
   
-//     const loginButton = await driver.findElement(By.id("login"));
-//     await loginButton.click();
-//     await new Promise(resolve => setTimeout(resolve, 500));
+    const loginButton = await driver.findElement(By.id("login"));
+    await loginButton.click();
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-//     const emailInput = await driver.findElement(By.id("username"));
-//     await emailInput.sendKeys(testemail);
-//     const passwordInput = await driver.findElement(By.id("password"));
-//     await passwordInput.sendKeys(password);
-//     await new Promise(resolve => setTimeout(resolve, 500));
+    const emailInput = await driver.findElement(By.id("username"));
+    await emailInput.sendKeys(testemail);
+    const passwordInput = await driver.findElement(By.id("password"));
+    await passwordInput.sendKeys(password);
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-//     const submitButton =  await driver.findElement(By.name("action"));
-//     await submitButton.click();
+    const submitButton =  await driver.findElement(By.name("action"));
+    await submitButton.click();
 
-//     await new Promise(resolve => setTimeout(resolve, 500));
-//     const currentUrl = await driver.getCurrentUrl();
-//     if (!currentUrl.includes('localhost')) {
-//         const acceptButton = await driver.findElement(By.xpath('//*[@value="accept"]'));
-//         await acceptButton.click();
-//         await driver.sleep(500);
-//     }
-
-
-//     expect(await driver.getCurrentUrl()).toContain('localhost');
-
-//     // test that user is actually logged in after
-//     await new Promise(resolve => setTimeout(resolve, 1000));
-
-//     // Click on the dropdown button to open the menu
-//     const dropdownButton = await driver.findElement(By.id('dropdown-button'));
-//     await dropdownButton.click();
-//     await new Promise(resolve => setTimeout(resolve, 1000));
-
-//     // Click on the logout link
-//     const logoutLink = await driver.findElement(By.css('#dropdown-menu a[href="/api/auth/logout"]'));
-//     await logoutLink.click();
-//     await new Promise(resolve => setTimeout(resolve, 1000));
-
-//     // check that user is actually logged out after
-    
-//         // also delete the user completely for every new test
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const currentUrl = await driver.getCurrentUrl();
+    if (!currentUrl.includes('localhost')) {
+        const acceptButton = await driver.findElement(By.xpath('//*[@value="accept"]'));
+        await acceptButton.click();
+        await driver.sleep(500);
+    }
 
 
-//   }, 999999);  
-// });
+    expect(await driver.getCurrentUrl()).toContain('localhost');
+
+    // test that user is actually logged in after
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Click on the dropdown button to open the menu
+    const dropdownButton = await driver.findElement(By.id('dropdown-button'));
+    await dropdownButton.click();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Click on the logout link
+    const logoutLink = await driver.findElement(By.css('#dropdown-menu a[href="/api/auth/logout"]'));
+    await logoutLink.click();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    expect(await driver.getCurrentUrl()).toContain('localhost');
+
+
+  }, 999999);  
+});
