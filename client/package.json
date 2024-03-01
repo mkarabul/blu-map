@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose",
+    "test:single": "npm test -- --testNamePattern"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
