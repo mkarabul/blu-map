@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import CalendarTime from "./CalendarTime";
+import CalendarDate from "./CalendarDate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
@@ -146,8 +147,20 @@ const CalendarRow = ({ activity, activityUtils }) => {
     };
   };
 
+  const updateDate = (dateString) => {
+    console.log(dateString);
+    const newDate = new Date(dateString);
+    const newActivity = { ...activityState, start: start, end: end };
+    newActivity.start = newDate.toISOString();
+    newActivity.end = new Date(end).toISOString();
+    updateActivity(newActivity);
+  };
+
   return (
     <tr>
+      <td>
+        <CalendarDate date={start} updateDate={updateDate} />
+      </td>
       <td>
         <CalendarTime
           time={activityState.start}

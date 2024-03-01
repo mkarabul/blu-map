@@ -6,8 +6,14 @@ import CalendarEditView from "./CalendarEditView";
 import useFormState from "./useFormState";
 
 const Form = ({ itinerary }) => {
-  const { activities, title, setTitle, updateActivity, addActivity, deleteActivity } =
-    useFormState({ itinerary });
+  const {
+    activities,
+    title,
+    setTitle,
+    updateActivity,
+    addActivity,
+    deleteActivity,
+  } = useFormState({ itinerary });
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -41,9 +47,22 @@ const Form = ({ itinerary }) => {
       </div>
       <div className="grid md:grid-cols-3">
         <div className="overflow-y-scroll max-h-full mb-4 col-span-2">
-          <CalendarEditView activities={activities} activityUtils={{updateActivity, addActivity, deleteActivity}} />
+          <CalendarEditView
+            activities={activities}
+            activityUtils={{ updateActivity, addActivity, deleteActivity }}
+          />
         </div>
-        <div className=""></div>
+        <div className="">
+          <div className="mb-4">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => addActivity({name: "New Activity", start: activities[0].start, end: activities[0].end, id: crypto.randomUUID()})}
+            >
+              Add Activity
+            </button>
+          </div>
+        </div>
       </div>
       <div>
         <button type="submit" className="btn btn-primary">
