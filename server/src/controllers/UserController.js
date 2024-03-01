@@ -64,7 +64,7 @@ const UserController = {
 
       const userName = generateUsername("", 3);
 
-      if (!email || !userId) {
+      if (!userId || !email) {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
@@ -153,11 +153,6 @@ const UserController = {
       user.isSuspended = !user.isSuspended;
       await user.save();
 
-      res.status(200).json({
-        message: `User ${
-          user.isSuspended ? "suspended" : "unsuspended"
-        } successfully`,
-      });
       res.status(200).json({
         message: `User ${
           user.isSuspended ? "suspended" : "unsuspended"
