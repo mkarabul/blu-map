@@ -21,6 +21,13 @@ router.get(
   ProfileTripController.getNotificationByUserId
 );
 
+router.get(
+  "/get-all/:userId",
+  checkJwt,
+  getUserInfoMiddleware,
+  ProfileTripController.getAllNotificationsByUserId
+);
+
 router.delete(
   "/:id",
   checkJwt,

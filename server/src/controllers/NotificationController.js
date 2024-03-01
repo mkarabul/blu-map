@@ -29,6 +29,19 @@ const NotificationController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async getAllNotificationsByUserId(req, res) {
+    try {
+      const { userId } = req.params;
+      const notifications = await Notification.findAll({
+        where: { userId },
+        attributes: ["id", "hour", "minute"],
+      });
+      res.status(200).json(notifications);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
   async deleteNotificationById(req, res) {
     try {
       const { id } = req.params;
