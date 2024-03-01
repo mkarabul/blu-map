@@ -9,6 +9,9 @@ const SocialPostController = {
         return res.status(404).json({ error: "Post not found" });
       }
       profileTrip.isSocial = !profileTrip.isSocial;
+      if (profileTrip.isSocial) {
+        profileTrip.isPublic = true;
+      }
       await profileTrip.save();
       res.status(200).json(profileTrip);
     } catch (error) {
