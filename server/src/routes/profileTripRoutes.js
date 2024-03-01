@@ -21,7 +21,7 @@ router.get(
   ProfileTripController.getProfileTrips
 );
 
-router.get("/post/:uuid", ProfileTripController.getTripById);
+router.get("/:uuid", ProfileTripController.getTripById);
 
 router.get("", ProfileTripController.getSocialProfileTrips);
 
