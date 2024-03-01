@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faPlus } from "@fortawesome/free-solid-svg-icons";
 
-const Trip = ({ trip, deleteTrip }) => {
+const Trip = ({ trip, deleteTrip, openModal, setTripData }) => {
   const { uuid, title } = trip;
   return (
     <div className="card bg-base-100 shadow-xl">
@@ -11,9 +11,12 @@ const Trip = ({ trip, deleteTrip }) => {
         <h2 className="card-title">{title}</h2>
         <div className="flex flex-row justify-between">
           <div className="flex items-center gap-2">
-            <div className="btn btn-circle btn-sm btn-secondary">
+            <button
+              className="btn btn-circle btn-sm btn-secondary"
+              onClick={() => openModal(uuid)}
+            >
               <FontAwesomeIcon icon={faPlus} />
-            </div>
+            </button>
             <button
               className="btn btn-error btn-sm btn-square"
               onClick={() => deleteTrip(uuid)}

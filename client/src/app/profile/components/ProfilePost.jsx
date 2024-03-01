@@ -27,11 +27,13 @@ export default function ProfilePost({
       <div className="card-body p-5">
         {/* user profile icon */}
         <div className="flex justify-between mb-4">
-          <img
-            src="/default-pfp.png"
-            alt="User Profile"
-            className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
-          />
+          <Link href={`/profile/${userName}`}>
+            <img
+              src="/default-pfp.png"
+              alt="User Profile"
+              className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
+            />
+          </Link>
           <ShareButton
             description={description}
             header={header}

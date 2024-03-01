@@ -30,9 +30,9 @@ const UserController = {
   async getUserByUserId(req, res) {
     try {
       const { userId } = req.params;
-      // if (req.user.sub !== userId) {
-      //   return res.status(403).json({ error: "User not authorized" });
-      // }
+      if (req.user.sub !== userId) {
+        return res.status(403).json({ error: "User not authorized" });
+      }
       const user = await User.findOne({
         where: { userId },
         attributes: [
@@ -55,7 +55,23 @@ const UserController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
-
+  async getUserByUsername(req, res) {
+    try {
+      const { userName } = req.params;
+      const user = await User.findOne({
+        where: { userName },
+        attributes: ["userName", "age", "gender"],
+      });
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res.status(404).json({ error: "User not found" });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
   async createUser(req, res) {
     try {
       const { sub: userId, email } = req.user;
