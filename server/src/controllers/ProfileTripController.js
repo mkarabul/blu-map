@@ -15,7 +15,6 @@ const ProfileTripsController = {
       });
       res.status(201).json(newProfileTrip);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -40,7 +39,6 @@ const ProfileTripsController = {
       });
       res.status(200).json(profileTrips);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -81,7 +79,6 @@ const ProfileTripsController = {
       }
       res.status(200).json(profileTrip);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -101,7 +98,6 @@ const ProfileTripsController = {
       });
       res.status(200).json(profileTrips);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },

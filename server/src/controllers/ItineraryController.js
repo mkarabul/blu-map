@@ -25,7 +25,6 @@ const ItineraryController = {
 
       res.status(200).json(itinerary);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -43,7 +42,6 @@ const ItineraryController = {
       });
       res.status(200).json(itineraries);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -56,7 +54,6 @@ const ItineraryController = {
       });
       res.status(201).json(itinerary);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -84,7 +81,6 @@ const ItineraryController = {
       const updatedItinerary = await Itinerary.findOne({ where: { uuid: id } });
       res.status(200).json(updatedItinerary);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
