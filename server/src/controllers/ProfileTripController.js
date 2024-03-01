@@ -25,6 +25,7 @@ const ProfileTripsController = {
       const profileTrips = await ProfileTrip.findAll({
         where: { userId },
         attributes: [
+          "uuid",
           "userName",
           "description",
           "header",
@@ -32,6 +33,9 @@ const ProfileTripsController = {
           "isPublic",
         ],
       });
+      if (req.user.sub !== userId) {
+        return res.status(403).json({ error: "User not authorized" });
+      }
       res.status(200).json(profileTrips);
     } catch (error) {
       console.error(error);

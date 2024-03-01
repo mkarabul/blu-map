@@ -13,7 +13,7 @@ import {
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
 
-import { sendToEmail } from "./email-share";
+import { sendToEmail } from "./EmailShare";
 
 export default function ShareButton() {
   const [theme, setTheme] = useState("dark");
