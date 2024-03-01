@@ -56,7 +56,7 @@ const Form = ({ itinerary }) => {
           <div className="mb-4">
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-primary m-8"
               onClick={() =>
                 addActivity({
                   name: "New Activity",
