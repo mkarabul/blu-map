@@ -1,7 +1,11 @@
 {
   "scripts": {
     "start": "node --env-file=.env.local src/index.js",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose",
+    "test:single": "npm test -- --testNamePattern"
   },
   "dependencies": {
     "auth0": "^4.3.1",
