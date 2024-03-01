@@ -4,6 +4,7 @@ import React from "react";
 
 import CalendarEditView from "./CalendarEditView";
 import useFormState from "./useFormState";
+import { useRouter } from "next/navigation";
 
 const Form = ({ itinerary }) => {
   const {
@@ -14,6 +15,8 @@ const Form = ({ itinerary }) => {
     addActivity,
     deleteActivity,
   } = useFormState({ itinerary });
+
+  const router = useRouter();
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -33,6 +36,10 @@ const Form = ({ itinerary }) => {
     });
 
     const data = await response.json();
+
+    if (response.ok) {
+      router.push(`/trips/${itinerary.uuid}`);
+    }
   }
 
   return (
