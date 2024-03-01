@@ -1,28 +1,16 @@
 import React from "react";
 
-const formatTime = (date) => {
-  return new Date(date).toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-  });
-};
+import { formatTime, sortActivities } from "./utils";
 
 const CalendarView = ({ activities }) => {
   // Sort activities by start time
   activities.sort((a, b) => new Date(a.start) - new Date(b.start));
 
-  const activitiesByDay = activities.reduce((acc, activity) => {
-    const activityDate = new Date(activity.start).toDateString();
-    if (!acc[activityDate]) {
-      acc[activityDate] = [];
-    }
-    acc[activityDate].push(activity);
-    return acc;
-  }, {});
+  const activitiesByDay = sortActivities(activities);
 
   //   console.log(activitiesByDay);
 
-  return (  
+  return (
     <table className="table table-pin-rows">
       {Object.entries(activitiesByDay).map(([date, activities]) => {
         return (
