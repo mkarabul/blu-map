@@ -24,7 +24,11 @@ const Form = ({ itinerary }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title,
-        activities,
+        activities: activities.map((activity) => ({
+          ...activity,
+          start: activity.start.toISOString(),
+          end: activity.end.toISOString(),
+        })),
       }),
     });
 

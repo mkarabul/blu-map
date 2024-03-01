@@ -29,6 +29,11 @@ const Itinerary = async ({ params }) => {
   const { itineraryId } = params;
 
   const itinerary = await getItinerary(itineraryId);
+  itinerary.activities = itinerary.activities.map((activity) => ({
+    ...activity,
+    start: new Date(activity.start),
+    end: new Date(activity.end),
+  }));
 
   return (
     <>

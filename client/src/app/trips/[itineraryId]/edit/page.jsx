@@ -18,8 +18,6 @@ const getItinerary = async (itineraryId) => {
     }
   );
 
-  console.log(response);
-
   return response.json();
 };
 
@@ -28,7 +26,11 @@ const page = async ({ params }) => {
 
   const itinerary = await getItinerary(itineraryId);
 
-  console.log(itinerary);
+  itinerary.activities = itinerary.activities.map((activity) => ({
+    ...activity,
+    start: new Date(activity.start),
+    end: new Date(activity.end),
+  }));
 
   return <Form itinerary={itinerary} />;
 };
