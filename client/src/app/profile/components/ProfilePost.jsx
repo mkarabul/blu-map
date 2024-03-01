@@ -4,15 +4,21 @@ import {
   faThumbsDown,
   faMapMarkedAlt,
   faPaperPlane,
+  faUsers,
+  faUsersSlash,
   faPlus,
   faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
+import SocialTabShare from "./SocialTabShare";
 
 export default function ProfilePost({
+  uuid,
   header,
   description,
   tripDate,
   userName,
+  isPublic,
+  isSocial,
 }) {
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
@@ -56,9 +62,7 @@ export default function ProfilePost({
             <button className="btn btn-outline rounded-full">
               <FontAwesomeIcon icon={faMapMarkedAlt} />
             </button>
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faPaperPlane} />
-            </button>
+            <SocialTabShare isSocial={isSocial} uuid={uuid} />
             <button className="btn btn-outline rounded-full">
               <FontAwesomeIcon icon={faPlus} />
             </button>
