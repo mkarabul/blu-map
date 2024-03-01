@@ -37,7 +37,9 @@ const ItineraryController = {
         return res.status(403).json({ error: "User not authorized" });
       }
 
-      const itineraries = await Itinerary.findAll({ where: { userId: userId } });
+      const itineraries = await Itinerary.findAll({
+        where: { userId: userId },
+      });
       res.status(200).json(itineraries);
     } catch (error) {
       console.error(error);
@@ -62,6 +64,7 @@ const ItineraryController = {
     try {
       const { id } = req.params;
       const itinerary = await Itinerary.findOne({ where: { id } });
+      console.log(itinerary);
 
       // Check if the itinerary exists
       if (!itinerary) {
@@ -74,10 +77,9 @@ const ItineraryController = {
       }
 
       const [updated] = await Itinerary.update(req.body, { where: { id } });
-      if (updated) {
-        const updatedItinerary = await Itinerary.findOne({ where: { id } });
-        res.status(200).json(updatedItinerary);
-      }
+
+      const updatedItinerary = await Itinerary.findOne({ where: { id } });
+      res.status(200).json(updatedItinerary);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
