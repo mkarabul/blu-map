@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 import { useState, useEffect } from 'react';
 import Option from "./components/option";
 import Profile from "./components/settings-profile";
@@ -15,21 +14,46 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Page() {
-  const [theme, setTheme] = useState('dark');
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
-  }, []);
+  // let currUser = "auth0|65df5cc6f0c1754329eca25c";
+
+  // const [theme, setTheme] = useState('dark');
+  // const [isLoading, setIsLoading] = useState(true);
+
+  // useEffect(() => {
+    // Commented out API fetch to mimic local storage retrieval
+    // const fetchTheme = async () => {
+    //   try {
+    //     const response = await fetch(`http://localhost:5000/api/users/${currUser}`);
+    //     if (!response.ok) {
+    //       throw new Error('Failed to fetch user data');
+    //     }
+    //     const data = await response.json();
+    //     const isDarkMode = data.isDarkMode;
+    //     setTheme(isDarkMode ? 'dark' : 'light');
+    //     document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+    //   } catch (error) {
+    //     console.error('Error fetching user data for theme:', error);
+    //   } finally {
+    //     setIsLoading(false);
+    //   }
+    // };
+    // fetchTheme();
+    const [theme, setTheme] = useState("dark");
+    useEffect(() => {
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      setTheme(savedTheme);
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    }, []);
+  
 
 
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
+    setTheme(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
   };
-  
+
   return (
     <div className="container mx-auto p-4">
       <Profile />

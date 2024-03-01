@@ -34,6 +34,7 @@ const User = sequelize.define("User", {
       isInt: true,
       min: -1,
     },
+
     defaultValue: -1,
   },
   gender: {
@@ -46,6 +47,16 @@ const User = sequelize.define("User", {
     allowNull: false,
     defaultValue: false,
   },
+  isDarkMode: {
+    type: DataTypes.BOOLEAN,
+    allowNULL: false,
+    defaultValue: true
+  },
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    allowNULL: false,
+    defaultValue: false
+  }
 });
 
 User.sync({ alter: true });

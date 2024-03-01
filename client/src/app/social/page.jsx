@@ -2,8 +2,37 @@
 import React, { useState, useEffect } from "react";
 import SocialPost from "./components/social-post";
 import ListPosts from "./components/list-posts";
-
 function SocialPage() {
+  const [theme, setTheme] = useState("dark");
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    setTheme(savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  }, []);
+
+  // let currUser = "auth0|65df5cc6f0c1754329eca25c"; // Placeholder for current user
+
+  // const [theme, setTheme] = useState('dark');
+  // const [isLoading, setIsLoading] = useState(true);
+
+  // useEffect(() => {
+  //   const fetchTheme = async () => {
+  //     try {
+  //       const response = await axios.get(`http://localhost:5000/api/users/${currUser}`);
+  //       const isDarkMode = response.data.isDarkMode;
+  //       setTheme(isDarkMode ? 'dark' : 'light');
+  //       document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+  //     } catch (error) {
+  //       console.error('Error fetching user data for theme:', error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+
+  //   fetchTheme();
+  // }, []);
+
   const [isAccordionOpenforDestination, setIsAccordionOpenforDestination] =
     useState(false);
   const [isAccordionOpenforInterests, setIsAccordionOpenforInterests] =
@@ -147,7 +176,7 @@ function SocialPage() {
         </div>
 
         {/* Left Column: Popular Destinations */}
-        <div className="md:fixed md:left-4 lg:left-8 md:top-4 md:w-1/5 p-4 border-r md:pl-0 md:h-screen overflow-auto hidden md:block mt-12">
+        <div className="md:fixed md:left-4 lg:left-8 md:top-4 md:w-1/5 p-4 md:h-screen overflow-auto hidden md:block mt-14 shadow-2xl">
           <h2 className="font-bold text-xl mb-4">Popular Destinations</h2>
 
           {/* North America Section */}
@@ -205,7 +234,7 @@ function SocialPage() {
         </div>
 
         {/* Right Column: Interests */}
-        <div className="md:fixed md:right-4 lg:right-8 md:top-4 md:w-1/5 p-4 border-l md:h-screen overflow-auto hidden md:block mt-12">
+        <div className="md:fixed md:right-4 lg:right-8 md:top-4 md:w-1/5 p-4 md:h-screen overflow-auto hidden md:block mt-14 shadow-2xl">
           <h2 className="font-bold text-xl mb-4">Interests</h2>
           {/* Attractions Section */}
           <h3 className="font-semibold text-lg mb-2">Attractions</h3>
