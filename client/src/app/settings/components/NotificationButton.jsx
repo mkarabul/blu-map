@@ -3,8 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function NotificationButton({ icon, header, context }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [genderNew, setGenderNew] = useState("");
-  const [ageNew, setAgeNew] = useState("");
 
   const openPopup = () => {
     setIsOpen(true);
@@ -43,7 +41,7 @@ export default function NotificationButton({ icon, header, context }) {
       </div>
 
       <dialog open={isOpen} id="share_modal" className="modal">
-        <div className="modal-box">
+        <div className="modal-box w-512 h-128">
           <form method="dialog" onSubmit={handleSubmit}>
             <button
               onClick={closeDialog}
@@ -51,35 +49,80 @@ export default function NotificationButton({ icon, header, context }) {
             >
               ✕
             </button>
-            <div className="flex flex-col mt-4">
-              <label
-                htmlFor="scheduledNotificationHour"
-                className="text-white text-base"
-              >
-                Scheduled Notification Hour:
-              </label>
-              <input
-                type="number"
-                id="scheduledNotificationHour"
-                className="w-1/2 px-4 py-2 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
-                placeholder="Enter the scheduled notification hour"
-                onChange={(e) => setScheduledNotificationHour(e.target.value)}
-              />
+            <div className="text-white text-base text-lg">
+              Schedule Daily Notification:
             </div>
-            <div className="flex flex-col mt-4">
-              <label
-                htmlFor="scheduledNotificationMinute"
-                className="text-white text-base"
-              >
-                Scheduled Notification Minute:
-              </label>
-              <input
-                type="number"
-                id="scheduledNotificationMinute"
-                className="w-1/2 px-4 py-2 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
-                placeholder="Enter the scheduled notification minute"
-                onChange={(e) => setScheduledNotificationMinute(e.target.value)}
-              />
+            <div className="flex flex-row mt-4">
+              <div className="flex flex-col mr-4">
+                <label
+                  htmlFor="scheduledNotificationHour"
+                  className="text-white text-base"
+                >
+                  Notification Hour:
+                </label>
+                <input
+                  type="number"
+                  id="Hour"
+                  className="w-3/4 px-4 py-2 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                  placeholder="Hour"
+                  onChange={(e) => setScheduledNotificationHour(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="scheduledNotificationMinute"
+                  className="text-white text-base"
+                >
+                  Notification Minute:
+                </label>
+                <input
+                  type="number"
+                  id="scheduledNotificationMinute"
+                  className="w-3/4 px-4 py-2 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                  placeholder="Minute"
+                  onChange={(e) =>
+                    setScheduledNotificationMinute(e.target.value)
+                  }
+                />
+              </div>
+            </div>
+            <hr className="my-4 border-gray-300" />
+            <div className="text-white text-base text-lg mt-6">
+              Schedule Notifications Before Activities:
+            </div>
+            <div className="flex flex-row mt-4">
+              <div className="flex flex-col mr-4">
+                <label
+                  htmlFor="scheduledNotificationHour"
+                  className="text-white text-base"
+                >
+                  Notification Hour:
+                </label>
+                <input
+                  type="number"
+                  id="Hour"
+                  className="w-3/4 px-4 py-2 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                  placeholder="Hour"
+                  onChange={(e) => setScheduledNotificationHour(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="scheduledNotificationMinute"
+                  className="text-white text-base"
+                >
+                  Notification Minute:
+                </label>
+                <input
+                  type="number"
+                  id="scheduledNotificationMinute"
+                  className="w-3/4 px-4 py-2 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                  placeholder="Minute"
+                  onChange={(e) =>
+                    setScheduledNotificationMinute(e.target.value)
+                  }
+                />
+              </div>
             </div>
             <button type="submit" className="btn btn-primary mt-4">
               Schedule
