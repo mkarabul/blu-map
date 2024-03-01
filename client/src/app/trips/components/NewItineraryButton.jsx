@@ -21,7 +21,7 @@ const NewItineraryButton = () => {
       return;
     }
 
-    router.push(`/trips/${itinerary.uuid}`);
+    router.push(`/trips/${itinerary.uuid}/edit`);
   };
 
   return (
