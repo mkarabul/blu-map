@@ -18,7 +18,7 @@ const getItinerary = async (itineraryId) => {
       },
     }
   );
-
+  
   return response.json();
 };
 
@@ -29,7 +29,7 @@ const Itinerary = async ({ params }) => {
 
   return (
     <>
-    {!itinerary && <>No itinerary found</> }
+      {!itinerary && <>No itinerary found</>}
       {itinerary && (
         <>
           <div className="mb-4">
