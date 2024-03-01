@@ -31,6 +31,6 @@ export default function ListPosts() {
       ))}
     </>
   ) : (
-    <div>{console.log(posts)}</div>
+    <div></div>
   );
 }

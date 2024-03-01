@@ -74,7 +74,7 @@ const ProfileTripsController = {
     try {
       const profileTrips = await ProfileTrip.findAll({
         where: { isSocial: true },
-        attributes: ["userName", "description", "header", "tripDate"],
+        attributes: ["id", "userName", "description", "header", "tripDate"],
       });
       res.status(200).json(profileTrips);
     } catch (error) {

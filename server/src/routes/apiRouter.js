@@ -13,6 +13,6 @@ router.use("/admin", adminRoutes);
 router.use("/profile-trip", profileTripRoutes);
 router.use("/itineraries", itineraryRoutes);
 router.use("/social-post", socialPostRoutes);
-router.use("/notifications", notificationRoutes);
+router.use("/notification", notificationRoutes);
 
 module.exports = router;

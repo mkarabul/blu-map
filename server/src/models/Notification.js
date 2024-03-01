@@ -2,11 +2,19 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
 const Notification = sequelize.define("Notification", {
+  id: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false,
+    unique: true,
+    autoIncrement: true,
+    primaryKey: true,
+    validate: {
+      isInt: true,
+    },
+  },
   userId: {
     type: DataTypes.STRING,
     allowNull: false,
-    primaryKey: true,
-    unique: true,
   },
   hour: {
     type: DataTypes.INTEGER,

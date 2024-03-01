@@ -7,4 +7,25 @@ const {
 
 const router = express.Router();
 
+router.post(
+  "/:userId",
+  checkJwt,
+  getUserInfoMiddleware,
+  ProfileTripController.createNotification
+);
+
+router.get(
+  "/:userId",
+  checkJwt,
+  getUserInfoMiddleware,
+  ProfileTripController.getNotificationByUserId
+);
+
+router.delete(
+  "/:id",
+  checkJwt,
+  getUserInfoMiddleware,
+  ProfileTripController.deleteNotificationById
+);
+
 module.exports = router;
