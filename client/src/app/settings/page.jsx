@@ -1,7 +1,8 @@
 "use client";
-import { useState, useEffect } from 'react';
-import Option from "./components/option";
-import Profile from "./components/settings-profile";
+import { useState, useEffect } from "react";
+import Option from "./components/Option";
+import Profile from "./components/SettingsProfile";
+import NotificationButton from "./components/NotificationButton";
 import {
   faServer,
   faUser,
@@ -10,7 +11,7 @@ import {
   faHeadphones,
   faRightToBracket,
   faMoon,
-  faSun
+  faSun,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Page() {
@@ -20,38 +21,36 @@ export default function Page() {
   // const [isLoading, setIsLoading] = useState(true);
 
   // useEffect(() => {
-    // Commented out API fetch to mimic local storage retrieval
-    // const fetchTheme = async () => {
-    //   try {
-    //     const response = await fetch(`http://localhost:5000/api/users/${currUser}`);
-    //     if (!response.ok) {
-    //       throw new Error('Failed to fetch user data');
-    //     }
-    //     const data = await response.json();
-    //     const isDarkMode = data.isDarkMode;
-    //     setTheme(isDarkMode ? 'dark' : 'light');
-    //     document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-    //   } catch (error) {
-    //     console.error('Error fetching user data for theme:', error);
-    //   } finally {
-    //     setIsLoading(false);
-    //   }
-    // };
-    // fetchTheme();
-    const [theme, setTheme] = useState("dark");
-    useEffect(() => {
-      const savedTheme = localStorage.getItem("theme") || "dark";
-      setTheme(savedTheme);
-      document.documentElement.setAttribute("data-theme", savedTheme);
-    }, []);
-  
-
+  // Commented out API fetch to mimic local storage retrieval
+  // const fetchTheme = async () => {
+  //   try {
+  //     const response = await fetch(`http://localhost:5000/api/users/${currUser}`);
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch user data');
+  //     }
+  //     const data = await response.json();
+  //     const isDarkMode = data.isDarkMode;
+  //     setTheme(isDarkMode ? 'dark' : 'light');
+  //     document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+  //   } catch (error) {
+  //     console.error('Error fetching user data for theme:', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+  // fetchTheme();
+  const [theme, setTheme] = useState("dark");
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    setTheme(savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('theme', newTheme);
+    const newTheme = theme === "dark" ? "light" : "dark";
+    localStorage.setItem("theme", newTheme);
     setTheme(newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
   };
 
   return (
@@ -65,15 +64,21 @@ export default function Page() {
           context="Privacy, security, change email or number"
           link="settings"
         />
-         <Option
-          icon={theme === 'dark' ? faSun : faMoon}
+        <Option
+          icon={theme === "dark" ? faSun : faMoon}
           header="Dark Mode"
           context="Toggle between Light and Dark mode"
           link="settings"
           onClick={toggleTheme}
           isToggle={true}
         />
-        <Option
+        {/* <Option
+          icon={faBell}
+          header="Notifications"
+          context="Message & Trip Notifications"
+          link="settings"
+        /> */}
+        <NotificationButton
           icon={faBell}
           header="Notifications"
           context="Message & Trip Notifications"
