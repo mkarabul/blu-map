@@ -57,7 +57,18 @@ const Form = ({ itinerary }) => {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={() => addActivity({name: "New Activity", start: activities[0].start, end: activities[0].end, id: crypto.randomUUID()})}
+              onClick={() =>
+                addActivity({
+                  name: "New Activity",
+                  start:
+                    activities.length > 0 ? activities[0].start : new Date(),
+                  end:
+                    activities.length > 0
+                      ? activities[0].end
+                      : new Date(Date.now() + 3600000),
+                  id: crypto.randomUUID(),
+                })
+              }
             >
               Add Activity
             </button>
