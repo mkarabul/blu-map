@@ -61,6 +61,13 @@ describe("Admin Routes", () => {
     expect(response.statusCode).toBe(200);
   });
 
+  test("PATCH /:userId/toggle-darkmode", async () => {
+    const response = await request(app)
+      .patch("/testAdmin/toggle-darkmode")
+      .send();
+    expect(response.statusCode).toBe(200);
+  });
+
   test("DELETE /:id", async () => {
     const response = await request(app).delete("/testAdmin");
     expect(response.statusCode).toBe(200);
