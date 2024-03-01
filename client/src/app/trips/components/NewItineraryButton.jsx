@@ -26,6 +26,7 @@ const NewItineraryButton = () => {
 
   return (
     <button
+      id="add-itinerary"
       className="btn btn-circle btn-secondary fixed bottom-8 right-8 border-2 align-middle"
       onClick={handleCreateItinerary}
     >

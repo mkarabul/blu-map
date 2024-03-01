@@ -34,7 +34,7 @@ export default function ProfileHeader({ postCount, userName, gender, age }) {
   };
 
   return (
-    <div className="profile-header bg-primary w-full text-center p-10 relative flex flex-col items-center justify-center">
+    <div id="background" className="profile-header bg-primary w-full text-center p-10 relative flex flex-col items-center justify-center">
       <div className="avatar">
         <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
           <img src="/default-pfp.png" />
@@ -48,12 +48,13 @@ export default function ProfileHeader({ postCount, userName, gender, age }) {
       {age !== 0 && gender !== "" && (
         <>
           <div className="flex space-x-4 text-white text-base mt-4">
-            <p>Gender: {gender}</p>
-            <p>Age: {age}</p>
+            <p id="gender">Gender: {gender}</p>
+            <p id="age">Age: {age}</p>
           </div>
         </>
       )}
       <div
+        id="edit"
         className="absolute top-2 right-2 text-white text-base cursor-pointer"
         onClick={openDialog}
       >
