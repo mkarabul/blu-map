@@ -65,7 +65,7 @@ export default function ProfilePost({
               <FontAwesomeIcon icon={faMapMarkedAlt} />
             </button>
             <SocialTabShare isSocial={isSocial} uuid={uuid} />
-            <button className="btn btn-outline rounded-full">
+            <button id="social-public-trip" className="btn btn-outline rounded-full">
               <FontAwesomeIcon icon={faPlus} />
             </button>
           </div>

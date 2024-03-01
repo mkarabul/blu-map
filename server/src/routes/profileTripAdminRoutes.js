@@ -1,5 +1,5 @@
 const express = require("express");
-const click = require("../controllers/ProfileTripControllerAdmin");
+const ProfileTripControllerAdmin = require("../controllers/ProfileTripControllerAdmin");
 
 
 const router = express.Router();
