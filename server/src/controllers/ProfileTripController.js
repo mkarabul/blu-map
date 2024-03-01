@@ -31,11 +31,12 @@ const ProfileTripsController = {
           "header",
           "tripDate",
           "isPublic",
+          "isSocial",
         ],
       });
-      if (req.user.sub !== userId) {
-        return res.status(403).json({ error: "User not authorized" });
-      }
+      // if (req.user.sub !== userId) {
+      //   return res.status(403).json({ error: "User not authorized" });
+      // }
       res.status(200).json(profileTrips);
     } catch (error) {
       console.error(error);
@@ -45,7 +46,7 @@ const ProfileTripsController = {
   async getPublicProfileTrips(req, res) {
     try {
       const profileTrips = await ProfileTrip.findAll({
-        where: { isPublic: true },
+        where: { isSocial: true },
         attributes: ["userName", "description", "header", "tripDate"],
       });
       res.status(200).json(profileTrips);
