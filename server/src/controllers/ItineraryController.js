@@ -13,7 +13,7 @@ const ItineraryController = {
   async getItinerary(req, res) {
     try {
       const { id } = req.params;
-      const itinerary = await Itinerary.findOne({ where: { id } });
+      const itinerary = await Itinerary.findOne({ where: { uuid: id } });
 
       if (!itinerary) {
         res.status(404).json({ error: "Itinerary not found" });
@@ -25,6 +25,7 @@ const ItineraryController = {
 
       res.status(200).json(itinerary);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -63,7 +64,7 @@ const ItineraryController = {
   async updateItinerary(req, res) {
     try {
       const { id } = req.params;
-      const itinerary = await Itinerary.findOne({ where: { id } });
+      const itinerary = await Itinerary.findOne({ where: { uuid: id } });
       console.log(itinerary);
 
       // Check if the itinerary exists
@@ -76,11 +77,14 @@ const ItineraryController = {
         return res.status(403).json({ error: "User not authorized" });
       }
 
-      const [updated] = await Itinerary.update(req.body, { where: { id } });
+      const [updated] = await Itinerary.update(req.body, {
+        where: { uuid: id },
+      });
 
-      const updatedItinerary = await Itinerary.findOne({ where: { id } });
+      const updatedItinerary = await Itinerary.findOne({ where: { uuid: id } });
       res.status(200).json(updatedItinerary);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -88,7 +92,7 @@ const ItineraryController = {
   async deleteItinerary(req, res) {
     try {
       const { id } = req.params;
-      const itinerary = await Itinerary.findOne({ where: { id } });
+      const itinerary = await Itinerary.findOne({ where: { uuid: id } });
 
       // Check if the itinerary exists
       if (!itinerary) {
@@ -100,9 +104,9 @@ const ItineraryController = {
         return res.status(403).json({ error: "User not authorized" });
       }
 
-      const deleted = await Itinerary.destroy({ where: { id } });
+      const deleted = await Itinerary.destroy({ where: { uuid: id } });
       if (deleted) {
-        res.status(204).send("Itinerary deleted");
+        res.status(204).send({ message: "Itinerary deleted" });
       }
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });

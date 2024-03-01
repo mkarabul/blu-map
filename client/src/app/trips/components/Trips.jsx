@@ -5,7 +5,7 @@ import useLoadTrips from "./UserTripsHook";
 import Trip from "./Trip";
 
 const Trips = () => {
-  const { trips, isLoading } = useLoadTrips();
+  const { trips, isLoading, deleteTrip } = useLoadTrips();
 
   return (
     <>
@@ -17,7 +17,7 @@ const Trips = () => {
       {!isLoading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {trips.map((trip) => (
-            <Trip key={trip.id} trip={trip} />
+            <Trip key={trip.uuid} trip={trip} deleteTrip={deleteTrip}/>
           ))}
         </div>
       )}

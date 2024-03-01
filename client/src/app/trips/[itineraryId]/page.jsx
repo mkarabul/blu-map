@@ -3,80 +3,60 @@ import React from "react";
 import CalendarView from "./components/CalendarView";
 import StartTrip from "./components/StartTrip";
 
+import { getSession } from "@auth0/nextjs-auth0";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+
 const getItinerary = async (itineraryId) => {
-  // Hardcoded data for now
-  const itinerary = {
-    id: 1,
-    title: "Trip to Hawaii",
-    activities: [
-      {
-        id: 1,
-        name: "Snorkeling",
-        start: new Date("2021-01-01T09:00:00"),
-        end: new Date("2021-01-01T12:00:00"),
-      },
-      {
-        id: 2,
-        name: "Beach Day",
-        start: new Date("2021-01-02T13:00:00"),
-        end: new Date("2021-01-02T17:00:00"),
-      },
-      {
-        id: 3,
-        name: "Beach Day",
-        start: new Date("2021-01-02T09:00:00"),
-        end: new Date("2021-01-02T17:00:00"),
-      },
-      {
-        id: 4,
-        name: "Snorkeling",
-        start: new Date("2021-01-01T09:00:00"),
-        end: new Date("2021-01-01T12:00:00"),
-      },
-      {
-        id: 5,
-        name: "Beach Day",
-        start: new Date("2021-01-02T13:00:00"),
-        end: new Date("2021-01-02T17:00:00"),
-      },
-      {
-        id: 6,
-        name: "Beach Day",
-        start: new Date("2021-01-02T09:00:00"),
-        end: new Date("2021-01-02T17:00:00"),
-      },
-      {
-        id: 7,
-        name: "Hiking",
-        start: new Date("2021-01-03T09:00:00"),
-        end: new Date("2021-01-03T12:00:00"),
-      },
-    ],
-  };
+  const user = await getSession();
 
-  return itinerary;
+  const response = await fetch(
+    `${process.env.API_URL}/api/itineraries/${itineraryId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    }
+  );
 
-  // const response = await fetch(`api/itinerary/${itineraryId}`);
-
-  // return response.json();
+  return response.json();
 };
 
 const Itinerary = async ({ params }) => {
   const { itineraryId } = params;
 
   const itinerary = await getItinerary(itineraryId);
+  itinerary.activities = itinerary.activities.map((activity) => ({
+    ...activity,
+    start: new Date(activity.start),
+    end: new Date(activity.end),
+  }));
 
   return (
     <>
-      <div className="mb-4">
-        <h1 className="text-4xl">{itinerary.title}</h1>
-      </div>
-      <div className="overflow-y-scroll max-h-full mb-4">
-        <CalendarView activities={itinerary.activities} />
-      </div>
-      <div className="flex justify-end">
-        <StartTrip itinerary={itinerary} />
-      </div>
+      {!itinerary && <>No itinerary found</>}
+      {itinerary && (
+        <>
+          <div className="mb-4 flex gap-4">
+            <h1 className="text-4xl">{itinerary.title}</h1>
+            <Link
+              className="btn btn-ghost btn-square"
+              href={`/trips/${itineraryId}/edit`}
+            >
+              <FontAwesomeIcon className="m-2" icon={faPenToSquare} />
+            </Link>
+          </div>
+          <div className="overflow-y-scroll max-h-full mb-4">
+            <CalendarView activities={itinerary.activities} />
+          </div>
+          <div className="flex justify-end">
+            <StartTrip itinerary={itinerary} />
+          </div>
+        </>
+      )}
     </>
   );
 };
