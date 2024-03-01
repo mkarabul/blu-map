@@ -35,6 +35,7 @@ export default function ProfilePost({
             description={description}
             header={header}
             userName={userName}
+            uuid={uuid}
           />
         </div>
         {/* Images Row */}

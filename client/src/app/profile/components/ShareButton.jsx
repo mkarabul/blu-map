@@ -15,7 +15,7 @@ import {
 
 import SendToEmail from "./EmailShare";
 
-export default function ShareButton({ description, header, userName }) {
+export default function ShareButton({ description, header, userName, uuid }) {
   const [theme, setTheme] = useState("dark");
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "dark";
@@ -39,23 +39,88 @@ export default function ShareButton({ description, header, userName }) {
 
   function openShareWithInstagram() {
     const modal = document.getElementById("share_modal");
-    modal.close();
-    // open instagram share
-    window.open("https://instagram.com/direct/inbox/", "_blank");
+    if (modal) {
+      modal.close();
+    }
+
+    const InstagramMessage = `Hello, I would like to share this following itinerary with you. \n\n Trip: ${header} \n\n Posted By: ${userName} \n\n Post Description: ${description}\n\n Link: http://localhost:3000/post/${uuid} \n\n Please feel free to interact and let me know what you think by clicking the link above!`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(InstagramMessage).then(
+        function () {
+          alert(
+            "Itinerary details copied to clipboard. You can now paste it in Instagram Direct. Make sure that no popups are blocked."
+          );
+          window.open("https://instagram.com/direct/inbox/", "_blank");
+        },
+        function (err) {
+          console.error("Could not copy text: ", err);
+          alert(
+            "Failed to copy itinerary details to clipboard. Please copy it manually."
+          );
+        }
+      );
+    } else {
+      alert(
+        "Clipboard functionality not supported or blocked. Please copy the message manually."
+      );
+    }
   }
 
   function openShareWithSnapchat() {
     const modal = document.getElementById("share_modal");
     modal.close();
-    // open instagram share
-    window.open("https://web.snapchat.com/", "_blank");
+
+    const SnapchatMessage = `Hello, I would like to share this following itinerary with you. \n\n Trip: ${header} \n\n Posted By: ${userName} \n\n Post Description: ${description}\n\n Link: http://localhost:3000/post/${uuid} \n\n Please feel free to interact and let me know what you think by clicking the link above!`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(SnapchatMessage).then(
+        function () {
+          alert(
+            "Itinerary details copied to clipboard. You can now paste it in Instagram Direct. Make sure that no popups are blocked."
+          );
+          window.open("https://web.snapchat.com/", "_blank");
+        },
+        function (err) {
+          console.error("Could not copy text: ", err);
+          alert(
+            "Failed to copy itinerary details to clipboard. Please copy it manually."
+          );
+        }
+      );
+    } else {
+      alert(
+        "Clipboard functionality not supported or blocked. Please copy the message manually."
+      );
+    }
   }
 
   function openShareWithWhatsApp() {
     const modal = document.getElementById("share_modal");
     modal.close();
-    // open instagram share
-    window.open("https://web.whatsapp.com/", "_blank");
+
+    const WhatsAppMessage = `Hello, I would like to share this following itinerary with you. \n\n Trip: ${header} \n\n Posted By: ${userName} \n\n Post Description: ${description}\n\n Link: http://localhost:3000/post/${uuid} \n\n Please feel free to interact and let me know what you think by clicking the link above!`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(WhatsAppMessage).then(
+        function () {
+          alert(
+            "Itinerary details copied to clipboard. You can now paste it in Instagram Direct. Make sure that no popups are blocked."
+          );
+          window.open("https://web.whatsapp.com/", "_blank");
+        },
+        function (err) {
+          console.error("Could not copy text: ", err);
+          alert(
+            "Failed to copy itinerary details to clipboard. Please copy it manually."
+          );
+        }
+      );
+    } else {
+      alert(
+        "Clipboard functionality not supported or blocked. Please copy the message manually."
+      );
+    }
   }
 
   return (
@@ -121,7 +186,13 @@ export default function ShareButton({ description, header, userName }) {
             <button
               className="btn rounded-full"
               onClick={() =>
-                SendToEmail({ emailAddress, description, header, userName })
+                SendToEmail({
+                  emailAddress,
+                  description,
+                  header,
+                  userName,
+                  uuid,
+                })
               }
             >
               Send to Email
