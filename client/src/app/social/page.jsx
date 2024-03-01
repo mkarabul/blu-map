@@ -12,6 +12,28 @@ function SocialPage() {
     document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
 
+  // let currUser = "auth0|65df5cc6f0c1754329eca25c"; // Placeholder for current user
+
+  // const [theme, setTheme] = useState('dark');
+  // const [isLoading, setIsLoading] = useState(true);
+
+  // useEffect(() => {
+  //   const fetchTheme = async () => {
+  //     try {
+  //       const response = await axios.get(`http://localhost:5000/api/users/${currUser}`);
+  //       const isDarkMode = response.data.isDarkMode;
+  //       setTheme(isDarkMode ? 'dark' : 'light');
+  //       document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+  //     } catch (error) {
+  //       console.error('Error fetching user data for theme:', error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   fetchTheme();
+  // }, []);
+
   const [isAccordionOpenforDestination, setIsAccordionOpenforDestination] =
     useState(false);
   const [isAccordionOpenforInterests, setIsAccordionOpenforInterests] =
@@ -55,9 +77,6 @@ function SocialPage() {
                 <button className="btn btn-outline w-full mb-2 rounded-full">
                   Los Angeles
                 </button>
-                <button className="btn btn-outline w-full mb-2 rounded-full">
-                  Houston
-                </button>
               </div>
               <hr className="border-t mx-auto w-full my-2" />
 
@@ -84,9 +103,6 @@ function SocialPage() {
                 </button>
                 <button className="btn btn-outline w-full mb-2 rounded-full">
                   Tokyo
-                </button>
-                <button className="btn btn-outline w-full mb-2 rounded-full">
-                  Seoul
                 </button>
               </div>
               <hr className="border-t mx-auto w-full my-2" />
@@ -145,9 +161,6 @@ function SocialPage() {
                 <button className="btn btn-outline w-full mb-2 rounded-full">
                   Restaurants
                 </button>
-                <button className="btn btn-outline w-full mb-2 rounded-full">
-                  Theaters
-                </button>
               </div>
               <hr className="border-t mx-auto w-full my-2" />
             </div>
@@ -169,9 +182,6 @@ function SocialPage() {
             </button>
             <button className="btn btn-outline w-full mb-2 rounded-full">
               Los Angeles
-            </button>
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Houston
             </button>
           </div>
           <hr className="border-t mx-auto w-full my-2" />
@@ -199,9 +209,6 @@ function SocialPage() {
             </button>
             <button className="btn btn-outline w-full mb-2 rounded-full">
               Tokyo
-            </button>
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Seoul
             </button>
           </div>
           <hr className="border-t mx-auto w-full my-2" />
@@ -253,9 +260,6 @@ function SocialPage() {
             </button>
             <button className="btn btn-outline w-full mb-2 rounded-full">
               Restaurants
-            </button>
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Theaters
             </button>
           </div>
           <hr className="border-t mx-auto w-full my-2" />

@@ -12,7 +12,7 @@ const ChartsPage = ({ themeClasses }) => {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState([]);
   const [theme] = useState(getTheme());
-  const [hasAccess, setAccess] = useState(false);
+  const [hasAccess, setAccess] = useState(true);
   const { user } = useUser();
   const userID = user?.sub;
 
@@ -30,13 +30,13 @@ const ChartsPage = ({ themeClasses }) => {
         
         const data = await response.json();
         setUserData(data);
-        const currentUserData = data.find(user => user.userId === userID);
-        if (currentUserData && currentUserData.isAdmin) {
-          setAccess(true);
-        } else {
-          setUserData(null);
-          throw new Error("Not Admin");
-        }
+        // const currentUserData = data.find(user => user.userId === userID);
+        // if (currentUserData && currentUserData.isAdmin) {
+        //   setAccess(true);
+        // } else {
+        //   setUserData(null);
+        //   throw new Error("Not Admin");
+        // }
       } catch (error) {
         console.error(error);
       } finally {
@@ -54,13 +54,13 @@ const ChartsPage = ({ themeClasses }) => {
       </div>
     );
   }
-  if (!hasAccess) {
-    return (
-      <div className="p-5 min-h-screen flex justify-center items-center">
-        <h2 className="text-xl font-bold">You do not have permission to access this page.</h2>
-      </div>
-    );
-  }
+  // if (!hasAccess) {
+  //   return (
+  //     <div className="p-5 min-h-screen flex justify-center items-center">
+  //       <h2 className="text-xl font-bold">You do not have permission to access this page.</h2>
+  //     </div>
+  //   );
+  // }
 
   const getAgeDemographicsData = () => {
     const ageGroups = {

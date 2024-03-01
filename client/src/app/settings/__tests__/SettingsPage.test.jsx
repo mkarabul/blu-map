@@ -1,17 +1,16 @@
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const axios = require('axios');
-const testemail = "testianag211a5@example.com"
-const password = "Testing132315"
-const testUsername = 'testUser';
-const userApiUrl = `http://localhost:5000/api/users/${testUsername}`;
+const testemail = "testing@example.com"
+const password = "Testing123"
+
 
 describe('Settings Page Tests', () => {
   let driver;
 
   beforeEach(async () => {
     const chromeOptions = new chrome.Options();
-    chromeOptions.headless = true; // Run tests in headless mode.
+    chromeOptions.headless = true;
     driver = await new Builder()
       .forBrowser('chrome')
       .setChromeOptions(chromeOptions)

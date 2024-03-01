@@ -5,7 +5,7 @@ const axios = require('axios');
 const testUsername = 'auth0|65e16df785816c4a38ce3180';
 const userApiUrl = `http://localhost:5000/api/admin-profile-trip/${testUsername}`;
 
-const testemail = "testing1234@gmail.com";
+const testemail = "testing@example.com";
 const password = "Testing123";
 
 describe('Social Page Tests', () => {
@@ -13,7 +13,7 @@ describe('Social Page Tests', () => {
 
   beforeEach(async () => {
     const chromeOptions = new chrome.Options();
-    chromeOptions.headless = true; // Run tests in headless mode.
+    chromeOptions.headless = true;
     driver = await new Builder()
       .forBrowser('chrome')
       .setChromeOptions(chromeOptions)

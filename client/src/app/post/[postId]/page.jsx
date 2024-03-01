@@ -29,9 +29,20 @@ const Post = async ({ params }) => {
     return;
   }
 
-  return <div className="container mx-auto">
-    <SocialPost header={post.header} description={post.description} tripDate={post.tripDate} userName={post.userName} />
-  </div>;
+  return (
+    <div className="container mx-auto">
+      <SocialPost
+        header={post.header}
+        description={post.description}
+        tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+        userName={post.userName}
+      />
+    </div>
+  );
 };
 
 export default Post;

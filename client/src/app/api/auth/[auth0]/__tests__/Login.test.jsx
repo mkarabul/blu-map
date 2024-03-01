@@ -12,8 +12,8 @@ const randomEmail = `${userName}@gmail.com`;
 const rand = generateUsername("", 10);
 const randomPassword = `${rand}32!?`;
 
-const testemail = "testingaccount123@gmail.com"
-const password = "Testingaccount123"
+const testemail = "testing@example.com"
+const password = "Testing123"
 
 describe('Login Page Tests', () => {
   let driver;

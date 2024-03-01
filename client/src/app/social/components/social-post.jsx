@@ -7,9 +7,10 @@ import {
   faPlus,
   faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
-import ShareButton from "../../profile/components/ShareButton";
+
 
 export default function SocialPost({
+  uuid,
   header,
   description,
   tripDate,
@@ -42,7 +43,7 @@ export default function SocialPost({
         {/* Trip description */}
         <div id="description" className="text-lg text-gray-700">{description}</div>
         <div id="header" className="text-2xl text-bold text-gray-700 mt-3">{header}</div>
-        <div id="username-date" className="text-xl text-sm font-medium text-gray-600 mt-1">
+        <div id="usernaame-date" className="text-xl text-sm font-medium text-gray-600 mt-1">
           Date: {tripDate} | Posted by: {userName}
         </div>
         {/* Buttons on the bottom of a post */}

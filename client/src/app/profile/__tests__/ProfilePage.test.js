@@ -1,8 +1,10 @@
 const axios = require('axios');
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
-const testemail = "testing1234@gmail.com";
+const testemail = "testing123@example.com";
 const password = "Testing123";
+
+// insert the userApiURL from the testing123@example.com userID
 const userApiUrl = "http://localhost:5000/api/admin/auth0|65e16df785816c4a38ce3180";
 describe('Profile Page Tests', () => {
   let driver;

@@ -19,6 +19,7 @@ export default function ListPosts() {
       {posts.map((post) => (
         <SocialPost
           key={post.id}
+          uuid={post.uuid}
           header={post.header}
           description={post.description}
           tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
@@ -31,6 +32,6 @@ export default function ListPosts() {
       ))}
     </>
   ) : (
-    <div>{console.log(posts)}</div>
+    <div></div>
   );
 }

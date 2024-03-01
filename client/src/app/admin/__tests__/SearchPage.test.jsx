@@ -2,9 +2,14 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const axios = require('axios');
 const testemail = "testing@example.com"
-const testUserID = "auth0|65e16d09f0c1754329edac35"
 const password = "Testing123"
+
+
+//sample userID
+const testUserID = "auth0|65e16d09f0c1754329edac35"
+
 const baseApiUrl = `http://localhost:5000/api/admin/${testUserID}`;
+
 
 async function getUserNameByUserID(userID) {
   try {

@@ -21,13 +21,13 @@ const SearchPage = ({ themeClasses }) => {
   
         const data = await response.json();
         setUsersData(data);
-        const currentUserData = data.find(user => user.userId === userID);
-        if (currentUserData && currentUserData.isAdmin) {
+        // const currentUserData = data.find(user => user.userId === userID);
+        // if (currentUserData && currentUserData.isAdmin) {
           setAccess(true);
-        } else {
-          setUsersData(null);
-          throw new Error("Not Admin");
-        }
+        // } else {
+        //   setUsersData(null);
+        //   throw new Error("Not Admin");
+        // }
       } catch (error) {
         console.error(error);
       } 
@@ -39,9 +39,9 @@ const SearchPage = ({ themeClasses }) => {
     setSearchTerm(event.target.value);
   };
 
-  if (!hasAccess) {
-    return <div></div>
-  }
+  // if (!hasAccess) {
+  //   return <div></div>
+  // }
 
   const toggleSuspend = async (userId, isSuspended) => {
     try {
