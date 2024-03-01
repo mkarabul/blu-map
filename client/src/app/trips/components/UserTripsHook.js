@@ -25,7 +25,26 @@ const useLoadTrips = () => {
     }
   }, [user]);
 
-  return { trips, isLoading: isLoading || isUserLoading };
+  const deleteTrip = async (tripId) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/itineraries/${tripId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Error deleting trip");
+      }
+      setTrips(trips.filter((trip) => trip.uuid !== tripId));
+      console.log(trips);
+    } catch (error) {
+      console.error("Error deleting trip:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { trips, isLoading: isLoading || isUserLoading, deleteTrip };
 };
 
 export default useLoadTrips;

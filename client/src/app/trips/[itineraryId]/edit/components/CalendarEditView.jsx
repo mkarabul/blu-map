@@ -2,13 +2,12 @@ import React from "react";
 import CalendarEditRow from "./CalendarEditRow";
 
 import { sortActivities } from "../../components/utils.js";
+import CalendarEditSection from "./CalendarEditSection";
 
 const CalendarEditView = ({ activities, activityUtils }) => {
   activities.sort((a, b) => new Date(a.start) - new Date(b.start));
 
   const activitiesByDay = sortActivities(activities);
-
-  //   console.log(activitiesByDay);
 
   return (
     <>
@@ -18,25 +17,7 @@ const CalendarEditView = ({ activities, activityUtils }) => {
         <table className="table table-pin-rows">
           {Object.entries(activitiesByDay).map(([date, activities]) => {
             return (
-              <>
-                <thead>
-                  <tr>
-                    <th>{date}</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {activities.map((activity, index) => {
-                    return (
-                      <CalendarEditRow
-                        key={activity.id}
-                        activity={activity}
-                        activityUtils={activityUtils}
-                      />
-                    );
-                  })}
-                </tbody>
-              </>
+              <CalendarEditSection key={date} date={date} activities={activities} activityUtils={activityUtils}/>
             );
           })}
         </table>

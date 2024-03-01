@@ -38,6 +38,7 @@ const Itinerary = sequelize.define("Itinerary", {
   activities: {
     type: DataTypes.JSON,
     allowNull: true,
+    defaultValue: [],
   },
 });
 

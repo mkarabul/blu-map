@@ -11,32 +11,38 @@ const CalendarView = ({ activities }) => {
   //   console.log(activitiesByDay);
 
   return (
-    <table className="table table-pin-rows">
-      {Object.entries(activitiesByDay).map(([date, activities]) => {
-        return (
-          <>
-            <thead>
-              <tr>
-                <th>{date}</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {activities.map((activity, index) => {
-                return (
-                  <tr key={index}>
-                    <td>
-                      {formatTime(activity.start)} - {formatTime(activity.end)}
-                    </td>
-                    <td>{activity.name}</td>
+    <>
+      {activities.length === 0 && <p>No activities</p>}
+      {activities.length > 0 && (
+        <table className="table table-pin-rows">
+          {Object.entries(activitiesByDay).map(([date, activities]) => {
+            return (
+              <>
+                <thead>
+                  <tr>
+                    <th>{date}</th>
+                    <th></th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </>
-        );
-      })}
-    </table>
+                </thead>
+                <tbody>
+                  {activities.map((activity, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>
+                          {formatTime(activity.start)} -{" "}
+                          {formatTime(activity.end)}
+                        </td>
+                        <td>{activity.name}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </>
+            );
+          })}
+        </table>
+      )}
+    </>
   );
 
   //   let currentDay = null;
