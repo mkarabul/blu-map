@@ -8,8 +8,10 @@ import {
   faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
 import ShareButton from "../../profile/components/ShareButton";
+import Link from "next/link";
 
 export default function SocialPost({
+  uuid,
   header,
   description,
   tripDate,
@@ -40,11 +42,13 @@ export default function SocialPost({
           />
         </div>
         {/* Trip description */}
-        <div className="text-lg text-gray-700">{description}</div>
-        <div className="text-2xl text-bold text-gray-700 mt-3">{header}</div>
-        <div className="text-xl text-sm font-medium text-gray-600 mt-1">
-          Date: {tripDate} | Posted by: {userName}
-        </div>
+        <Link href={`/post/${uuid}`}>
+          <div className="text-lg text-gray-700">{description}</div>
+          <div className="text-2xl text-bold text-gray-700 mt-3">{header}</div>
+          <div className="text-xl text-sm font-medium text-gray-600 mt-1">
+            Date: {tripDate} | Posted by: {userName}
+          </div>
+        </Link>
         {/* Buttons on the bottom of a post */}
         <div className="flex flex-col md:flex-row justify-start items-center mt-4">
           <div className="flex flex-grow space-x-2 mb-2 md:mb-0">
