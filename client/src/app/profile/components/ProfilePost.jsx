@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ShareButton from "../../profile/components/ShareButton";
 import {
   faThumbsUp,
   faThumbsDown,
@@ -18,12 +19,13 @@ export default function ProfilePost({
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
       <div className="card-body p-5">
         {/* user profile icon */}
-        <div className="flex justify-start mb-4">
+        <div className="flex justify-between mb-4">
           <img
             src="/default-pfp.png"
             alt="User Profile"
             className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
           />
+          <ShareButton />
         </div>
         {/* Images Row */}
         <div className="flex justify-between space-x-4 mb-4">

@@ -7,6 +7,7 @@ import {
   faPlus,
   faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
+import ShareButton from "../../profile/components/ShareButton";
 
 export default function SocialPost({
   header,
@@ -18,7 +19,7 @@ export default function SocialPost({
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
       <div className="card-body p-5">
         {/* user profile icon */}
-        <div className="flex justify-start mb-4">
+        <div className="flex justify-between mb-4">
           <img
             src="/default-pfp.png"
             alt="User Profile"
