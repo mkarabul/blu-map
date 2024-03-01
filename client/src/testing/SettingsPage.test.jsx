@@ -11,7 +11,7 @@
 
 //   beforeEach(async () => {
 //     const chromeOptions = new chrome.Options();
-//     chromeOptions.headless = true;
+//     chromeOptions.headless = true; // Run tests in headless mode.
 //     driver = await new Builder()
 //       .forBrowser('chrome')
 //       .setChromeOptions(chromeOptions)
@@ -24,11 +24,11 @@
 //     }
 //   });
 
-
 //   test('light mode dark mode', async () => {
 //     await driver.get('http://localhost:3000');
 //     await new Promise(resolve => setTimeout(resolve, 500));
-  
+
+//     // Login process
 //     const loginButton = await driver.findElement(By.id("login"));
 //     await loginButton.click();
 //     await new Promise(resolve => setTimeout(resolve, 300));
@@ -39,52 +39,39 @@
 //     await passwordInput.sendKeys(password);
 //     await new Promise(resolve => setTimeout(resolve, 300));
 
-//     const submitButton =  await driver.findElement(By.name("action"));
+//     const submitButton = await driver.findElement(By.name("action"));
 //     await submitButton.click();
-
 //     await new Promise(resolve => setTimeout(resolve, 300));
-//     const currentUrl = await driver.getCurrentUrl();
-//     if (!currentUrl.includes('localhost')) {
-//         const acceptButton = await driver.findElement(By.xpath('//*[@value="accept"]'));
-//         await acceptButton.click();
-//         await driver.sleep(300);
-//     }
 
+//     // Check URL after login
 //     expect(await driver.getCurrentUrl()).toContain('localhost');
 
+//     // Navigate to settings
 //     const dropdownButton = await driver.findElement(By.id('dropdown-button'));
 //     await dropdownButton.click();
 //     await new Promise(resolve => setTimeout(resolve, 300));
 
 //     const settings = await driver.findElement(By.id('settings-link'));
 //     await settings.click();
-<<<<<<< HEAD
-//     await new Promise(resolve => setTimeout(resolve, 700));
-=======
 //     await new Promise(resolve => setTimeout(resolve, 300));
->>>>>>> a23dc3215b9bd0a0eba5ed9873fd175ef389b716
 //     expect(await driver.getCurrentUrl()).toContain('settings');
 
+//     // Toggle theme
 //     let theme = await driver.executeScript("return document.documentElement.getAttribute('data-theme');");
-    
 //     const toggleThemeOption = await driver.wait(until.elementLocated(By.xpath("//h1[contains(text(), 'Toggle between Light and Dark mode')]/ancestor::div[contains(@class, 'block border p-2 rounded-lg shadow')]")), 10000);
 //     await toggleThemeOption.click();
 //     let newTheme = await driver.executeScript("return document.documentElement.getAttribute('data-theme');");
 //     if (theme == newTheme) {
-//         throw new Error("The theme did not change")
+//       throw new Error("The theme did not change");
 //     }
-
 
 //     await driver.sleep(1000);
 
+//     // Toggle theme back
 //     await toggleThemeOption.click();
 //     newTheme = await driver.executeScript("return document.documentElement.getAttribute('data-theme');");
 //     if (theme != newTheme) {
-//         throw new Error("The theme did not change the second time")
+//       throw new Error("The theme did not change the second time");
 //     }
-
-//     await driver.sleep(1000);
-
 //   }, 999999);
-  
 // });

@@ -1,77 +1,97 @@
+"use client"
 import React, { useState, useEffect } from 'react';
+import { useUser } from "@auth0/nextjs-auth0/client";
 
-import axios from 'axios';
-
-const SearchPage = ({ themeClasses, toggleTheme }) => {
+const SearchPage = ({ themeClasses }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('none');
   const [showingUsers, setShowingUsers] = useState(15);
   const [usersData, setUsersData] = useState([]);
-  let currUser = "testUser3" // CHANGE THIS LATER
- 
+  const [hasAccess, setAccess] = useState(false);
+  const { user } = useUser();
+  const userID = user?.sub;
 
-  useEffect(() => {
+  useEffect(() => {    
     const fetchUsersData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users/');
-        setUsersData(response.data);
+        const response = await fetch('http://localhost:5000/api/admin/');
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+  
+        const data = await response.json();
+        setUsersData(data);
+        const currentUserData = data.find(user => user.userId === userID);
+        if (currentUserData && currentUserData.isAdmin) {
+          setAccess(true);
+        } else {
+          setUsersData(null);
+          throw new Error("Not Admin");
+        }
       } catch (error) {
-        throw new Error(error);
-      }
+        console.error(error);
+      } 
     };
     fetchUsersData();
-  }, []);
-
+  }, [userID]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
-  
+
+  if (!hasAccess) {
+    return <div></div>
+  }
+
   const toggleSuspend = async (userId, isSuspended) => {
     try {
-      await axios.patch(`http://localhost:5000/api/users/${userId}/toggle-suspend`);
-  
-      let message = isSuspended ? "User is unsuspended successfully" : "User is suspended successfully";
-      alert(message);
-      setUsersData((prevUsers) => prevUsers.map((user) => {
-        if (user.userId === userId) {
-          return { ...user, isSuspended: !user.isSuspended };
-        }
-        return user;
-      }));
+      const response = await fetch(`http://localhost:5000/api/admin/${userId}/toggle-suspend`, {
+        method: 'PATCH',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to toggle user suspension');
+      }
+      const updatedUser = { ...usersData.find(user => user.userId === userId), isSuspended: !isSuspended };
+      setUsersData(prevUsers => prevUsers.map(user => user.userId === userId ? updatedUser : user));
+      alert(isSuspended ? "User is unsuspended successfully" : "User is suspended successfully");
     } catch (error) {
       console.error('Error toggling user suspension:', error);
-      alert(`Error toggling user suspension: ${error}`);
+      alert(`Error toggling user suspension: ${error.message}`);
     }
   };
+
   const toggleAdminStatus = async (userId, isAdmin) => {
     try {
-      await axios.patch(`http://localhost:5000/api/users/${userId}/toggle-admin`);
-  
-      let message = isAdmin ? "User is demoted successfully" : "User is promoted to admin successfully";
-      alert(message);
-      setUsersData((prevUsers) => prevUsers.map((user) => {
-        if (user.userId === userId) {
-          return { ...user, isAdmin: !user.isAdmin };
-        }
-        return user;
-      }));
+      const response = await fetch(`http://localhost:5000/api/admin/${userId}/toggle-admin`, {
+        method: 'PATCH',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to toggle admin status');
+      }
+      const updatedUser = { ...usersData.find(user => user.userId === userId), isAdmin: !isAdmin };
+      setUsersData(prevUsers => prevUsers.map(user => user.userId === userId ? updatedUser : user));
+      alert(isAdmin ? "User is demoted successfully" : "User is promoted to admin successfully");
     } catch (error) {
-      console.error('Error toggling user suspension:', error);
-      alert(`Error toggling user suspension: ${error}`);
+      console.error('Error toggling admin status:', error);
+      alert(`Error toggling admin status: ${error.message}`);
     }
   };
+
   const forceDelete = async (userId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/${userId}`);
-      setUsersData((prevUsers) => prevUsers.filter((user) => user.userId !== userId));
+      const response = await fetch(`http://localhost:5000/api/admin/${userId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete user');
+      }
+      setUsersData(prevUsers => prevUsers.filter(user => user.userId !== userId));
       alert("User is deleted successfully");
     } catch (error) {
       console.error('Error deleting user:', error);
-      alert(`Error deleting user: ${error}`);
+      alert(`Error deleting user: ${error.message}`);
     }
   };
-  
 
 
   const filteredUsers = usersData.filter((user) =>
@@ -112,8 +132,6 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
 
   return (
     <div className={`p-5 min-h-screen ${themeClasses} transition-colors duration-500 justify-center`}>
-      <h1 className="text-3xl font-bold mb-6">User Search</h1>
-
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-4">
           <input
@@ -159,7 +177,7 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
         <p>Admin: {user.isAdmin ? 'True' : 'False'}</p>
         
         {/* Only show action buttons if the user is not the current user */}
-        {currUser !== user.userId && (
+        {userID !== user.userId && (
           <>
             {/* Only allow suspension/unsuspension if the user is not an admin */}
             {!user.isAdmin && (
@@ -173,7 +191,7 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
             )}
             
             {/* Toggle Admin Status Button, ensuring not to self-manage or to demote/promote other admins if not allowed */}
-            {currUser !== user.userId && (
+            {userID !== user.userId && (
               <button
                 id="adminaccessornot"
                 onClick={() => toggleAdminStatus(user.userId, user.isAdmin)}

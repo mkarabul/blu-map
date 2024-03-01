@@ -1,69 +1,84 @@
-// const { Builder, By, Key, until } = require('selenium-webdriver');
-// const chrome = require('selenium-webdriver/chrome');
-// const axios = require('axios');
+const { Builder, By, Key, until } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+const testemail = "testingaccount123@gmail.com";
+const password = "Testingaccount123";
 
-// const testUsername = 'testUser';
-// const userApiUrl = `http://localhost:5000/api/users/${testUsername}`;
+describe('Profile Page Tests', () => {
+  let driver;
 
-// describe('Profile Page Tests', () => {
-//   let driver;
+  beforeEach(async () => {
+    const chromeOptions = new chrome.Options();
+    chromeOptions.headless = true;
+    driver = await new Builder()
+      .forBrowser('chrome')
+      .setChromeOptions(chromeOptions)
+      .build();
+  });
 
-//   beforeEach(async () => {
-//     const chromeOptions = new chrome.Options();
-//     chromeOptions.headless = true;
-//     driver = await new Builder()
-//       .forBrowser('chrome')
-//       .setChromeOptions(chromeOptions)
-//       .build();
-//   });
+  afterEach(async () => {
+    if (driver) {
+      await driver.quit();
+    }
+  });
 
-//   afterEach(async () => {
-//     if (driver) {
-//       await driver.quit();
-//     }
-//   });
-
-//   test('share button', async () => {
-//     await driver.get('http://localhost:3000');
-//     await new Promise(resolve => setTimeout(resolve, 1000));
+  test('share button', async () => {
+    await driver.get('http://localhost:3000');
+    await new Promise(resolve => setTimeout(resolve, 500));
   
-//     const searchButton = await driver.findElement(By.id("profile-page"));
-//     await searchButton.click();
-//     await new Promise(resolve => setTimeout(resolve, 1000));
-  
-//     const socialPlatforms = [
-//       {id: 'instagram', expectedUrl: 'instagram.com'},
-//       {id: 'snapchat', expectedUrl: 'snapchat.com'},
-//       {id: 'whatsapp', expectedUrl: 'whatsapp.com'},
-//     ];
+    const loginButton = await driver.findElement(By.id("login"));
+    await loginButton.click();
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-<<<<<<< HEAD
-//     for (const platform of socialPlatforms) {
-//       const shareButton = await driver.findElement(By.id("sharefromsquare-button"));
-//       await shareButton.click();
-//       await new Promise(resolve => setTimeout(resolve, 500));
-=======
+    const emailInput = await driver.findElement(By.id("username"));
+    await emailInput.sendKeys(testemail);
+    const passwordInput = await driver.findElement(By.id("password"));
+    await passwordInput.sendKeys(password);
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const submitButton =  await driver.findElement(By.name("action"));
+    await submitButton.click();
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const currentUrl = await driver.getCurrentUrl();
+    if (!currentUrl.includes('localhost')) {
+        const acceptButton = await driver.findElement(By.xpath('//*[@value="accept"]'));
+        await acceptButton.click();
+        await driver.sleep(500);
+    }
+    const dropdownButton = await driver.findElement(By.id('dropdown-button'));
+    await dropdownButton.click();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+  
+    const searchButton = await driver.findElement(By.id("profile-link"));
+    await searchButton.click();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  
+    const socialPlatforms = [
+      {id: 'instagram', expectedUrl: 'instagram.com'},
+      {id: 'snapchat', expectedUrl: 'snapchat.com'},
+      {id: 'whatsapp', expectedUrl: 'whatsapp.com'},
+    ];
     for (const platform of socialPlatforms) {
-      const shareButton = await driver.findElement(By.className("sharefromsquare-button"));
+      const shareButton = await driver.findElement(By.id("sharefromsquare-button"));
       await shareButton.click();
       await new Promise(resolve => setTimeout(resolve, 500));
->>>>>>> a23dc3215b9bd0a0eba5ed9873fd175ef389b716
   
-//       const socialButton = await driver.findElement(By.id(platform.id));
-//       await socialButton.click();
-//       await new Promise(resolve => setTimeout(resolve, 500));
+      const socialButton = await driver.findElement(By.id(platform.id));
+      await socialButton.click();
+      await new Promise(resolve => setTimeout(resolve, 500));
   
-//       let windows = await driver.getAllWindowHandles();
-//       await driver.switchTo().window(windows[1]);
+      let windows = await driver.getAllWindowHandles();
+      await driver.switchTo().window(windows[1]);
   
-//       let currentUrl = await driver.getCurrentUrl();
-//       expect(currentUrl).toContain(platform.expectedUrl);
+      let currentUrl = await driver.getCurrentUrl();
+      expect(currentUrl).toContain(platform.expectedUrl);
   
-//       await driver.close();
-//       await driver.switchTo().window(windows[0]);
-//       await new Promise(resolve => setTimeout(resolve, 500));
-//     }
+      await driver.close();
+      await driver.switchTo().window(windows[0]);
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
   
-//   }, 999999);
+  }, 999999);
   
-// });
+});

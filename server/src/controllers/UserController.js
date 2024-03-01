@@ -31,6 +31,9 @@ const UserController = {
   async getUserByUserId(req, res) {
     try {
       const { userId } = req.params;
+      // if (req.user.sub !== userId) {
+      //   return res.status(403).json({ error: "User not authorized" });
+      // }
       const user = await User.findOne({
         where: { userId },
         attributes: [
@@ -61,12 +64,14 @@ const UserController = {
 
       const userName = generateUsername("", 3);
 
-      if (!email || !userId) {
+      if (!userId || !email) {
         return res.status(400).json({ error: "Missing required fields" });
       }
 
       const user = await User.create({
-        userId, email, userName,
+        userId,
+        email,
+        userName,
       });
 
       res.status(201).json({ message: "User created successfully", user });
@@ -96,45 +101,45 @@ const UserController = {
     try {
       const { userId } = req.params;
       const user = await User.findOne({ where: { userId } });
-  
+
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-        user.isAdmin = !user.isAdmin;
+      user.isAdmin = !user.isAdmin;
       await user.save();
-  
+
       res.status(200).json({
-        message: `User has been ${user.isAdmin ? "granted admin rights" : "revoked admin rights"} successfully.`,
+        message: `User has been ${
+          user.isAdmin ? "granted admin rights" : "revoked admin rights"
+        } successfully.`,
       });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
-
-
 
   async toggleUserDarkModeById(req, res) {
     try {
       const { userId } = req.params;
       const user = await User.findOne({ where: { userId } });
-  
+
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-        user.isDarkMode = !user.isDarkMode;
+      user.isDarkMode = !user.isDarkMode;
       await user.save();
-  
+
       res.status(200).json({
-        message: `User is now in ${user.isDarkMode ? "Dark Mode" : "Light Mode"}`,
+        message: `User is now in ${
+          user.isDarkMode ? "Dark Mode" : "Light Mode"
+        }`,
       });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
-
-  
 
   async toggleUserSuspensionById(req, res) {
     try {
@@ -153,18 +158,31 @@ const UserController = {
           user.isSuspended ? "suspended" : "unsuspended"
         } successfully`,
       });
-      res.status(200).json({
-        message: `User ${
-          user.isSuspended ? "suspended" : "unsuspended"
-        } successfully`,
-      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
-    
-
-    
+  },
+  async updateUserByUserId(req, res) {
+    try {
+      const { userId } = req.params;
+      if (req.user.sub !== userId) {
+        return res.status(403).json({ error: "User not authorized" });
+      }
+      const { userNameNew, genderNew, ageNew } = req.body;
+      const user = await User.findOne({ where: { userId } });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      user.userName = userNameNew || user.userName;
+      user.gender = genderNew || user.gender;
+      user.age = parseInt(ageNew) || user.age;
+      await user.save();
+      res.status(200).json({ message: "User updated successfully", user });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   },
 };
 

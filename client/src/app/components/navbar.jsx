@@ -42,11 +42,6 @@ export default async function Navbar() {
               Trips
             </button>
           </Link>
-          <Link href="/profile">
-            <button id="profile-page" className="btn btn-outline" style={{ width: "10rem" }}>
-              Profile {user.sub} 
-            </button>
-          </Link>
         </div>
 
         {/* Profile Section */}
@@ -84,6 +79,11 @@ const UserDropdown = () => {
         id="dropdown-menu"
       >
         <li>
+          <Link id="profile-link" className="justify-between" href="/profile">
+            Profile
+          </Link>
+        </li>
+        <li>
           <Link id="settings-link" className="justify-between" href="/settings">
             Settings
           </Link>
@@ -94,5 +94,4 @@ const UserDropdown = () => {
       </ul>
     </div>
   );
-
 };
