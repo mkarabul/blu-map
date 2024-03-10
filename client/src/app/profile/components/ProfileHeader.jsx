@@ -1,5 +1,4 @@
 "use client";
-
 import { useUser } from "@auth0/nextjs-auth0/client";
 import React, { useState } from "react";
 
@@ -108,51 +107,6 @@ export default function ProfileHeader({
       {isOwner && (
         <div className="report-button absolute top-2 left-2 text-white text-base cursor-pointer" onClick={openReportDialog}>
           Report
-        <div
-          className="absolute top-2 right-2 text-white text-base cursor-pointer"
-          onClick={openDialog}
-        >
-          Edit
-        </div>
-      )}
-      <dialog open={isOpen} id="share_modal" className="modal">
-        <div className="modal-box">
-          <form method="dialog" onSubmit={handleSubmit}>
-            <button
-              onClick={closeDialog}
-              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-            >
-            </button>
-            <div className="flex flex-col mt-4">
-              <label htmlFor="gender" className="text-white text-base">
-                Gender:
-              </label>
-              <input
-                type="text"
-                id="gender"
-                className="w-full px-4 py-2 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
-                placeholder="Enter your gender"
-                value={genderNew}
-                onChange={(e) => setGenderNew(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col mt-4">
-              <label htmlFor="age" className="text-white text-base">
-                Age:
-              </label>
-              <input
-                type="number"
-                id="age"
-                className="w-full px-4 py-2 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
-                placeholder="Enter your age"
-                value={ageNew}
-                onChange={(e) => setAgeNew(e.target.value)}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary mt-4">
-              Submit
-            </button>
-          </form>
         </div>
       )}
 
