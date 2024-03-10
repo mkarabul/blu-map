@@ -11,6 +11,11 @@ const SearchPage = ({ themeClasses }) => {
   const { user } = useUser();
   const userID = user?.sub;
 
+
+  const [isReportModalOpen, setReportModalOpen] = useState(false);
+  const [currentReportDetails, setCurrentReportDetails] = useState({});
+
+
   useEffect(() => {    
     const fetchUsersData = async () => {
       try {
@@ -39,9 +44,6 @@ const SearchPage = ({ themeClasses }) => {
     setSearchTerm(event.target.value);
   };
 
-  if (!hasAccess) {
-    return <div></div>
-  }
 
   const toggleSuspend = async (userId, isSuspended) => {
     try {
@@ -59,6 +61,34 @@ const SearchPage = ({ themeClasses }) => {
       alert(`Error toggling user suspension: ${error.message}`);
     }
   };
+  
+  const viewReports = (userId) => {
+    // For now, setting static report details. Replace this with actual report details based on userId.
+    const reportDetails = {
+      title: "Sample Report Title",
+      description: "This is a placeholder description for the report. Replace this with actual report data.",
+      reportedOn: "Date of the report",
+    };
+    setCurrentReportDetails(reportDetails);
+    setReportModalOpen(true);
+  };
+
+  const ReportModal = ({ isOpen, onClose, report }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="bg-white p-5 rounded-lg">
+          <h2 className="text-xl font-bold">{report.title}</h2>
+          <p>{report.description}</p>
+          <p>Reported on: {report.reportedOn}</p>
+          <button onClick={onClose} className="px-4 py-2 rounded bg-red-500 text-white mt-4">Close</button>
+        </div>
+      </div>
+    );
+  };
+
+
 
   const toggleAdminStatus = async (userId, isAdmin) => {
     try {
@@ -175,9 +205,13 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
         <p>Gender: {user.gender}</p>
         <p>Status: {user.isSuspended ? 'Suspended' : 'Active'}</p>
         <p>Admin: {user.isAdmin ? 'True' : 'False'}</p>
-        
+        <p>Number of Reports: {user.reportNum}</p>
+
+     
+  
         {/* Only show action buttons if the user is not the current user */}
         {userID !== user.userId && (
+
           <>
             {/* Only allow suspension/unsuspension if the user is not an admin */}
             {!user.isAdmin && (
@@ -189,7 +223,8 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
                 {user.isSuspended ? 'Unsuspend' : 'Suspend'}
               </button>
             )}
-            
+          
+          
             {/* Toggle Admin Status Button, ensuring not to self-manage or to demote/promote other admins if not allowed */}
             {userID !== user.userId && (
               <button
@@ -206,11 +241,23 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
               <button
                 id="delete_user"
                 onClick={() => forceDelete(user.userId)}
-                className="px-4 py-2 rounded bg-red-500 text-white"
+                className="px-4 py-2 rounded bg-red-500 text-white mr-2"
               >
                 Force Delete
               </button>
             )}
+            {/* Toggle Admin Status Button, ensuring not to self-manage or to demote/promote other admins if not allowed */}
+
+            {user.reportNum > 0 && (
+              <button
+                id="viewReports"
+                onClick={() => viewReports(user.userId)}
+                className="px-4 py-2 rounded bg-blue-500 text-white"
+              >
+                View Reports
+              </button>
+            )}
+   
           </>
         )}
       </div>
@@ -228,6 +275,11 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
           </button>
         )}
       </div>
+      <ReportModal
+        isOpen={isReportModalOpen}
+        onClose={() => setReportModalOpen(false)}
+        report={currentReportDetails}
+      />
   
     </div>
   );
