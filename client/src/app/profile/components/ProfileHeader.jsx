@@ -1,5 +1,4 @@
-"use client";
-import { useUser } from "@auth0/nextjs-auth0/client";
+"use client";import { useUser } from "@auth0/nextjs-auth0/client";
 import React, { useState } from "react";
 
 export default function ProfileHeader({
@@ -39,7 +38,6 @@ export default function ProfileHeader({
   const handleReportSubmit = async (event) => {
     event.preventDefault();
     try {
-      // replace this w the actual user ID of the profile
       const userID = user?.sub;
       await fetch(`http://localhost:5000/api/admin/${userID}/increment-report`, {
         method: 'PATCH',
@@ -55,7 +53,6 @@ export default function ProfileHeader({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         reporterUserId: user?.sub,
-        // replace this w the actual user ID of the profile
         reportedUserId: user?.sub,
         header,
         description,
@@ -72,7 +69,6 @@ export default function ProfileHeader({
     } else {
       console.error("Error submitting report");
       alert("There was an error, try again later");
-
     }
   };
 
@@ -80,6 +76,21 @@ export default function ProfileHeader({
   const closeEditDialog = () => setIsEditOpen(false);
   const openReportDialog = () => setIsReportOpen(true);
   const closeReportDialog = () => setIsReportOpen(false);
+
+  const [isFollowing, setIsFollowing] = useState(false);
+  const toggleFollow = () => setIsFollowing(!isFollowing);
+
+
+  const followButton = isOwner && (
+    <button
+      className={`text-white text-base cursor-pointer px-4 py-2 rounded-lg shadow-md transition-all ease-in-out duration-300 ${
+        isFollowing ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"
+      }`}
+      onClick={toggleFollow}
+    >
+      {isFollowing ? "Unfollow" : "Follow"}
+    </button>
+  );
 
   return (
     <div id="background" className="profile-header bg-primary w-full text-center p-10 relative flex flex-col items-center justify-center">
@@ -99,6 +110,7 @@ export default function ProfileHeader({
           <p id="age">Age: {age}</p>
         </div>
       )}
+      {followButton}
       {isOwner && (
         <div className="edit-button absolute top-2 right-2 text-white text-base cursor-pointer" onClick={openEditDialog}>
           Edit
@@ -147,6 +159,8 @@ export default function ProfileHeader({
           </div>
           <button type="submit" className="btn btn-primary mt-4">Submit Report</button>
         </form>
+     
+
       </dialog>
     </div>
   );
