@@ -11,7 +11,6 @@ describe("set", () => {
 
     // Assert
     expect(result).toBeDefined();
-    // Add more assertions if needed
   });
 });
 
@@ -73,7 +72,6 @@ describe("hSet", () => {
 
     // Assert
     expect(result).toBeDefined();
-    // Add more assertions if needed
   });
 });
 
@@ -92,7 +90,6 @@ describe("hGet", () => {
 
     // Assert
     expect(result).toBe(value);
-    // Add more assertions if needed
   });
 
   it("should return null if the value does not exist in the Redis hash", async () => {
