@@ -67,7 +67,8 @@ const SearchPage = ({ themeClasses }) => {
   const viewReports = async (userId) => {
     // Fetch reports data from the API
     try {
-      const response = await fetch(`http://localhost:5000/api/reports/all/${userId}`);
+     const response = await fetch(`http://localhost:5000/api/reports/all/${userId}`);
+
       if (!response.ok) {
         throw new Error('Failed to fetch reports');
       }
@@ -91,34 +92,28 @@ const SearchPage = ({ themeClasses }) => {
     };
     const deleteReport = async () => {
       try {
-        // First, send the PATCH request to decrement the report number on the backend
         await fetch(`http://localhost:5000/api/admin/${currentReport.reportedUserId}/decrement-report`, {
           method: 'PATCH',
         });
     
-        // Then, delete the report
         await fetch(`http://localhost:5000/api/reports/${currentReport.reportId}`, {
           method: 'DELETE',
         });
     
-        // Update the reports in the state to reflect the deletion
         const updatedReports = reportsData.filter(report => report.reportId !== currentReport.reportId);
         setReportsData(updatedReports);
     
-        // Additionally, update usersData to reflect the change in reportNum
         setUsersData(users => users.map(user => {
           if (user.userId === currentReport.reportedUserId) {
-            return { ...user, reportNum: Math.max(user.reportNum - 1, 0) }; // Ensure reportNum doesn't go below 0
+            return { ...user, reportNum: Math.max(user.reportNum - 1, 0) }; 
           }
           return user;
         }));
     
-        // Adjust the current report index if necessary
         if (currentReportIndex >= updatedReports.length - 1) {
           setCurrentReportIndex(prevIndex => Math.max(0, prevIndex - 1));
         }
     
-        // Close the modal if there are no more reports
         if (updatedReports.length === 0) {
           onClose();
         }
@@ -147,7 +142,6 @@ const SearchPage = ({ themeClasses }) => {
                 Next ({currentReportIndex + 1}/{totalReports})
               </button>
             )}
-            {/* Placeholder for "Resolve" functionality */}
             <button onClick={deleteReport} className="px-4 py-2 rounded bg-green-500 text-white mt-4">Resolve</button>
           </div>
         </div>
@@ -206,6 +200,8 @@ const SearchPage = ({ themeClasses }) => {
         return a.userId - b.userId;
       case 'suspended':
         return b.isSuspended - a.isSuspended;
+      case 'reports':
+        return b.reportNum - a.reportNum;
       default:
         return 0;
     }
@@ -255,6 +251,8 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
               <option value="alphabeticalEmail">Alphabetical (Email)</option>
               <option value="userId">User ID</option>
               <option value="suspended">Suspended Accounts</option>
+              <option value="reports">Number of Reports</option>
+
             </select>
           </div>
         </div>

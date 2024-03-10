@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import SearchPage from './components/SearchPage';
 import ChartsPage from './components/Charts';
 import { useUser } from "@auth0/nextjs-auth0/client";
+import Footer from '../components/footer';
 
 const HomePage = () => {
   const [activePage, setActivePage] = useState('charts');
@@ -78,6 +79,7 @@ const HomePage = () => {
         {activePage === 'charts' && <ChartsPage />}
         {activePage === 'search' && <SearchPage />}
       </div>
+      <Footer />
     </div>
   );
 };
