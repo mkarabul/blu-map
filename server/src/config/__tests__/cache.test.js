@@ -104,3 +104,53 @@ describe("hGet", () => {
     expect(result).toBeNull();
   });
 });
+
+describe("hGetAll", () => {
+  it("should get all values from a Redis hash", async () => {
+    // Arrange
+    const key = "testKey2";
+    const field1 = "testField1";
+    const value1 = "testValue1";
+    const field2 = "testField2";
+    const value2 = "testValue2";
+
+    // Set the values in the Redis hash
+    await cache.hSet(key, field1, value1);
+    await cache.hSet(key, field2, value2);
+
+    // Act
+    const result = await cache.hGetAll(key);
+
+    // Assert
+    expect(result).toEqual({ [field1]: value1, [field2]: value2 });
+  });
+
+  it("should return an empty object if the hash does not exist", async () => {
+    // Arrange
+    const key = "nonExistentKey";
+
+    // Act
+    const result = await cache.hGetAll(key);
+
+    // Assert
+    expect(result).toEqual({});
+  });
+});
+
+describe("hDel", () => {
+  it("should delete a value from a Redis hash", async () => {
+    // Arrange
+    const key = "testKey";
+    const field = "testField";
+    const value = "testValue";
+
+    // Set the value in the Redis hash
+    await cache.hSet(key, field, value);
+
+    // Act
+    const result = await cache.hDel(key, field);
+
+    // Assert
+    expect(result).toBe(1);
+  });
+});
