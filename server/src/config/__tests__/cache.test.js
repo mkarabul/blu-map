@@ -12,6 +12,27 @@ describe("set", () => {
     // Assert
     expect(result).toBeDefined();
   });
+
+  it("should set a value in Redis with an expiration", async () => {
+    // Arrange
+    const key = "testKey";
+    const value = "testValue";
+    const expiration = 10;
+
+    // Act
+    const result = await cache.set(key, value, expiration);
+
+    // Assert
+    expect(result).toBeDefined();
+
+    const result2 = await cache.get(key);
+    expect(result2).toBe(value);
+
+    setTimeout(async () => {
+      const result = await cache.get(key);
+      expect(result).toBeNull();
+    }, expiration * 10);
+  });
 });
 
 describe("get", () => {
@@ -72,6 +93,28 @@ describe("hSet", () => {
 
     // Assert
     expect(result).toBeDefined();
+  });
+
+  it("should set a value in a Redis hash with an expiration", async () => {
+    // Arrange
+    const key = "testKey";
+    const field = "testField";
+    const value = "testValue";
+    const expiration = 10;
+
+    // Act
+    const result = await cache.hSet(key, field, value, expiration);
+
+    // Assert
+    expect(result).toBeDefined();
+
+    const result2 = await cache.hGet(key, field);
+    expect(result2).toBe(value);
+
+    setTimeout(async () => {
+      const result = await cache.hGet(key, field);
+      expect(result).toBeNull();
+    }, expiration * 10);
   });
 });
 
