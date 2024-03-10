@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp,
@@ -16,9 +17,22 @@ export default function SocialPost({
   description,
   tripDate,
   userName,
-  likes = 0,
-  dislikes = 0,
+  likes: initialLikes,
+  dislikes: initialDislikes,
 }) {
+  initialLikes = initialLikes || 0;
+  initialDislikes = initialDislikes || 0;
+  const [likes, setLike] = useState(initialLikes);
+  const [dislikes, setDislike] = useState(initialDislikes);
+
+  const addLike = () => {
+    setLike(likes + 1);
+  };
+
+  const addDislike = () => {
+    setDislike(dislikes + 1);
+  };
+
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
       <div className="card-body p-5">
@@ -56,11 +70,14 @@ export default function SocialPost({
         {/* Buttons on the bottom of a post */}
         <div className="flex flex-col md:flex-row justify-start items-center mt-4">
           <div className="flex flex-grow space-x-2 mb-2 md:mb-0">
-            <button className="btn btn-outline rounded-full">
+            <button className="btn btn-outline rounded-full" onClick={addLike}>
               <FontAwesomeIcon icon={faThumbsUp} />
               <p> {likes} </p>
             </button>
-            <button className="btn btn-outline rounded-full">
+            <button
+              className="btn btn-outline rounded-full"
+              onClick={addDislike}
+            >
               <FontAwesomeIcon icon={faThumbsDown} />
               <p> {dislikes} </p>
             </button>
