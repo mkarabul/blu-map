@@ -54,6 +54,16 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
     allowNull: false,
     unique: true,
   },
+  likes: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  dislikes: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
 });
 
 ProfileTrip.sync({ alter: true });

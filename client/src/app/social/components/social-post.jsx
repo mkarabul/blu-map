@@ -16,6 +16,8 @@ export default function SocialPost({
   description,
   tripDate,
   userName,
+  likes = 0,
+  dislikes = 0,
 }) {
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
@@ -56,9 +58,11 @@ export default function SocialPost({
           <div className="flex flex-grow space-x-2 mb-2 md:mb-0">
             <button className="btn btn-outline rounded-full">
               <FontAwesomeIcon icon={faThumbsUp} />
+              <p> {likes} </p>
             </button>
             <button className="btn btn-outline rounded-full">
               <FontAwesomeIcon icon={faThumbsDown} />
+              <p> {dislikes} </p>
             </button>
             <button className="btn btn-outline rounded-full">
               <FontAwesomeIcon icon={faMapMarkedAlt} />

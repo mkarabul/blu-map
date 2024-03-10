@@ -28,6 +28,8 @@ export default function ListPosts() {
             day: "numeric",
           })}
           userName={post.userName}
+          likes={post.likes}
+          dislikes={post.dislikes}
         />
       ))}
     </>

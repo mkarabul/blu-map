@@ -23,6 +23,16 @@ const Post = sequelize.define("Post", {
     type: DataTypes.ARRAY(DataTypes.STRING), // for multiple images
     allowNull: true, // if the user doesnt want to put an image
   },
+  likes: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  dislikes: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
 });
 
 Post.sync();

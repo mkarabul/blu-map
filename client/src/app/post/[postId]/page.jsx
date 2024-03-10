@@ -40,6 +40,8 @@ const Post = async ({ params }) => {
           day: "numeric",
         })}
         userName={post.userName}
+        likes={post.likes}
+        dislikes={post.dislikes}
       />
     </div>
   );
