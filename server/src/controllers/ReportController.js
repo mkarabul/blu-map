@@ -73,7 +73,7 @@ const ReportController = {
       const reports = await Report.findAll({
         where: { reportedUserId },
       });
-      if (reports && reports.length > 0) {
+      if (reports) {
         res.status(200).json(reports);
       } else {
         res.status(404).json({ error: "No reports found for the given user ID" });

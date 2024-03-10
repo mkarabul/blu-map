@@ -13,7 +13,9 @@ const SearchPage = ({ themeClasses }) => {
 
 
   const [isReportModalOpen, setReportModalOpen] = useState(false);
-  const [currentReportDetails, setCurrentReportDetails] = useState({});
+  const [reportsData, setReportsData] = useState([]); // Store multiple reports
+  const [currentReportIndex, setCurrentReportIndex] = useState(0); // Current viewed report index
+
 
 
   useEffect(() => {    
@@ -62,31 +64,97 @@ const SearchPage = ({ themeClasses }) => {
     }
   };
   
-  const viewReports = (userId) => {
-    // For now, setting static report details. Replace this with actual report details based on userId.
-    const reportDetails = {
-      title: "Sample Report Title",
-      description: "This is a placeholder description for the report. Replace this with actual report data.",
-      reportedOn: "Date of the report",
-    };
-    setCurrentReportDetails(reportDetails);
-    setReportModalOpen(true);
+  const viewReports = async (userId) => {
+    // Fetch reports data from the API
+    try {
+      const response = await fetch(`http://localhost:5000/api/reports/all/${userId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch reports');
+      }
+      const data = await response.json();
+      setReportsData(data);
+      setCurrentReportIndex(0);
+      setReportModalOpen(true);
+    } catch (error) {
+      console.error('Error fetching reports:', error);
+    }
   };
+  
+  const ReportModal = ({ isOpen, onClose, reports }) => {
+    if (!isOpen || reports.length === 0) return null;
 
-  const ReportModal = ({ isOpen, onClose, report }) => {
-    if (!isOpen) return null;
+    const currentReport = reports[currentReportIndex];
+    const totalReports = reports.length;
+
+    const nextReport = () => {
+      setCurrentReportIndex((prevIndex) => (prevIndex + 1) % totalReports); // Loop back to the first report
+    };
+    const deleteReport = async () => {
+      try {
+        // First, send the PATCH request to decrement the report number on the backend
+        await fetch(`http://localhost:5000/api/admin/${currentReport.reportedUserId}/decrement-report`, {
+          method: 'PATCH',
+        });
+    
+        // Then, delete the report
+        await fetch(`http://localhost:5000/api/reports/${currentReport.reportId}`, {
+          method: 'DELETE',
+        });
+    
+        // Update the reports in the state to reflect the deletion
+        const updatedReports = reportsData.filter(report => report.reportId !== currentReport.reportId);
+        setReportsData(updatedReports);
+    
+        // Additionally, update usersData to reflect the change in reportNum
+        setUsersData(users => users.map(user => {
+          if (user.userId === currentReport.reportedUserId) {
+            return { ...user, reportNum: Math.max(user.reportNum - 1, 0) }; // Ensure reportNum doesn't go below 0
+          }
+          return user;
+        }));
+    
+        // Adjust the current report index if necessary
+        if (currentReportIndex >= updatedReports.length - 1) {
+          setCurrentReportIndex(prevIndex => Math.max(0, prevIndex - 1));
+        }
+    
+        // Close the modal if there are no more reports
+        if (updatedReports.length === 0) {
+          onClose();
+        }
+    
+        alert("Report resolved successfully");
+      } catch (error) {
+        console.error('Error resolving report:', error);
+        alert(`Error: ${error.message}`);
+      }
+    };
+    
+  
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
         <div className="bg-white p-5 rounded-lg">
-          <h2 className="text-xl font-bold">{report.title}</h2>
-          <p>{report.description}</p>
-          <p>Reported on: {report.reportedOn}</p>
-          <button onClick={onClose} className="px-4 py-2 rounded bg-red-500 text-white mt-4">Close</button>
+          <h2 className="text-xl font-bold">{currentReport.header}</h2>
+          <p>Description: {currentReport.description}</p>
+          <p>Report Type: {currentReport.reportType}</p>
+
+          <p>Reported on: {currentReport.createdAt}</p>
+          <div className="flex justify-between items-center">
+            <button onClick={onClose} className="px-4 py-2 rounded bg-red-500 text-white mt-4">Close</button>
+            {totalReports > 1 && (
+              <button onClick={nextReport} className="px-4 py-2 rounded bg-blue-500 text-white mt-4">
+                Next ({currentReportIndex + 1}/{totalReports})
+              </button>
+            )}
+            {/* Placeholder for "Resolve" functionality */}
+            <button onClick={deleteReport} className="px-4 py-2 rounded bg-green-500 text-white mt-4">Resolve</button>
+          </div>
         </div>
       </div>
     );
   };
+
 
 
 
@@ -278,7 +346,7 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
       <ReportModal
         isOpen={isReportModalOpen}
         onClose={() => setReportModalOpen(false)}
-        report={currentReportDetails}
+        reports={reportsData}
       />
   
     </div>
