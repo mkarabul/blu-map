@@ -21,6 +21,7 @@ export default function ProfilePost({
   userName,
   isPublic,
   isSocial,
+  tripId,
 }) {
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">

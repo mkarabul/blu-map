@@ -86,7 +86,7 @@ describe("Fail cases User routes", () => {
 
   test("GET /users/:userId", async () => {
     const response = await request(app).get("/notTestUserId");
-    expect(response.statusCode).toBe(404);
+    expect(response.statusCode).toBe(403);
   });
 
   test("PUT /users/:id", async () => {
