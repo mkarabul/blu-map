@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ShareButton from "../../profile/components/ShareButton";
 import Link from "next/link";
+import { reputationSystem } from "../components/rep_system";
 
 export default function SocialPost({
   uuid,
@@ -20,18 +22,10 @@ export default function SocialPost({
   likes: initialLikes,
   dislikes: initialDislikes,
 }) {
-  initialLikes = initialLikes || 0;
-  initialDislikes = initialDislikes || 0;
-  const [likes, setLike] = useState(initialLikes);
-  const [dislikes, setDislike] = useState(initialDislikes);
-
-  const addLike = () => {
-    setLike(likes + 1);
-  };
-
-  const addDislike = () => {
-    setDislike(dislikes + 1);
-  };
+  const { likes, dislikes, addLike, addDislike } = reputationSystem(
+    initialLikes,
+    initialDislikes
+  );
 
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
