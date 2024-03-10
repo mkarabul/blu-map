@@ -49,6 +49,11 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
     allowNull: false,
     defaultValue: false,
   },
+  tripId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    unique: true,
+  },
 });
 
 ProfileTrip.sync({ alter: true });

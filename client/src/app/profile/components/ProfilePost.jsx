@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ShareButton from "../../profile/components/ShareButton";
+import Link from "next/link";
 import {
   faThumbsUp,
   faThumbsDown,
@@ -26,12 +27,19 @@ export default function ProfilePost({
       <div className="card-body p-5">
         {/* user profile icon */}
         <div className="flex justify-between mb-4">
-          <img
-            src="/default-pfp.png"
-            alt="User Profile"
-            className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
+          <Link href={`/profile/${userName}`}>
+            <img
+              src="/default-pfp.png"
+              alt="User Profile"
+              className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
+            />
+          </Link>
+          <ShareButton
+            description={description}
+            header={header}
+            userName={userName}
+            uuid={uuid}
           />
-          <ShareButton />
         </div>
         {/* Images Row */}
         <div className="flex justify-between space-x-4 mb-4">
@@ -47,11 +55,13 @@ export default function ProfilePost({
           />
         </div>
         {/* Trip description */}
-        <div className="text-lg text-gray-700">{description}</div>
-        <div className="text-2xl text-bold text-gray-700 mt-3">{header}</div>
-        <div className="text-xl text-sm font-medium text-gray-600 mt-1">
-          Date: {tripDate} | Posted by: {userName}
-        </div>
+        <Link href={`/post/${uuid}`}>
+          <div className="text-lg text-gray-700">{description}</div>
+          <div className="text-2xl text-bold text-gray-700 mt-3">{header}</div>
+          <div className="text-xl text-sm font-medium text-gray-600 mt-1">
+            Date: {tripDate} | Posted by: {userName}
+          </div>
+        </Link>
         {/* Buttons on the bottom of a post */}
         <div className="flex flex-col md:flex-row justify-start items-center mt-4">
           <div className="flex flex-grow space-x-2 mb-2 md:mb-0">

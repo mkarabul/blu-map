@@ -22,6 +22,7 @@ export default function Page() {
         userName={userData.userName}
         gender={userData.gender}
         age={userData.age}
+        isOwner={true}
       />
       <ListPosts posts={posts} isLoading={isLoading} />
     </div>

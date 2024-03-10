@@ -3,7 +3,7 @@ const ProfileTrip = require("../models/ProfileTrip");
 const ProfileTripsController = {
   async createProfileTrip(req, res) {
     try {
-      const { userId, userName, description, header, tripDate, isPublic } =
+      const { userId, userName, description, header, tripDate, tripId } =
         req.body;
       const newProfileTrip = await ProfileTrip.create({
         userId,
@@ -11,11 +11,10 @@ const ProfileTripsController = {
         description,
         header,
         tripDate,
-        isPublic,
+        tripId,
       });
       res.status(201).json(newProfileTrip);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -35,9 +34,22 @@ const ProfileTripsController = {
           "tripDate",
           "isPublic",
           "isSocial",
+          "tripId",
         ],
       });
       res.status(200).json(profileTrips);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  async getPublicProfileTrips(req, res) {
+    try {
+      const { userName } = req.params;
+      const publicProfileTrips = await ProfileTrip.findAll({
+        where: { userName, isPublic: true },
+        attributes: ["uuid", "userName", "description", "header", "tripDate"],
+      });
+      res.status(200).json(publicProfileTrips);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -56,6 +68,7 @@ const ProfileTripsController = {
           "tripDate",
           "isPublic",
           "isSocial",
+          "tripId",
         ],
       });
       // if (req.user.sub !== userId) {
@@ -66,7 +79,6 @@ const ProfileTripsController = {
       }
       res.status(200).json(profileTrip);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -74,11 +86,18 @@ const ProfileTripsController = {
     try {
       const profileTrips = await ProfileTrip.findAll({
         where: { isSocial: true },
-        attributes: ["userName", "description", "header", "tripDate"],
+        attributes: [
+          "id",
+          "uuid",
+          "userName",
+          "description",
+          "header",
+          "tripDate",
+          "tripId",
+        ],
       });
       res.status(200).json(profileTrips);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },

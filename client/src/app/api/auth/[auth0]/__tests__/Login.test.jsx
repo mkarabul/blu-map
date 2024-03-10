@@ -67,7 +67,7 @@ describe('Login Page Tests', () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     expect(await driver.getCurrentUrl()).toContain('localhost');
 
-  }, 999999);
+  }, 999999),
 
   test('login logout', async () => {
     await driver.get('http://localhost:3000');

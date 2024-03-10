@@ -5,8 +5,8 @@ import Trips from "./components/Trips";
 import UseItineraryButton from "./components/NewItineraryButton";
 
 const Page = () => {
-
   const [theme, setTheme] = useState("dark");
+
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "dark";
     setTheme(savedTheme);

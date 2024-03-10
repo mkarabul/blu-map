@@ -1,7 +1,15 @@
+"use client";
+
 import { useUser } from "@auth0/nextjs-auth0/client";
 import React, { useState } from "react";
 
-export default function ProfileHeader({ postCount, userName, gender, age }) {
+export default function ProfileHeader({
+  postCount,
+  userName,
+  gender,
+  age,
+  isOwner,
+}) {
   const { user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [genderNew, setGenderNew] = useState("");
@@ -53,13 +61,14 @@ export default function ProfileHeader({ postCount, userName, gender, age }) {
           </div>
         </>
       )}
-      <div
-        id="edit"
-        className="absolute top-2 right-2 text-white text-base cursor-pointer"
-        onClick={openDialog}
-      >
-        Edit
-      </div>
+      {isOwner && (
+        <div
+          className="absolute top-2 right-2 text-white text-base cursor-pointer"
+          onClick={openDialog}
+        >
+          Edit
+        </div>
+      )}
       <dialog open={isOpen} id="share_modal" className="modal">
         <div className="modal-box">
           <form method="dialog" onSubmit={handleSubmit}>

@@ -14,6 +14,8 @@ router.get(
   getUserInfoMiddleware,
   UserController.getUserByUserId
 );
+router.get("/username/:userName", UserController.getUserByUsername);
+
 router.post("/", checkJwt, getUserInfoMiddleware, UserController.createUser);
 router.delete("/:userId", UserController.deleteUserByUserId);
 router.patch(
