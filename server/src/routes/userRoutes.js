@@ -32,5 +32,7 @@ router.put(
 
 router.patch("/:userId/toggle-admin", UserController.toggleUserAdminStatusById);
 router.patch("/:userId/toggle-darkmode", UserController.toggleUserDarkModeById);
+router.patch("/:userId/toggle-public", UserController.toggleUserPublicById);
+
 
 module.exports = router;

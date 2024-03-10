@@ -14,7 +14,6 @@ const router = express.Router();
 router.use("/users", userRoutes);
 router.use("/admin", adminRoutes);
 router.use("/profile-trip", adminProfileRoutes);
-router.use("/profile-trip-admin", adminprofile);
 
 router.use("/itineraries", itineraryRoutes);
 router.use("/social-post", socialPostRoutes);

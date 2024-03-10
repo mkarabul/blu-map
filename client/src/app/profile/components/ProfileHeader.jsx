@@ -40,7 +40,7 @@ export default function ProfileHeader({
     event.preventDefault();
     try {
       // replace this w the actual user ID of the profile
-      const userID = "auth0|65ed882d0f22676f48846452";
+      const userID = user?.sub;
       await fetch(`http://localhost:5000/api/admin/${userID}/increment-report`, {
         method: 'PATCH',
       });
@@ -56,7 +56,7 @@ export default function ProfileHeader({
       body: JSON.stringify({
         reporterUserId: user?.sub,
         // replace this w the actual user ID of the profile
-        reportedUserId: "auth0|65ed882d0f22676f48846452",
+        reportedUserId: user?.sub,
         header,
         description,
         reportType,
@@ -68,8 +68,11 @@ export default function ProfileHeader({
       setDescription("");
       setReportType("");
       setIsReportOpen(false);
+      alert("The report was successfully submitted");
     } else {
       console.error("Error submitting report");
+      alert("There was an error, try again later");
+
     }
   };
 

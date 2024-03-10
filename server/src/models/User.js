@@ -57,6 +57,11 @@ const User = sequelize.define("User", {
     allowNULL: false,
     defaultValue: false
   },
+  isPublic: {
+    type: DataTypes.BOOLEAN,
+    allowNULL: false,
+    defaultValue: true,
+  },
   reportNum: {
     type: DataTypes.INTEGER,
     allowNull: false,

@@ -135,6 +135,8 @@ const SearchPage = ({ themeClasses }) => {
           <p>Report Type: {currentReport.reportType}</p>
 
           <p>Reported on: {currentReport.createdAt}</p>
+          <p>Reported by ID: {currentReport.reporterUserId}</p>
+
           <div className="flex justify-between items-center">
             <button onClick={onClose} className="px-4 py-2 rounded bg-red-500 text-white mt-4">Close</button>
             {totalReports > 1 && (
@@ -148,7 +150,6 @@ const SearchPage = ({ themeClasses }) => {
       </div>
     );
   };
-
 
 
 
@@ -271,6 +272,7 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
         <p>Gender: {user.gender}</p>
         <p>Status: {user.isSuspended ? 'Suspended' : 'Active'}</p>
         <p>Admin: {user.isAdmin ? 'True' : 'False'}</p>
+        <p>Public Mode: {user.isPublic ? 'True' : 'False'}</p>
         <p>Number of Reports: {user.reportNum}</p>
 
      
@@ -312,7 +314,6 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
                 Force Delete
               </button>
             )}
-            {/* Toggle Admin Status Button, ensuring not to self-manage or to demote/promote other admins if not allowed */}
 
             {user.reportNum > 0 && (
               <button
