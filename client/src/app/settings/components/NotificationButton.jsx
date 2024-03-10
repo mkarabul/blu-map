@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useUser } from "@auth0/nextjs-auth0/client";
