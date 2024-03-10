@@ -18,6 +18,7 @@ const UserController = {
           "isSuspended",
           "isDarkMode",
           "isAdmin",
+          "reportNum",
         ],
       });
       res.status(200).json(users);
@@ -44,6 +45,7 @@ const UserController = {
           "isSuspended",
           "isDarkMode",
           "isAdmin",
+          "reportNum",
         ],
       });
       if (user) {

@@ -19,7 +19,8 @@ const UserController = {
               "gender",
               "isSuspended",
               "isDarkMode",
-              "isAdmin"
+              "isAdmin",
+              "reportNum",
             ],
           });
           res.status(200).json(users);
@@ -45,6 +46,7 @@ const UserController = {
           "isSuspended",
           "isDarkMode",
           "isAdmin",
+          "reportNum",
         ],
       });
       if (user) {
@@ -166,6 +168,63 @@ const UserController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+
+  async incrementUserReportCount(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findOne({ where: { userId } });
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      user.reportNum = user.reportNum + 1; 
+      await user.save();
+  
+      res.status(200).json({
+        message: "User's report count incremented successfully",
+        user: {
+          userId: user.userId,
+          reportNum: user.reportNum
+        }
+        
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" }); 
+    }
+  },
+
+  async decrementUserReportCount(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findOne({ where: { userId } });
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      if (user.reportNum <= 0) {
+        return res.status(400).json({ error: "User's report count cannot be decremented further" });
+      }
+  
+      user.reportNum = user.reportNum - 1; 
+      await user.save();
+  
+      res.status(200).json({
+        message: "User's report count incremented successfully",
+        user: {
+          userId: user.userId,
+          reportNum: user.reportNum
+        }
+        
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" }); 
+    }
+  }
+  
 };
 
 

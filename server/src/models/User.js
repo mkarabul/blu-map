@@ -56,7 +56,17 @@ const User = sequelize.define("User", {
     type: DataTypes.BOOLEAN,
     allowNULL: false,
     defaultValue: false
-  }
+  },
+  reportNum: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      isInt: true,
+      min: -1,
+    },
+
+    defaultValue: 0,
+  },
 });
 
 User.sync({ alter: true });
