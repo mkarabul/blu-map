@@ -9,6 +9,7 @@ const adminProfileRoutes= require("./profileTripAdminRoutes");
 const socialPostRoutes = require("./socialPostRoutes");
 const notificationRoutes = require("./notificationRoutes");
 const reportRoutes = require("./reportRoutes");
+
 const router = express.Router();
 
 router.use("/users", userRoutes);
@@ -20,5 +21,6 @@ router.use("/itineraries", itineraryRoutes);
 router.use("/social-post", socialPostRoutes);
 router.use("/notification", notificationRoutes);
 router.use("/reports", reportRoutes);
+
 
 module.exports = router;
