@@ -60,3 +60,50 @@ describe("del", () => {
     expect(result).toBe(1);
   });
 });
+
+describe("hSet", () => {
+  it("should set a value in a Redis hash", async () => {
+    // Arrange
+    const key = "testKey";
+    const field = "testField";
+    const value = "testValue";
+
+    // Act
+    const result = await cache.hSet(key, field, value);
+
+    // Assert
+    expect(result).toBeDefined();
+    // Add more assertions if needed
+  });
+});
+
+describe("hGet", () => {
+  it("should get a value from a Redis hash", async () => {
+    // Arrange
+    const key = "testKey";
+    const field = "testField";
+    const value = "testValue";
+
+    // Set the value in the Redis hash
+    await cache.hSet(key, field, value);
+
+    // Act
+    const result = await cache.hGet(key, field);
+
+    // Assert
+    expect(result).toBe(value);
+    // Add more assertions if needed
+  });
+
+  it("should return null if the value does not exist in the Redis hash", async () => {
+    // Arrange
+    const key = "nonExistentKey";
+    const field = "nonExistentField";
+
+    // Act
+    const result = await cache.hGet(key, field);
+
+    // Assert
+    expect(result).toBeNull();
+  });
+});
