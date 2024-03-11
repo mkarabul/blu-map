@@ -1,43 +1,21 @@
 import { useState, useEffect } from "react";
 
 export function reputationSystem(initialLikes, initialDislikes, uuid) {
-  const [likes, setLikes] = useState(initialLikes || 0);
-  const [dislikes, setDislikes] = useState(initialDislikes || 0);
+  const storedLikes = localStorage.getItem(`likes-${uuid}`);
+  const storedDislikes = localStorage.getItem(`dislikes-${uuid}`);
+
+  const [likes, setLikes] = useState(
+    storedLikes ? parseInt(storedLikes, 10) : initialLikes || 0
+  );
+  const [dislikes, setDislikes] = useState(
+    storedDislikes ? parseInt(storedDislikes, 10) : initialDislikes || 0
+  );
   const [userAction, setUserAction] = useState(null);
 
-  const saveLikes = async (likes) => {
-    const response = await fetch(`/post/${uuid}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ uuid, likes }),
-    });
-    if (!response.ok) {
-      throw new Error("Failed to save likes");
-    }
-  };
-
-  const saveDislikes = async (dislikes) => {
-    const response = await fetch(`/post/${uuid}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ uuid, dislikes }),
-    });
-    if (!response.ok) {
-      throw new Error("Failed to save dislikes");
-    }
-  };
-
   useEffect(() => {
-    saveLikes(likes);
-  }, [likes]);
-
-  useEffect(() => {
-    saveDislikes(dislikes);
-  }, [dislikes]);
+    localStorage.setItem(`likes-${uuid}`, likes.toString());
+    localStorage.setItem(`dislikes-${uuid}`, dislikes.toString());
+  }, [likes, dislikes]);
 
   const addLike = () => {
     if (userAction !== "liked") {
