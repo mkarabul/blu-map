@@ -74,7 +74,6 @@ export default function NotificationButton({ icon, header, context }) {
           <FontAwesomeIcon
             icon={icon}
             style={{ width: "50px", height: "50px" }}
-            className="text-white"
           />
           <div>
             <h2 className="text-xl font-medium mb-1">{header}</h2>
@@ -94,12 +93,10 @@ export default function NotificationButton({ icon, header, context }) {
               >
                 ✕
               </button>
-              <div className="text-white text-base text-lg">
-                Schedule Daily Notification:
-              </div>
+              <div className="text-base">Schedule Daily Notification:</div>
               <div className="flex flex-row mt-4">
                 <div className="flex flex-col mr-4">
-                  <label htmlFor="Hour" className="text-white text-base">
+                  <label htmlFor="Hour" className="text-base">
                     Notification Hour:
                   </label>
                   <input
@@ -116,7 +113,7 @@ export default function NotificationButton({ icon, header, context }) {
                 <div className="flex flex-col">
                   <label
                     htmlFor="scheduledNotificationMinute"
-                    className="text-white text-base"
+                    className="text-base"
                   >
                     Notification Minute:
                   </label>
@@ -137,7 +134,7 @@ export default function NotificationButton({ icon, header, context }) {
               </button>
               {otherNotifications.length > 0 && (
                 <div className="mt-4">
-                  <h3 className="text-white text-lg font-medium">
+                  <h3 className="text-lg font-medium">
                     Other Daily Notifications:
                   </h3>
                   <>

@@ -10,7 +10,6 @@ export default function Option({ icon, header, context, link, onClick }) {
             <FontAwesomeIcon
               icon={icon}
               style={{ width: "50px", height: "50px" }}
-              className="text-white"
             />
             <div>
               <h2 className="text-xl font-medium mb-1">{header}</h2>
@@ -29,7 +28,6 @@ export default function Option({ icon, header, context, link, onClick }) {
               <FontAwesomeIcon
                 icon={icon}
                 style={{ width: "50px", height: "50px" }}
-                className="text-white"
               />
               <div>
                 <h2 className="text-xl font-medium mb-1">{header}</h2>

@@ -60,11 +60,6 @@ describe("User Routes", () => {
     expect(response.statusCode).toBe(200);
   });
 
-  test("PATCH /users/:userId/toggle-darkmode", async () => {
-    const response = await request(app).patch("/testUserId/toggle-darkmode");
-    expect(response.statusCode).toBe(200);
-  });
-
   test("DELETE /users/:userId", async () => {
     const response = await request(app).delete("/testUserId");
     expect(response.statusCode).toBe(200);
@@ -124,11 +119,6 @@ describe("Fail cases User routes", () => {
 
   test("PATCH /users/:userId/toggle-admin", async () => {
     const response = await request(app).patch("/notTestUserId/toggle-admin");
-    expect(response.statusCode).toBe(404);
-  });
-
-  test("PATCH /users/:userId/toggle-darkmode", async () => {
-    const response = await request(app).patch("/notTestUserId/toggle-darkmode");
     expect(response.statusCode).toBe(404);
   });
 

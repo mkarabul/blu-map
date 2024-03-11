@@ -72,6 +72,22 @@ const UserController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async getUserThemeByUserId(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findOne({
+        where: { userId },
+        attributes: ["isDarkMode"],
+      });
+      if (user) {
+        res.status(200).json({ isDarkMode: user.isDarkMode });
+      } else {
+        res.status(404).json({ error: "User not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
   async createUser(req, res) {
     try {
       const { sub: userId, email } = req.user;
@@ -188,6 +204,24 @@ const UserController = {
       user.age = parseInt(ageNew) || user.age;
       await user.save();
       res.status(200).json({ message: "User updated successfully", user });
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  async updateUserThemeByUserId(req, res) {
+    try {
+      const { userId } = req.params;
+      if (req.user.sub !== userId) {
+        return res.status(403).json({ error: "User not authorized" });
+      }
+      const { newTheme } = req.body;
+      const user = await User.findOne({ where: { userId } });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      user.isDarkMode = newTheme === "dark" ? true : false;
+      await user.save();
+      res.status(200).json({ message: "User theme updated successfully" });
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }

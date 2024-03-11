@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import ShareButton from "./components/ShareButton";
+
 import ListPosts from "./components/ListPosts";
 import ProfileHeader from "./components/ProfileHeader";
 import useLoadPosts from "./components/ProfilePostsHook";

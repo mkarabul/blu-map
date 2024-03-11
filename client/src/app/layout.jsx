@@ -3,6 +3,7 @@ import { UserProvider } from "@auth0/nextjs-auth0/client";
 import "./globals.css";
 import Navbar from "./components/navbar";
 import AlertComponent from "./components/AlertComponent";
+import UserTheme from "./components/UserTheme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <UserProvider>
         <body className={inter.className}>
+          <UserTheme />
           <Navbar />
           <AlertComponent />
           <main>{children}</main>
