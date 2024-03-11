@@ -19,7 +19,6 @@ export default function AlertComponent() {
         if (delay < 0) {
           delay += 24 * 60 * 60 * 1000;
         }
-        console.log(delay);
         setTimeout(() => {
           alert(`The time is now: ${hour}:${minute}`);
         }, delay);

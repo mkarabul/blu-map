@@ -44,6 +44,7 @@ const UserController = {
           "isSuspended",
           "isDarkMode",
           "isAdmin",
+          "profileName",
         ],
       });
       if (user) {
@@ -60,7 +61,7 @@ const UserController = {
       const { userName } = req.params;
       const user = await User.findOne({
         where: { userName },
-        attributes: ["userName", "age", "gender"],
+        attributes: ["userName", "age", "gender", "profileName"],
       });
       if (user) {
         res.status(200).json(user);
@@ -194,7 +195,7 @@ const UserController = {
       if (req.user.sub !== userId) {
         return res.status(403).json({ error: "User not authorized" });
       }
-      const { userNameNew, genderNew, ageNew } = req.body;
+      const { userNameNew, genderNew, ageNew, profileNameNew } = req.body;
       const user = await User.findOne({ where: { userId } });
       if (!user) {
         return res.status(404).json({ error: "User not found" });
@@ -202,6 +203,7 @@ const UserController = {
       user.userName = userNameNew || user.userName;
       user.gender = genderNew || user.gender;
       user.age = parseInt(ageNew) || user.age;
+      user.profileName = profileNameNew || user.profileName;
       await user.save();
       res.status(200).json({ message: "User updated successfully", user });
     } catch (error) {

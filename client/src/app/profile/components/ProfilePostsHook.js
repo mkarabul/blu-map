@@ -34,6 +34,7 @@ const useLoadPosts = () => {
           gender: optionalData.gender,
           age: optionalData.age,
           userName: optionalData.userName,
+          profileName: optionalData.profileName,
         });
       } catch (error) {
         console.error("Error loading optional user data:", error);

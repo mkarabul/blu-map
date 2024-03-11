@@ -9,11 +9,13 @@ export default function ProfileHeader({
   gender,
   age,
   isOwner,
+  profileName,
 }) {
   const { user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [genderNew, setGenderNew] = useState("");
   const [ageNew, setAgeNew] = useState(0);
+  const [profileNameNew, setProfileNameNew] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,12 +23,13 @@ export default function ProfileHeader({
     const updateUserResponse = await fetch(`/api/users/${user?.sub}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ genderNew, ageNew }),
+      body: JSON.stringify({ genderNew, ageNew, profileNameNew }),
     });
 
     if (updateUserResponse.ok) {
       setGenderNew("");
       setAgeNew(0);
+      setProfileNameNew("");
       setIsOpen(false);
     } else {
       console.error("Error updating user fields");
@@ -48,7 +51,11 @@ export default function ProfileHeader({
           <img src="/default-pfp.png" />
         </div>
       </div>
-      <p className="text-white text-base mt-4">{userName}</p>
+      <p className="text-white text-base mt-4">
+        {profileName === "" || profileName === undefined
+          ? userName
+          : profileName}
+      </p>
       <div className="flex space-x-4 text-white text-base mt-4">
         <p>Followers: 0</p>
         <p>Posts: {postCount}</p>
@@ -78,6 +85,19 @@ export default function ProfileHeader({
             >
               ✕
             </button>
+            <div className="flex flex-col mt-4">
+              <label htmlFor="gender" className="text-white text-base">
+                Profile Name:
+              </label>
+              <input
+                type="text"
+                id="profileName"
+                className="w-full px-4 py-2 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                placeholder="Enter your profile name"
+                value={profileNameNew}
+                onChange={(e) => setProfileNameNew(e.target.value)}
+              />
+            </div>
             <div className="flex flex-col mt-4">
               <label htmlFor="gender" className="text-white text-base">
                 Gender:

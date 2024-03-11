@@ -12,6 +12,7 @@ export default function Page() {
       <ProfileHeader
         postCount={postCount}
         userName={userData.userName}
+        profileName={userData.profileName}
         gender={userData.gender}
         age={userData.age}
         isOwner={true}
