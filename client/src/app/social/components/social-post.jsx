@@ -1,5 +1,6 @@
+// social-post.jsx
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp,
@@ -11,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ShareButton from "../../profile/components/ShareButton";
 import Link from "next/link";
-import { reputationSystem } from "../components/rep_system";
+import { RepSystem } from "../components/rep_system";
 
 export default function SocialPost({
   uuid,
@@ -22,9 +23,10 @@ export default function SocialPost({
   likes: initialLikes,
   dislikes: initialDislikes,
 }) {
-  const { likes, dislikes, addLike, addDislike } = reputationSystem(
+  const { likes, dislikes, addLike, addDislike } = RepSystem(
     initialLikes,
-    initialDislikes
+    initialDislikes,
+    uuid
   );
 
   return (

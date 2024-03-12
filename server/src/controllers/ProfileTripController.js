@@ -117,6 +117,26 @@ const ProfileTripsController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async incrementLikes(req, res) {
+    try {
+      const { uuid } = req.params;
+      const profileTrip = await ProfileTrip.findOne({ where: { uuid } });
+      profileTrip.increment("likes");
+      res.status(200).json(profileTrip);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  async incrementDislikes(req, res) {
+    try {
+      const { uuid } = req.params;
+      const profileTrip = await ProfileTrip.findOne({ where: { uuid } });
+      profileTrip.increment("dislikes");
+      res.status(200).json(profileTrip);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 };
 
 module.exports = ProfileTripsController;

@@ -27,4 +27,10 @@ router.get("/:uuid", ProfileTripController.getTripById);
 
 router.get("", ProfileTripController.getSocialProfileTrips);
 
+router.patch("/:uuid/increment-likes", ProfileTripController.incrementLikes);
+router.patch(
+  "/:uuid/increment-dislikes",
+  ProfileTripController.incrementDislikes
+);
+
 module.exports = router;
