@@ -5,7 +5,8 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:verbose": "jest --verbose",
-    "test:single": "npm test -- --testNamePattern"
+    "test:single": "npm test -- --testNamePattern",
+    "test:file": "npm test --"
   },
   "dependencies": {
     "auth0": "^4.3.1",
