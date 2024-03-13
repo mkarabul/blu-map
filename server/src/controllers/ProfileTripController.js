@@ -3,16 +3,8 @@ const ProfileTrip = require("../models/ProfileTrip");
 const ProfileTripsController = {
   async createProfileTrip(req, res) {
     try {
-      const {
-        userId,
-        userName,
-        description,
-        header,
-        tripDate,
-        tripId,
-        likes,
-        dislikes,
-      } = req.body;
+      const { userId, userName, description, header, tripDate, tripId } =
+        req.body;
       const newProfileTrip = await ProfileTrip.create({
         userId,
         userName,
@@ -20,8 +12,6 @@ const ProfileTripsController = {
         header,
         tripDate,
         tripId,
-        likes,
-        dislikes,
       });
       res.status(201).json(newProfileTrip);
     } catch (error) {
