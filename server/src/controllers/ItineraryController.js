@@ -34,8 +34,6 @@ const ItineraryController = {
   async getUserItineraries(req, res) {
     try {
       const { userId } = req.params;
-      
-      console.log(req.user, userId);
 
       if (req.user.sub !== userId) {
         return res.status(403).json({ error: "User not authorized" });
@@ -68,7 +66,6 @@ const ItineraryController = {
     try {
       const { id } = req.params;
       const itinerary = await Itinerary.findOne({ where: { uuid: id } });
-      console.log(itinerary);
 
       // Check if the itinerary exists
       if (!itinerary) {
