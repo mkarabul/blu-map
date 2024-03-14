@@ -6,6 +6,7 @@ const ItineraryController = {
       const itineraries = await Itinerary.findAll();
       res.status(200).json(itineraries);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -25,6 +26,7 @@ const ItineraryController = {
 
       res.status(200).json(itinerary);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -32,6 +34,8 @@ const ItineraryController = {
   async getUserItineraries(req, res) {
     try {
       const { userId } = req.params;
+      
+      console.log(req.user, userId);
 
       if (req.user.sub !== userId) {
         return res.status(403).json({ error: "User not authorized" });
@@ -42,6 +46,7 @@ const ItineraryController = {
       });
       res.status(200).json(itineraries);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -54,6 +59,7 @@ const ItineraryController = {
       });
       res.status(201).json(itinerary);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -81,6 +87,7 @@ const ItineraryController = {
       const updatedItinerary = await Itinerary.findOne({ where: { uuid: id } });
       res.status(200).json(updatedItinerary);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -105,6 +112,7 @@ const ItineraryController = {
         res.status(204).send({ message: "Itinerary deleted" });
       }
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
