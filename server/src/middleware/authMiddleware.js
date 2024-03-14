@@ -18,10 +18,10 @@ const userInfoClient = new UserInfoClient({
 const getUserInfoMiddleware = async (req, res, next) => {
   const token = req.auth.token;
 
-  const cachedUser = await cache.hGetAll(token);
+  const cachedUser = await cache.get(token);
 
   if (cachedUser) {
-    req.user = JSON.stringify(cachedUser);
+    req.user = JSON.parse(cachedUser);
     next();
     return;
   }
@@ -29,7 +29,7 @@ const getUserInfoMiddleware = async (req, res, next) => {
   const userInfo = await userInfoClient.getUserInfo(token);
 
   req.user = userInfo.data;
-  cache.hSet(token, userInfo.data);
+  cache.set(token, JSON.stringify(userInfo.data));
   next();
 };
 
