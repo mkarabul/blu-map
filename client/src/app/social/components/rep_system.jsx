@@ -2,12 +2,8 @@ import { useState, useEffect } from "react";
 
 export const RepSystem = (initialLikes, initialDislikes, postId) => {
   // use local storage to prevent the user from refreshing and bloating the database
-  const [likes, setLikes] = useState(
-    parseInt(localStorage.getItem(`likes-${postId}`)) || initialLikes
-  );
-  const [dislikes, setDislikes] = useState(
-    parseInt(localStorage.getItem(`dislikes-${postId}`)) || initialDislikes
-  );
+  const [likes, setLikes] = useState(initialLikes);
+  const [dislikes, setDislikes] = useState(initialDislikes);
   const [hasLiked, setHasLiked] = useState(
     localStorage.getItem(`hasLiked-${postId}`) === "true"
   );
