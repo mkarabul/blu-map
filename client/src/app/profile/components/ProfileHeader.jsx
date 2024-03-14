@@ -1,6 +1,7 @@
-"use client";import { useUser } from "@auth0/nextjs-auth0/client";
+"use client";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import React, { useState } from "react";
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 export default function ProfileHeader({
   postCount,
   userName,
@@ -80,7 +81,6 @@ export default function ProfileHeader({
   const [isFollowing, setIsFollowing] = useState(false);
   const toggleFollow = () => setIsFollowing(!isFollowing);
 
-
   const followButton = isOwner && (
     <button
       className={`text-white text-base cursor-pointer px-4 py-2 rounded-lg shadow-md transition-all ease-in-out duration-300 ${
@@ -93,32 +93,43 @@ export default function ProfileHeader({
   );
 
   return (
-    <div id="background" className="profile-header bg-primary w-full text-center p-10 relative flex flex-col items-center justify-center">
-      <div className="avatar">
-        <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-          <img src="/default-pfp.png" alt="Profile avatar" />
+    <div id="background" className="profile-header bg-gradient-to-r from-blue-500 to-indigo-600 w-full text-center py-10 relative flex flex-col items-center justify-center rounded-lg shadow-lg">
+      <div className="avatar mb-4 group">
+        <div className="w-24 h-24 rounded-full overflow-hidden group-hover:ring-2 group-hover:ring-indigo-300">
+          <img src="/default-pfp.png" alt="Profile avatar" className="rounded-full transition duration-300 ease-in-out" />
         </div>
       </div>
-      <p className="text-white text-base mt-4">{userName}</p>
-      <div className="flex space-x-4 text-white text-base mt-4">
-        <p>Followers: 0</p>
-        <p>Posts: {postCount}</p>
+      <h1 className="text-white text-3xl font-semibold">{userName}</h1>
+      <div className="flex space-x-4 text-white mt-4">
+        <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
+          <i className="fas fa-users mr-2"></i>
+          <span>Followers: 0</span>
+        </div>
+        <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
+          <i className="fas fa-pencil-alt mr-2"></i>
+          <span>Posts: {postCount}</span>
+        </div>
       </div>
-      {age !== 0 && gender !== "" && (
-        <div className="flex space-x-4 text-white text-base mt-4">
-          <p id="gender">Gender: {gender}</p>
-          <p id="age">Age: {age}</p>
+      <div className="mt-4">
+        <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center mr-2">
+          <span>Gender: {gender}</span>
         </div>
-      )}
-      {followButton}
-      {isOwner && (
-        <div className="edit-button absolute top-2 right-2 text-white text-base cursor-pointer" onClick={openEditDialog}>
-          Edit
+        <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
+          <span>Age: {age}</span>
         </div>
+      </div>
+      {!isOwner && (
+        <button onClick={openReportDialog} className="btn-report-issue transition duration-150 ease-in-out mt-6">
+          <i className="fas fa-exclamation-triangle mr-2"></i>
+          Report Issue
+        </button>
       )}
       {isOwner && (
-        <div className="report-button absolute top-2 left-2 text-white text-base cursor-pointer" onClick={openReportDialog}>
-          Report
+        <div className="flex space-x-3 mt-6">
+          <button onClick={openEditDialog} className="btn-edit-profile transition duration-150 ease-in-out">
+            <i className="fas fa-edit mr-2"></i>
+            Edit Profile
+          </button>
         </div>
       )}
 
@@ -159,8 +170,6 @@ export default function ProfileHeader({
           </div>
           <button type="submit" className="btn btn-primary mt-4">Submit Report</button>
         </form>
-     
-
       </dialog>
     </div>
   );

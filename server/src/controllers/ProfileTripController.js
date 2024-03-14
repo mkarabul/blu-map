@@ -35,6 +35,7 @@ const ProfileTripsController = {
           "isPublic",
           "isSocial",
           "tripId",
+
         ],
       });
       res.status(200).json(profileTrips);
@@ -101,6 +102,7 @@ const ProfileTripsController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+
 };
 
 module.exports = ProfileTripsController;

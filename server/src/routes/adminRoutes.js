@@ -14,9 +14,9 @@ router.patch(
 );
 router.patch('/:userId/toggle-admin', UserController.toggleUserAdminStatusById);
 router.patch('/:userId/toggle-darkmode', UserController.toggleUserDarkModeById);
+
 router.patch('/:userId/increment-report', UserController.incrementUserReportCount);
-router.patch('/:userId/decrement-report', UserController.decrementUserReportCount
-);
+router.patch('/:userId/decrement-report', UserController.decrementUserReportCount);
 
 
 
