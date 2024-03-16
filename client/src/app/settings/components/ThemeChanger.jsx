@@ -4,20 +4,25 @@ import { useState, useEffect } from "react";
 import Option from "./Option";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { useTheme } from "next-themes";
 
 export default function ThemeChanger() {
   const { user } = useUser();
-  const [theme, setTheme] = useState("dark");
+  const [uiTheme, uiSetTheme] = useState(null);
+
+  const { theme, setTheme } = useTheme();
+
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    setTheme(savedTheme);
+    if (typeof window !== "undefined") {
+      uiSetTheme(theme);
+    }
   }, []);
 
   const toggleTheme = async () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    localStorage.setItem("theme", newTheme);
+    const newTheme = uiTheme === "dark" ? "light" : "dark";
+    uiSetTheme(newTheme);
     setTheme(newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
+
     await fetch(`/api/users/theme/${user?.sub}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -27,7 +32,7 @@ export default function ThemeChanger() {
 
   return (
     <Option
-      icon={theme === "dark" ? faMoon : faSun}
+      icon={faMoon}
       header="Dark Mode"
       context="Toggle between Light and Dark mode"
       link="settings"
