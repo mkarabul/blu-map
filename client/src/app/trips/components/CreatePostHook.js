@@ -47,8 +47,8 @@ const useCreatePost = () => {
     setState({ ...state, isLoading: true });
 
     try {
-      const response = await fetch(`api/image/${tripId}`, {
-        method: "POST",
+      const response = await fetch(`api/profile-trip/${tripId}/images`, {
+        method: "PATCH",
         body: imageData,
       });
       if (!response.ok) {

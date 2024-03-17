@@ -101,6 +101,25 @@ const ProfileTripsController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async updateTripImages(req, res) {
+    const { tripId } = req.params;
+    const images = req.files;
+    console.log("images", images);
+    try {
+      const profileTrip = await ProfileTrip.findOne({ where: { tripId } });
+      if (!profileTrip) {
+        return res.status(404).json({ error: "Trip not found" });
+      }
+      if (req.user.sub !== profileTrip.userId) {
+        return res.status(403).json({ error: "User not authorized" });
+      }
+      profileTrip.images = images;
+      await profileTrip.save();
+      res.status(200).json(profileTrip);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 };
 
 module.exports = ProfileTripsController;
