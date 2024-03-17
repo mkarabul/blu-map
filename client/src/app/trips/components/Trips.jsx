@@ -8,12 +8,33 @@ import useCreatePost from "./CreatePostHook";
 
 const Trips = () => {
   const { trips, isLoading, deleteTrip } = useLoadTrips();
-  const { userData, createUserPost } = useCreatePost();
+  const { userData, state, createUserPost, createUserImage } = useCreatePost();
 
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
   const [tripDate, setTripDate] = useState("");
+  const [images, setImages] = useState([]);
+  const [error, setError] = useState("");
   const [tripId, setTripId] = useState("");
+
+  const validFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+
+  const handleUpload = (e) => {
+    if (e.target.files.length > 5) {
+      setError("You can only select up to 5 images.");
+      e.target.value = "";
+    } else {
+      for (let i = 0; i < e.target.files.length; i++) {
+        if (!validFileTypes.includes(e.target.files[i].type)) {
+          setError("Invalid file type. Please select an image.");
+          e.target.value = "";
+          return;
+        }
+      }
+      setError("");
+      setImages(e.target.files);
+    }
+  };
 
   const openModal = (uuid) => {
     setTripId(uuid);
@@ -24,7 +45,7 @@ const Trips = () => {
     document.getElementById("my_modal_4").close();
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const body = {
       header: title,
@@ -34,8 +55,13 @@ const Trips = () => {
       userId: userData.userId,
       userName: userData.userName,
     };
+    const form = new FormData();
+    for (let i = 0; i < images.length; i++) {
+      form.append("image", images[i]);
+    }
     try {
-      createUserPost(body);
+      await createUserPost(body);
+      await createUserImage(form, tripId);
       closeModal();
     } catch (error) {
       console.error("Error creating post:", error);
@@ -45,6 +71,14 @@ const Trips = () => {
 
   return (
     <>
+      {state.isLoading && (
+        <div className="flex justify-center">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      )}
+      {state.error !== "" && (
+        <div className="text-red-500 text-center">{state.error}</div>
+      )}
       {isLoading && (
         <div className="flex justify-center">
           <span className="loading loading-spinner loading-lg"></span>
@@ -90,11 +124,22 @@ const Trips = () => {
               />
             </label>
             <label className="block mb-2">
-              Title:
+              Date:
               <input
                 type="text"
                 placeholder="YYYY-MM-DD"
                 onChange={(e) => setTripDate(e.target.value)}
+                className="w-full px-3 py-2 border rounded mt-1"
+              />
+            </label>
+            {error !== "" && <p className="text-red-500">{error}</p>}
+            <label className="block mb-2">
+              Images:
+              <input
+                type="file"
+                placeholder="Upload images"
+                onChange={handleUpload}
+                multiple
                 className="w-full px-3 py-2 border rounded mt-1"
               />
             </label>

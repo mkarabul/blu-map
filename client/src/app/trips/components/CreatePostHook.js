@@ -4,6 +4,10 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 const useCreatePost = () => {
   const { user } = useUser();
   const [userData, setUserData] = useState({});
+  const [state, setState] = useState({
+    isLoading: false,
+    error: "",
+  });
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -38,7 +42,27 @@ const useCreatePost = () => {
       console.error("Error creating post:", error);
     }
   };
-  return { userData, createUserPost };
+
+  const createUserImage = async (imageData, tripId) => {
+    setState({ ...state, isLoading: true });
+
+    try {
+      const response = await fetch(`api/image/${tripId}`, {
+        method: "POST",
+        body: imageData,
+      });
+      if (!response.ok) {
+        throw new Error("Error creating image");
+      }
+      const data = await response.json();
+      setState({ ...state, isLoading: false });
+      return data;
+    } catch (error) {
+      setState({ ...state, isLoading: false, error: error.message });
+    }
+  };
+
+  return { userData, state, createUserPost, createUserImage };
 };
 
 export default useCreatePost;
