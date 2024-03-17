@@ -21,7 +21,9 @@ const UserController = {
               "isDarkMode",
               "isAdmin",
               "reportNum",
-              "isPublic"
+              "isPublic",
+              "followers",
+              "following"
             ],
           });
           res.status(200).json(users);
@@ -48,7 +50,9 @@ const UserController = {
           "isDarkMode",
           "isAdmin",
           "reportNum",
-          "isPublic"
+          "isPublic",
+          "followers",
+          "following"
         ],
       });
       if (user) {

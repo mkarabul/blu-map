@@ -37,10 +37,10 @@ router.patch("/:userId/toggle-public", UserController.toggleUserPublicById);
 
 
 router.patch("/:userId/toggle-public", UserController.toggleUserPublicById);
-router.patch('/:userId/increment-following', UserController.incrementUserFollowingCount);
-router.patch('/:userId/decrement-following', UserController.decrementUserFollowingCount);
-router.patch('/:userId/increment-follower', UserController.incrementUserFollowerCount);
-router.patch('/:userId/decrement-follower', UserController.decrementUserFollowerCount);
+router.patch('/:userName/increment-following', UserController.incrementUserFollowingCount);
+router.patch('/:userName/decrement-following', UserController.decrementUserFollowingCount);
+router.patch('/:userName/increment-follower', UserController.incrementUserFollowerCount);
+router.patch('/:userName/decrement-follower', UserController.decrementUserFollowerCount);
 
 
 

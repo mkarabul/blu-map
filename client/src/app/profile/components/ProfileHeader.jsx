@@ -1,7 +1,9 @@
 "use client";
+
 import { useUser } from "@auth0/nextjs-auth0/client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+
 export default function ProfileHeader({
   postCount,
   userName,
@@ -12,14 +14,36 @@ export default function ProfileHeader({
   const { user } = useUser();
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
-  const [genderNew, setGenderNew] = useState("");
+  const [genderNew, setGenderNew] = useState('');
   const [ageNew, setAgeNew] = useState(0);
-  const [header, setHeader] = useState("");
-  const [description, setDescription] = useState("");
-  const [reportType, setReportType] = useState("");
+  const [header, setHeader] = useState('');
+  const [description, setDescription] = useState('');
+  const [reportType, setReportType] = useState('');
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
 
+  const fetchUserCounts = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/users/username/${userName}`, {
+        method: 'GET',
+      });
+      const data = await response.json();
+      setFollowersCount(data.followers);
+      setFollowingCount(data.following);
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchUserCounts();
+    }
+  }, [user, userName]);
   const handleSubmit = async (event) => {
     event.preventDefault();
+    alert(genderNew);
+    alert(ageNew);
 
     const updateUserResponse = await fetch(`/api/users/${user?.sub}`, {
       method: "PUT",
@@ -102,9 +126,16 @@ export default function ProfileHeader({
       <h1 className="text-white text-3xl font-semibold">{userName}</h1>
       <div className="flex space-x-4 text-white mt-4">
         <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
-          <i className="fas fa-users mr-2"></i>
-          <span>Followers: 0</span>
+          <i className="fas fa-user-friends mr-2"></i>
+          <span>Followers: {followersCount}</span>
         </div>
+        <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
+          <i className="fas fa-user-plus mr-2"></i>
+          <span>Following: {followingCount}</span>
+        </div>
+      </div>
+
+      <div className="flex space-x-4 text-white mt-4">
         <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
           <i className="fas fa-pencil-alt mr-2"></i>
           <span>Posts: {postCount}</span>

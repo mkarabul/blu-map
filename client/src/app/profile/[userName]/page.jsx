@@ -23,6 +23,9 @@ const getUserData = async (user, userName) => {
       gender: optionalData.gender,
       age: optionalData.age,
       userName: optionalData.userName,
+      followers: optionalData.followers,
+      following: optionalData.following,
+
     };
   } catch (error) {
     console.error("Error loading optional user data:", error);
@@ -66,6 +69,8 @@ export default async function Page({ params }) {
         gender={userData.gender}
         age={userData.age}
         isOwner={false}
+        follower={userData.followers}
+        following={userData.following}
       />
       <ListPosts posts={posts} isLoading={false} />
     </div>

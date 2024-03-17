@@ -68,7 +68,7 @@ const UserController = {
       const { userName } = req.params;
       const user = await User.findOne({
         where: { userName },
-        attributes: ["userName", "age", "gender"],
+        attributes: ["userName", "age", "gender", "followers", "following"],
       });
       if (user) {
         res.status(200).json(user);
@@ -229,8 +229,8 @@ const UserController = {
 
   async incrementUserFollowingCount(req, res) {
     try {
-      const { userId } = req.params;
-      const user = await User.findOne({ where: { userId } });
+      const { userName } = req.params;
+      const user = await User.findOne({ where: { userName } });
   
       if (!user) {
         return res.status(404).json({ error: "User not found" });
@@ -242,7 +242,7 @@ const UserController = {
       res.status(200).json({
         message: "User's following count incremented successfully",
         user: {
-          userId: user.userId,
+          userName: user.userName,
           following: user.following
         }
         
@@ -255,8 +255,8 @@ const UserController = {
 
   async decrementUserFollowingCount(req, res) {
     try {
-      const { userId } = req.params;
-      const user = await User.findOne({ where: { userId } });
+      const { userName } = req.params;
+      const user = await User.findOne({ where: { userName } });
   
       if (!user) {
         return res.status(404).json({ error: "User not found" });
@@ -272,7 +272,7 @@ const UserController = {
       res.status(200).json({
         message: "User's following count decremented successfully",
         user: {
-          userId: user.userId,
+          userName: user.userName,
           following: user.following
         }
         
@@ -288,8 +288,8 @@ const UserController = {
 
   async incrementUserFollowerCount(req, res) {
     try {
-      const { userId } = req.params;
-      const user = await User.findOne({ where: { userId } });
+      const { userName } = req.params;
+      const user = await User.findOne({ where: { userName } });
   
       if (!user) {
         return res.status(404).json({ error: "User not found" });
@@ -301,7 +301,7 @@ const UserController = {
       res.status(200).json({
         message: "User's follower count incremented successfully",
         user: {
-          userId: user.userId,
+          userName: user.userName,
           followers: user.followers
         }
         
@@ -314,24 +314,24 @@ const UserController = {
 
   async decrementUserFollowerCount(req, res) {
     try {
-      const { userId } = req.params;
-      const user = await User.findOne({ where: { userId } });
+      const { userName } = req.params;
+      const user = await User.findOne({ where: { userName } });
   
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
 
-      if (user.followers <= 0) {
-        return res.status(400).json({ error: "User's followers count cannot be decremented further" });
+      if (user.follower <= 0) {
+        return res.status(400).json({ error: "User's following count cannot be decremented further" });
       }
   
       user.followers = user.followers - 1; 
       await user.save();
   
       res.status(200).json({
-        message: "User's followers count decremented successfully",
+        message: "User's follower count decremented successfully",
         user: {
-          userId: user.userId,
+          userName: user.userName,
           followers: user.followers
         }
         
