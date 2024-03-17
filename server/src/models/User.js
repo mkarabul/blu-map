@@ -72,6 +72,26 @@ const User = sequelize.define("User", {
 
     defaultValue: 0,
   },
+  followers: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      isInt: true,
+      min: -1,
+    },
+
+    defaultValue: 0,
+  },
+  following: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      isInt: true,
+      min: -1,
+    },
+
+    defaultValue: 0,
+  },
 });
 
 User.sync({ alter: true });

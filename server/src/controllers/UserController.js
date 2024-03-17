@@ -19,7 +19,9 @@ const UserController = {
           "isDarkMode",
           "isAdmin",
           "reportNum",
-          "isPublic"
+          "isPublic",
+          "followers",
+          "following"
         ],
       });
       res.status(200).json(users);
@@ -47,7 +49,9 @@ const UserController = {
           "isDarkMode",
           "isAdmin",
           "reportNum",
-          "isPublic"
+          "isPublic",
+          "followers",
+          "following"
         ],
       });
       if (user) {
@@ -222,6 +226,123 @@ const UserController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+
+  async incrementUserFollowingCount(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findOne({ where: { userId } });
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      user.following = user.following + 1; 
+      await user.save();
+  
+      res.status(200).json({
+        message: "User's following count incremented successfully",
+        user: {
+          userId: user.userId,
+          following: user.following
+        }
+        
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" }); 
+    }
+  },
+
+  async decrementUserFollowingCount(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findOne({ where: { userId } });
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      if (user.following <= 0) {
+        return res.status(400).json({ error: "User's following count cannot be decremented further" });
+      }
+  
+      user.following = user.following - 1; 
+      await user.save();
+  
+      res.status(200).json({
+        message: "User's following count decremented successfully",
+        user: {
+          userId: user.userId,
+          following: user.following
+        }
+        
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" }); 
+    }
+  },
+
+
+
+
+  async incrementUserFollowerCount(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findOne({ where: { userId } });
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      user.followers = user.followers + 1; 
+      await user.save();
+  
+      res.status(200).json({
+        message: "User's follower count incremented successfully",
+        user: {
+          userId: user.userId,
+          followers: user.followers
+        }
+        
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" }); 
+    }
+  },
+
+  async decrementUserFollowerCount(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findOne({ where: { userId } });
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      if (user.followers <= 0) {
+        return res.status(400).json({ error: "User's followers count cannot be decremented further" });
+      }
+  
+      user.followers = user.followers - 1; 
+      await user.save();
+  
+      res.status(200).json({
+        message: "User's followers count decremented successfully",
+        user: {
+          userId: user.userId,
+          followers: user.followers
+        }
+        
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" }); 
+    }
+  },
+  
+
 };
 
 module.exports = UserController;

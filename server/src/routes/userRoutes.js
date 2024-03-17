@@ -35,4 +35,15 @@ router.patch("/:userId/toggle-darkmode", UserController.toggleUserDarkModeById);
 router.patch("/:userId/toggle-public", UserController.toggleUserPublicById);
 
 
+
+router.patch("/:userId/toggle-public", UserController.toggleUserPublicById);
+router.patch('/:userId/increment-following', UserController.incrementUserFollowingCount);
+router.patch('/:userId/decrement-following', UserController.decrementUserFollowingCount);
+router.patch('/:userId/increment-follower', UserController.incrementUserFollowerCount);
+router.patch('/:userId/decrement-follower', UserController.decrementUserFollowerCount);
+
+
+
+
+
 module.exports = router;
