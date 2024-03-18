@@ -7,6 +7,7 @@ const useCreatePost = () => {
   const [state, setState] = useState({
     isLoading: false,
     error: "",
+    confirmation: "",
   });
 
   useEffect(() => {
@@ -37,8 +38,10 @@ const useCreatePost = () => {
         throw new Error("Error creating post");
       }
       const data = await response.json();
+      setState({ ...state, confirmation: "Profile post created successfully" });
       return data;
     } catch (error) {
+      setState({ ...state, error: error.message });
       console.error("Error creating post:", error);
     }
   };
@@ -56,8 +59,10 @@ const useCreatePost = () => {
       }
       const data = await response.json();
       setState({ ...state, isLoading: false });
+      setState({ ...state, confirmation: "Profile post created successfully" });
       return data;
     } catch (error) {
+      setState({ ...state, confirmation: "" });
       setState({ ...state, isLoading: false, error: error.message });
     }
   };

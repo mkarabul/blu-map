@@ -55,16 +55,21 @@ const Trips = () => {
       userId: userData.userId,
       userName: userData.userName,
     };
-    const form = new FormData();
-    for (let i = 0; i < images.length; i++) {
-      form.append("image", images[i]);
-    }
     try {
       await createUserPost(body);
+      if (images.length === 0) {
+        closeModal();
+        return;
+      }
+      const form = new FormData();
+      for (let i = 0; i < images.length; i++) {
+        form.append("image", images[i]);
+      }
       await createUserImage(form, tripId);
       closeModal();
     } catch (error) {
       console.error("Error creating post:", error);
+      closeModal();
       // Handle the error here, e.g. show an error message to the user
     }
   };
@@ -75,6 +80,9 @@ const Trips = () => {
         <div className="flex justify-center">
           <span className="loading loading-spinner loading-lg"></span>
         </div>
+      )}
+      {state.confirmation !== "" && (
+        <div className="text-green-500 text-center">{state.confirmation}</div>
       )}
       {state.error !== "" && (
         <div className="text-red-500 text-center">{state.error}</div>

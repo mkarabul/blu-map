@@ -8,6 +8,7 @@
     "test:single": "npm test -- --testNamePattern"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.535.0",
     "auth0": "^4.3.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
