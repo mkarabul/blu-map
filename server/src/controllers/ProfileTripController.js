@@ -1,5 +1,6 @@
 const ProfileTrip = require("../models/ProfileTrip");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { v4: uuidv4 } = require("uuid");
 
 const BUCKET_NAME = process.env.BUCKET_NAME;
 const BUCKET_REGION = process.env.BUCKET_REGION;
@@ -121,9 +122,10 @@ const ProfileTripsController = {
     console.log("images", images);
     for (let i = 0; i < images.length; i++) {
       const { originalname, buffer, mimetype } = images[i];
+      const uniqueName = `${uuidv4()}-${originalname}`;
       const params = {
         Bucket: process.env.BUCKET_NAME,
-        Key: `${tripId}/${originalname}`,
+        Key: `${tripId}/${uniqueName}`,
         Body: buffer,
         ContentType: mimetype,
       };
