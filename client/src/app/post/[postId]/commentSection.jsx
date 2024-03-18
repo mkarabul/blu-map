@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const CommentSection = () => {
+const CommentSection = ({ userName }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
 
@@ -22,18 +22,34 @@ const CommentSection = () => {
             placeholder="Type your comment here..."
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            style={{ resize: "none" }}
+            style={{ height: "2.5rem", resize: "none" }}
           ></textarea>
-          <button type="submit" className="btn btn-primary mt-4 md:mt-0">
+          <button
+            type="submit"
+            className="btn mt-4 md:mt-0"
+            style={{
+              backgroundColor: "rgb(33,138,255)",
+              color: "white",
+            }}
+          >
             Submit
           </button>
         </div>
       </form>
-      <div className="w-full max-w-xl">
+      <div className="w-full max-w-xl" style={{ paddingBottom: "5rem" }}>
         {comments.map((comment, index) => (
-          <p key={index} className="text-left p-2">
+          <div
+            key={index}
+            className="text-left p-2 mb-2"
+            style={{
+              backgroundColor: "rgb(33,138,255)",
+              color: "white",
+              borderRadius: "15px",
+              padding: "10px",
+            }}
+          >
             {comment}
-          </p>
+          </div>
         ))}
       </div>
     </div>
