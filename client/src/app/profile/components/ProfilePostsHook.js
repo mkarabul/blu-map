@@ -18,16 +18,6 @@ const useLoadPosts = () => {
     const loadPosts = async () => {
       const userId = user?.sub;
       try {
-        const response = await fetch(`api/profile-trip/user/${userId}`);
-        const data = await response.json();
-        setPosts(data);
-      } catch (error) {
-        console.error("Error loading posts:", error);
-      } finally {
-        setIsLoadingPosts(false);
-      }
-
-      try {
         const optionalResponse = await fetch(`api/users/${userId}`);
         const optionalData = await optionalResponse.json();
         setUserData({
@@ -40,6 +30,32 @@ const useLoadPosts = () => {
         console.error("Error loading optional user data:", error);
       } finally {
         setIsLoadingUserInfo(false);
+      }
+
+      try {
+        const response = await fetch(`api/profile-trip/user/${userId}`);
+        const data = await response.json();
+        const imageFetchPromises = data.map((post) =>
+          fetch(`api/profile-trip/${post.tripId}/images`)
+        );
+
+        const imageResponses = await Promise.all(imageFetchPromises);
+        const imagesData = await Promise.all(
+          imageResponses.map((res) => res.json())
+        );
+
+        for (let i = 0; i < data.length; i++) {
+          if (imagesData[i].length > 0) {
+            data[i].images = imagesData[i];
+          } else {
+            data[i].images = ["https://via.placeholder.com/150"];
+          }
+        }
+        setPosts(data);
+      } catch (error) {
+        console.error("Error loading posts:", error);
+      } finally {
+        setIsLoadingPosts(false);
       }
     };
 

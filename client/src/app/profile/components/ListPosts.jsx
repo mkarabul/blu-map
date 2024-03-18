@@ -26,6 +26,7 @@ const ListPosts = ({ posts, isLoading }) => {
               })}
               userName={post.userName}
               tripId={post.tripId}
+              images={post.images}
             />
           ))}
         </>

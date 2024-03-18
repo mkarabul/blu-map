@@ -50,6 +50,7 @@ const ProfileTripsController = {
           "isPublic",
           "isSocial",
           "tripId",
+          "images",
         ],
       });
       res.status(200).json(profileTrips);
@@ -86,9 +87,9 @@ const ProfileTripsController = {
           "tripId",
         ],
       });
-      // if (req.user.sub !== userId) {
-      //   return res.status(403).json({ error: "User not authorized" });
-      // }
+      if (req.user.sub !== userId) {
+        return res.status(403).json({ error: "User not authorized" });
+      }
       if (!profileTrip.isPublic) {
         return res.status(403).json({ error: "Trip is not public" });
       }
@@ -160,6 +161,9 @@ const ProfileTripsController = {
         return res.status(404).json({ error: "Trip not found" });
       }
       const images = profileTrip.images;
+      if (images === null || images.length === 0) {
+        return res.status(200).send([]);
+      }
       const imageUrls = [];
       for (let i = 0; i < images.length; i++) {
         const command = new GetObjectCommand({
@@ -171,6 +175,7 @@ const ProfileTripsController = {
       }
       res.status(200).json(imageUrls);
     } catch (error) {
+      console.error("Error getting images: ", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },

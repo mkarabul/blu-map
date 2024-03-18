@@ -39,4 +39,6 @@ router.patch(
   ProfileTripController.updateTripImages
 );
 
+router.get("/:tripId/images", ProfileTripController.getTripImages);
+
 module.exports = router;

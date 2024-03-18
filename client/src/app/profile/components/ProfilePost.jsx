@@ -22,6 +22,7 @@ export default function ProfilePost({
   isPublic,
   isSocial,
   tripId,
+  images,
 }) {
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
@@ -44,7 +45,8 @@ export default function ProfilePost({
         </div>
         {/* Images Row */}
         <div className="flex justify-between space-x-4 mb-4">
-          <img
+          <img src={images[0]} alt="Image 1" className="rounded-lg" />
+          {/* <img
             src="https://via.placeholder.com/150"
             alt="Image 1"
             className="w-1/2 rounded-lg"
@@ -53,7 +55,7 @@ export default function ProfilePost({
             src="https://via.placeholder.com/150"
             alt="Image 2"
             className="w-1/2 rounded-lg"
-          />
+          /> */}
         </div>
         {/* Trip description */}
         <Link href={`/post/${uuid}`}>
