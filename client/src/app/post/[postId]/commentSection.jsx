@@ -48,7 +48,7 @@ const CommentSection = ({ userName }) => {
               padding: "10px",
             }}
           >
-            {comment}
+            {userName}: {comment}
           </div>
         ))}
       </div>
