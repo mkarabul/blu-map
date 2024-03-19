@@ -8,11 +8,11 @@ const Report = sequelize.define("Report", {
     defaultValue: () => uuidv4(),
     primaryKey: true,
   },
-  reporterUserId: {
+  reporterUserID: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  reportedUserId: {
+  reportedUserName: {
     type: DataTypes.STRING,
     allowNull: false,
   },

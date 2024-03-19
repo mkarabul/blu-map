@@ -3,10 +3,10 @@ const Report = require("../models/Report");
 const ReportController = {
   async createReport(req, res) {
     try {
-      const { reporterUserId, reportedUserId, header, description, reportType } = req.body;
+      const { reporterUserID, reportedUserName, header, description, reportType } = req.body;
       const newReport = await Report.create({
-        reporterUserId,
-        reportedUserId,
+        reporterUserID,
+        reportedUserName,
         header,
         description,
         reportType
@@ -67,11 +67,11 @@ const ReportController = {
     }
   },
 
-  async getAllReportsByReportedUserId(req, res) {
+  async getAllReportsByReportedUserName(req, res) {
     try {
-      const { reportedUserId } = req.params;
+      const { reportedUserName } = req.params;
       const reports = await Report.findAll({
-        where: { reportedUserId },
+        where: { reportedUserName },
       });
       if (reports) {
         res.status(200).json(reports);

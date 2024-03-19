@@ -13,8 +13,8 @@ const SearchPage = ({ themeClasses }) => {
 
 
   const [isReportModalOpen, setReportModalOpen] = useState(false);
-  const [reportsData, setReportsData] = useState([]); // Store multiple reports
-  const [currentReportIndex, setCurrentReportIndex] = useState(0); // Current viewed report index
+  const [reportsData, setReportsData] = useState([]);
+  const [currentReportIndex, setCurrentReportIndex] = useState(0);
 
 
 
@@ -92,7 +92,7 @@ const SearchPage = ({ themeClasses }) => {
     };
     const deleteReport = async () => {
       try {
-        await fetch(`http://localhost:5000/api/admin/${currentReport.reportedUserId}/decrement-report`, {
+        await fetch(`http://localhost:5000/api/admin/${currentReport.reportedUserName}/decrement-report`, {
           method: 'PATCH',
         });
     
@@ -134,7 +134,7 @@ const SearchPage = ({ themeClasses }) => {
           <p>Report Type: {currentReport.reportType}</p>
 
           <p>Reported on: {currentReport.createdAt}</p>
-          <p>Reported by ID: {currentReport.reporterUserId}</p>
+          <p>Reported by ID: {currentReport.reporterUserID}</p>
 
           <div className="flex justify-between items-center">
             <button onClick={onClose} className="px-4 py-2 rounded bg-red-500 text-white mt-4">Close</button>
@@ -317,7 +317,7 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
             {user.reportNum > 0 && (
               <button
                 id="viewReports"
-                onClick={() => viewReports(user.userId)}
+                onClick={() => viewReports(user.userName)}
                 className="px-4 py-2 rounded bg-blue-500 text-white"
               >
                 View Reports

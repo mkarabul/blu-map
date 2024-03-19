@@ -177,8 +177,8 @@ const UserController = {
 
   async incrementUserReportCount(req, res) {
     try {
-      const { userId } = req.params;
-      const user = await User.findOne({ where: { userId } });
+      const { userName } = req.params;
+      const user = await User.findOne({ where: { userName } });
   
       if (!user) {
         return res.status(404).json({ error: "User not found" });
@@ -190,7 +190,7 @@ const UserController = {
       res.status(200).json({
         message: "User's report count incremented successfully",
         user: {
-          userId: user.userId,
+          userName: user.userName,
           reportNum: user.reportNum
         }
         
@@ -203,8 +203,8 @@ const UserController = {
 
   async decrementUserReportCount(req, res) {
     try {
-      const { userId } = req.params;
-      const user = await User.findOne({ where: { userId } });
+      const { userName } = req.params;
+      const user = await User.findOne({ where: { userName } });
   
       if (!user) {
         return res.status(404).json({ error: "User not found" });
@@ -220,7 +220,7 @@ const UserController = {
       res.status(200).json({
         message: "User's report count incremented successfully",
         user: {
-          userId: user.userId,
+          userName: user.userName,
           reportNum: user.reportNum
         }
         

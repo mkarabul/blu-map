@@ -10,13 +10,12 @@ const HomePage = () => {
   const [activePage, setActivePage] = useState('charts');
   const [loading, setLoading] = useState(true);
   const [hasAccess, setAccess] = useState(false);
-  const { user } = useUser();
-  const userID = user?.sub;
-  
+  const { user, error } = useUser();
+
   useEffect(() => {    
     const fetchUsersData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/admin/${userID}`);
+        const response = await fetch(`http://localhost:5000/api/admin/${user?.sub}`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -35,11 +34,19 @@ const HomePage = () => {
       }
     };
 
-    if (userID) {
+    if (user) {
       fetchUsersData();
     }
-  }, [userID]);
+  }, [user]);
   
+  if (error) {
+    return (
+      <div className="p-5 min-h-screen flex justify-center items-center">
+        <h2 className="text-xl font-bold">You are not logged in.</h2>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="p-5 min-h-screen flex justify-center items-center">
