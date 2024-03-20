@@ -36,7 +36,6 @@ const useFormState = ({ itinerary }) => {
   const deleteActivity = (activity) => {
     const updatedActivities = activities.filter((a) => a.id !== activity.id);
     setActivities(updatedActivities);
-    console.log(activities.length);
   };
 
   return {

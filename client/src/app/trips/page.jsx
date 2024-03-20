@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Trips from "./components/Trips";
-import UseItineraryButton from "./components/NewItineraryButton";
+import NewItineraryButton from "./components/NewItineraryButton";
 
 const Page = () => {
   const [theme, setTheme] = useState("dark");
@@ -20,7 +20,7 @@ const Page = () => {
     <div className={`container mx-auto px-8 my-8`}>
       <h1 className="text-center text-4xl font-bold mb-4">Trips</h1>
       <Trips />
-      <UseItineraryButton />
+      <NewItineraryButton />
     </div>
   );
 };
