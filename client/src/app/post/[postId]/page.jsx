@@ -3,11 +3,9 @@ import { getSession } from "@auth0/nextjs-auth0";
 
 import SocialPost from "../../social/components/social-post";
 import CommentSection from "./commentSection";
+import { getPosts } from "../../profile/[userName]/page";
 
 const getPostAndUser = async (postId, session) => {
-  const user = session?.user || {};
-  const username = user.nickname;
-
   const response = await fetch(
     `${process.env.API_URL}/api/profile-trip/${postId}`,
     {
@@ -20,6 +18,21 @@ const getPostAndUser = async (postId, session) => {
   );
 
   const post = await response.json();
+
+  const uuid = post.userId;
+  const usernameResponse = await fetch(
+    `${process.env.API_URL}/api/users/${uuid}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+    }
+  );
+
+  const { username } = await usernameResponse.json();
+
   return { post, username };
 };
 

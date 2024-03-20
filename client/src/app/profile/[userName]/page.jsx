@@ -71,3 +71,5 @@ export default async function Page({ params }) {
     </div>
   );
 }
+
+export { getPosts };
