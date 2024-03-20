@@ -47,7 +47,7 @@ export default function ProfileHeader({
   } = useReportLogic(user, userName);
   const fetchUserCounts = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/users/username/${userName}`, {
+      const response = await fetch(`/api/users/${user?.sub}`, {
         method: 'GET',
       });
       const data = await response.json();
