@@ -4,8 +4,8 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import React, { useState, useEffect } from "react";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import FollowerPopup from "./FollowPopup";
-
-
+import { useReportLogic } from "./ReportHook";
+import { useFollow } from "./FollowHook";
 export default function ProfileHeader({
   postCount,
   userName,
@@ -13,14 +13,14 @@ export default function ProfileHeader({
   age,
   isOwner,
 }) {
+
+
   const { user } = useUser();
+
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isReportOpen, setIsReportOpen] = useState(false);
   const [genderNew, setGenderNew] = useState('');
   const [ageNew, setAgeNew] = useState(0);
-  const [header, setHeader] = useState('');
-  const [description, setDescription] = useState('');
-  const [reportType, setReportType] = useState('');
+
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
 
@@ -30,9 +30,21 @@ export default function ProfileHeader({
   const [followersList, setFollowersList] = useState([]);
   const [followingList, setFollowingList] = useState([]);
 
+  const { isFollowing, handleFollow } = useFollow(user, userName);
 
 
-
+  const {
+    isReportOpen,
+    header,
+    description,
+    reportType,
+    setHeader,
+    setDescription,
+    setReportType,
+    openReportDialog,
+    closeReportDialog,
+    handleReportSubmit,
+  } = useReportLogic(user, userName);
   const fetchUserCounts = async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/users/username/${userName}`, {
@@ -51,6 +63,8 @@ export default function ProfileHeader({
       fetchUserCounts();
     }
   }, [user, userName]);
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     alert(genderNew);
@@ -70,63 +84,17 @@ export default function ProfileHeader({
       console.error("Error updating user fields");
     }
   };
-
-  const handleReportSubmit = async (event) => {
-
-    event.preventDefault();
-    try {
-      const userID = user?.sub
-      await fetch(`http://localhost:5000/api/admin/${userName}/increment-report`, {
-        method: 'PATCH',
-      });
-    }
-    catch (error) {
-      console.error('Error resolving report:', error);
-      alert(`Error: ${error.message}`);
-    }
-
-    const reportResponse = await fetch(`/api/reports`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        reporterUserID: user?.sub,
-        reportedUserName: userName,
-        header,
-        description,
-        reportType,
-      }),
-    });
-
-    if (reportResponse.ok) {
-      setHeader("");
-      setDescription("");
-      setReportType("");
-      setIsReportOpen(false);
-      alert("The report was successfully submitted");
-    } else {
-      console.error("Error submitting report");
-      alert("There was an error, try again later");
-    }
-  };
-
   const openEditDialog = () => setIsEditOpen(true);
   const closeEditDialog = () => setIsEditOpen(false);
-  const openReportDialog = () => setIsReportOpen(true);
-  const closeReportDialog = () => setIsReportOpen(false);
 
-  const [isFollowing, setIsFollowing] = useState(false);
 
   const fetchAndShowFollowerPopup = async () => {
     const response = await fetch(`http://localhost:5000/api/follow/followers/${userName}`);
     const data = await response.json();
-  
     if (Array.isArray(data)) {
-      // Assuming you want to display the list of userNames of followers
       setFollowersList(data.map(follower => ({ userName: follower.userName })));
       setShowFollowerPopup(true);
-    } else {
-      alert("not array");
-    }
+    } 
   };
   
   const fetchAndShowFollowingPopup = async () => {
@@ -134,15 +102,10 @@ export default function ProfileHeader({
     const data = await response.json();
   
     if (Array.isArray(data)) {
-      // Assuming you want to display the list of followingUserNames
       setFollowingList(data.map(following => ({ userName: following.followingUserName })));
       setShowFollowingPopup(true);
-    } else {
-      alert("not array");
     }
   };
-  
-
   
   return (
     <div id="background" class="profile-header bg-gradient-to-r from-blue-500 to-indigo-600 w-full text-center py-10 relative flex flex-col items-center justify-center rounded-lg shadow-lg">
@@ -178,11 +141,17 @@ export default function ProfileHeader({
       </div>
     </div>
     {!isOwner && (
-      <button onClick={openReportDialog} class="btn-report-issue transition duration-150 ease-in-out mt-6">
-        <i class="fas fa-exclamation-triangle mr-2"></i>
-        Report Issue
-      </button>
-    )}
+      <div className="flex mt-6 space-x-3">
+        <button onClick={handleFollow} className="btn-follow transition duration-150 ease-in-out">
+          <i className="fas fa-user-plus mr-2"></i>
+          Follow
+        </button>
+          <button onClick={openReportDialog} className="btn-report-issue transition duration-150 ease-in-out">
+            <i className="fas fa-exclamation-triangle mr-2"></i>
+            Report Issue
+          </button>
+        </div>
+      )}
     {isOwner && (
       <div class="flex space-x-3 mt-6">
         <button onClick={openEditDialog} class="btn-edit-profile transition duration-150 ease-in-out">

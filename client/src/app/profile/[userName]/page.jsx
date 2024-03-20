@@ -2,6 +2,8 @@ import React from "react";
 import ListPosts from "../components/ListPosts";
 import ProfileHeader from "../components/ProfileHeader";
 
+
+
 import { getSession } from "@auth0/nextjs-auth0";
 
 const getUserData = async (user, userName) => {
@@ -71,6 +73,7 @@ export default async function Page({ params }) {
         isOwner={false}
         follower={userData.followers}
         following={userData.following}
+
       />
       <ListPosts posts={posts} isLoading={false} />
     </div>

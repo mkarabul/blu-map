@@ -18,6 +18,7 @@ const ReportController = {
     }
   },
 
+
   async getAllReports(req, res) {
     try {
       const reports = await Report.findAll();

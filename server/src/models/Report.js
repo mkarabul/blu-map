@@ -1,12 +1,16 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-const { v4: uuidv4 } = require('uuid');
 
 const Report = sequelize.define("Report", {
   reportId: {
-    type: DataTypes.UUID,
-    defaultValue: () => uuidv4(),
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false,
+    unique: true,
+    autoIncrement: true,
     primaryKey: true,
+    validate: {
+      isInt: true,
+    },
   },
   reporterUserID: {
     type: DataTypes.STRING,
@@ -28,8 +32,7 @@ const Report = sequelize.define("Report", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-}, {
-});
+}, {});
 
 Report.sync({ alter: true });
 
