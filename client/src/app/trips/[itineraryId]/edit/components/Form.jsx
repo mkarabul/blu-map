@@ -21,7 +21,6 @@ const Form = ({ itinerary }) => {
   async function onSubmit(event) {
     event.preventDefault();
 
-    console.log("submitting", itinerary.uuid, title, activities);
     const response = await fetch(`/api/itineraries/${itinerary.uuid}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
