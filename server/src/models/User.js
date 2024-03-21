@@ -50,13 +50,18 @@ const User = sequelize.define("User", {
   isDarkMode: {
     type: DataTypes.BOOLEAN,
     allowNULL: false,
-    defaultValue: true
+    defaultValue: true,
   },
   isAdmin: {
     type: DataTypes.BOOLEAN,
     allowNULL: false,
-    defaultValue: false
-  }
+    defaultValue: false,
+  },
+  isBlocked: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
 });
 
 User.sync({ alter: true });

@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@auth0/nextjs-auth0/client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function ProfileHeader({
   postCount,
@@ -14,6 +14,21 @@ export default function ProfileHeader({
   const [isOpen, setIsOpen] = useState(false);
   const [genderNew, setGenderNew] = useState("");
   const [ageNew, setAgeNew] = useState(0);
+  const [isBlocked, setIsBlocked] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const response = await fetch(`/api/users/${user?.sub}`);
+      if (response.ok) {
+        const data = await response.json();
+        setIsBlocked(data.isBlocked);
+      }
+    };
+
+    if (user) {
+      fetchUserData();
+    }
+  }, [user]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -40,6 +55,8 @@ export default function ProfileHeader({
   const closeDialog = () => {
     setIsOpen(false);
   };
+
+  const toggleBlockStatus = () => setIsBlocked(!isBlocked);
 
   return (
     <div className="profile-header bg-primary w-full text-center p-10 relative flex flex-col items-center justify-center">
@@ -69,6 +86,9 @@ export default function ProfileHeader({
           Edit
         </div>
       )}
+      <button className="btn btn-error btn-sm mt-5" onClick={toggleBlockStatus}>
+        {isBlocked ? "Unblock User" : "Block User"}
+      </button>
       <dialog open={isOpen} id="share_modal" className="modal">
         <div className="modal-box">
           <form method="dialog" onSubmit={handleSubmit}>
