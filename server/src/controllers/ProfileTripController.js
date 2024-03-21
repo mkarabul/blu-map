@@ -1,4 +1,6 @@
 const ProfileTrip = require("../models/ProfileTrip");
+const Like = require("../models/Like");
+const Dislike = require("../models/Dislike");
 
 const ProfileTripsController = {
   async createProfileTrip(req, res) {
@@ -39,6 +41,35 @@ const ProfileTripsController = {
           "dislikes",
         ],
       });
+      // likeDislike = null;
+      // for (let i = 0; i < profileTrips.length; i++) {
+      // check if Likes contain a row with uuid and req.user.sub
+      // check if Dislikes contain a row with uuid and req.user.sub
+      // }
+
+      // for (let i = 0; i < profileTrips.length; i++) {
+      //   const uuid = profileTrips[i].uuid;
+      //   const userId = req.user.sub;
+
+      //   let likeDislike = null;
+
+      //   const like = await Like.findOne({
+      //     where: { postId: uuid, userId: userId },
+      //   });
+
+      //   const dislike = await Dislike.findOne({
+      //     where: { postId: uuid, userId: userId },
+      //   });
+
+      //   if (like) {
+      //     likeDislike = "like";
+      //   }
+
+      //   if (dislike) {
+      //     likeDislike = "dislike";
+      //   }
+      // }
+
       res.status(200).json(profileTrips);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
