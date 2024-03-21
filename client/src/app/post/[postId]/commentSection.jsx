@@ -1,13 +1,30 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const CommentSection = ({ userName }) => {
+const CommentSection = ({ userName, postId }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    fetchComments();
+  }, [postId]);
+
+  const fetchComments = async () => {
+    const response = await fetch(`/api/profile-trip/${postId}/comments`);
+    const data = await response.json();
+    setComments(data);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!comment.trim()) return;
+    await fetch(`/api/profile-trip/${postId}/comments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ postId, text: comment }),
+    });
     setComments([...comments, comment]);
     setComment("");
   };

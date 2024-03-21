@@ -18,5 +18,4 @@ router.use("/social-post", socialPostRoutes);
 router.use("/notification", notificationRoutes);
 router.use("/likes", likeRoutes);
 router.use("/dislikes", dislikeRoutes);
-
 module.exports = router;
