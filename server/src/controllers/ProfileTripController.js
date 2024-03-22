@@ -170,7 +170,9 @@ const ProfileTripsController = {
         tripId,
       });
       res.status(201).json(newComment);
-    } catch (error) {}
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   },
 };
 

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 const CommentSection = ({ userName, postId }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [userData, setUserData] = useState({});
 
   // useEffect(() => {
   //   fetchComments();
@@ -17,13 +18,15 @@ const CommentSection = ({ userName, postId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const userId = userData.userId;
+    //const tripId = tripId;
     if (!comment.trim()) return;
     await fetch(`/api/profile-trip/${postId}/comments`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ postId, text: comment }),
+      body: JSON.stringify({ userId, comment, tripId: postId }),
     });
     setComments([...comments, comment]);
     setComment("");
