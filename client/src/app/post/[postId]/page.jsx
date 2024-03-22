@@ -61,7 +61,7 @@ const Post = async ({ params }) => {
           dislikes={post.dislikes}
         />
       </div>
-      <CommentSection userName={username} />
+      <CommentSection userName={username} postId={postId} />
     </div>
   );
 };

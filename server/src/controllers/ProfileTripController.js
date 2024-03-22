@@ -1,6 +1,7 @@
 const ProfileTrip = require("../models/ProfileTrip");
 const Like = require("../models/Like");
 const Dislike = require("../models/Dislike");
+const Comment = require("../models/Comment");
 
 const ProfileTripsController = {
   async createProfileTrip(req, res) {
@@ -104,6 +105,7 @@ const ProfileTripsController = {
           "tripId",
           "likes",
           "dislikes",
+          "comments",
         ],
       });
       // if (req.user.sub !== userId) {
@@ -157,6 +159,18 @@ const ProfileTripsController = {
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
+  },
+  async createComment(req, res) {
+    try {
+      const { userId, userName, comment, tripId } = req.body;
+      const newComment = await Comment.create({
+        userId,
+        userName,
+        comment,
+        tripId,
+      });
+      res.status(201).json(newComment);
+    } catch (error) {}
   },
 };
 

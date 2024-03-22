@@ -64,6 +64,10 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
     allowNull: false,
     defaultValue: 0,
   },
+  comments: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: true,
+  },
 });
 
 ProfileTrip.sync({ alter: true });

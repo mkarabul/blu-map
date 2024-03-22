@@ -33,4 +33,8 @@ router.patch(
   ProfileTripController.incrementDislikes
 );
 
+router.patch("/:uuid/comments", ProfileTripController.addComment);
+
+//router.get("/:uuid/comments", ProfileTripController.getComments);
+
 module.exports = router;

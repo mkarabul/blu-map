@@ -5,21 +5,21 @@ const CommentSection = ({ userName, postId }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
 
-  useEffect(() => {
-    fetchComments();
-  }, [postId]);
+  // useEffect(() => {
+  //   fetchComments();
+  // }, [postId]);
 
-  const fetchComments = async () => {
-    const response = await fetch(`/api/profile-trip/${postId}/comments`);
-    const data = await response.json();
-    setComments(data);
-  };
+  // const fetchComments = async () => {
+  //   const response = await fetch(`/api/profile-trip/${postId}/comments`);
+  //   const data = await response.json();
+  //   setComments(data);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!comment.trim()) return;
     await fetch(`/api/profile-trip/${postId}/comments`, {
-      method: "POST",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
@@ -27,6 +27,7 @@ const CommentSection = ({ userName, postId }) => {
     });
     setComments([...comments, comment]);
     setComment("");
+    console.log("Comment submitted");
   };
 
   return (
