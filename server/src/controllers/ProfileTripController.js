@@ -5,7 +5,7 @@ const {
   GetObjectCommand,
 } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-const { v4: uuidv4 } = require("uuid"); 
+const { v4: uuidv4 } = require("uuid");
 
 const s3Client = new S3Client({
   region: process.env.BUCKET_REGION,
@@ -87,14 +87,12 @@ const ProfileTripsController = {
           "tripId",
         ],
       });
-      if (req.user.sub !== userId) {
-        return res.status(403).json({ error: "User not authorized" });
-      }
       if (!profileTrip.isPublic) {
         return res.status(403).json({ error: "Trip is not public" });
       }
       res.status(200).json(profileTrip);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },

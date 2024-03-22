@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SocialPost from "./social-post";
+import SocialPost from "./SocialPost";
 
 export default function ListPosts() {
   const [posts, setPosts] = useState([]);
@@ -29,6 +29,7 @@ export default function ListPosts() {
           })}
           userName={post.userName}
           tripId={post.tripId}
+          clickable={true}
         />
       ))}
     </>

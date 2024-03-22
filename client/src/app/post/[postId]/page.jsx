@@ -1,7 +1,7 @@
 import React from "react";
 import { getSession } from "@auth0/nextjs-auth0";
 
-import SocialPost from "../../social/components/social-post";
+import SocialPost from "../../social/components/SocialPost";
 
 const getPost = async (postId) => {
   const user = await getSession();
@@ -32,6 +32,8 @@ const Post = async ({ params }) => {
   return (
     <div className="container mx-auto">
       <SocialPost
+        key={post.id}
+        uuid={post.uuid}
         header={post.header}
         description={post.description}
         tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
@@ -40,6 +42,8 @@ const Post = async ({ params }) => {
           day: "numeric",
         })}
         userName={post.userName}
+        tripId={post.tripId}
+        clickable={false}
       />
     </div>
   );
