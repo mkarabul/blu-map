@@ -3,14 +3,6 @@ const sequelize = require("../config/database");
 const { use } = require("../routes/profileTripRoutes");
 
 const Comment = sequelize.define("Comment", {
-  postId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: "ProfileTrip",
-      key: "id",
-    },
-  },
   userId: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -19,8 +11,12 @@ const Comment = sequelize.define("Comment", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  text: {
+  comment: {
     type: DataTypes.STRING,
+    allowNull: false,
+  },
+  tripId: {
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
 });
