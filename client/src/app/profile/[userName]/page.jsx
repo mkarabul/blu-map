@@ -64,6 +64,26 @@ const getPosts = async (user, userName, attemptsLeft = 2) => {
   }
 };
 
+// const getPosts = async (user, userName) => {
+//   const accessToken = user?.accessToken;
+//   try {
+//     const response = await fetch(
+//       `${process.env.API_URL}/api/profile-trip/public/${userName}`,
+//       {
+//         method: "GET",
+//         headers: {
+//           Authorization: `Bearer ${accessToken}`,
+//         },
+//       }
+//     );
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error("Error loading posts:", error);
+//     return [];
+//   }
+// }; 
+
 
 export default async function Page({ params }) {
   const { userName } = params;
@@ -82,7 +102,7 @@ export default async function Page({ params }) {
         age={userData.age}
         isOwner={false}
       />
-      <ListPosts posts={posts} isLoading={false} />
+      <ListPosts posts={posts} isLoading={false} isOwner={false} userName={userData.userName}/>
     </div>
   );
 }
