@@ -56,7 +56,12 @@ const User = sequelize.define("User", {
     type: DataTypes.BOOLEAN,
     allowNULL: false,
     defaultValue: false
-  }
+  },
+  isPublic: {
+    type: DataTypes.BOOLEAN,
+    allowNULL: false,
+    defaultValue: true,
+  },
 });
 
 User.sync({ alter: true });

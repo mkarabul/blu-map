@@ -46,6 +46,8 @@ const FollowSystemController = {
 
   async unfollowUser(req, res) {
     const { userName, followingUserName } = req.body;
+    console.log(userName);
+    console.log(followingUserName);
     try {
       const result = await followSystem.destroy({
         where: { userName, followingUserName }
@@ -53,10 +55,10 @@ const FollowSystemController = {
       if (result === 1) {
         res.status(200).json({ message: "User unfollowed successfully" });
       } else {
-        res.status(404).json({ error: "Follow relationship not found" });
+        res.status(404).json({ error: `${userName} ${followingUserName}` });
       }
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: `${userName} ${followingUserName}` });
     }
   }
   

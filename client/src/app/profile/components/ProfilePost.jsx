@@ -1,3 +1,4 @@
+"use client"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ShareButton from "../../profile/components/ShareButton";
 import Link from "next/link";

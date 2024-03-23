@@ -18,6 +18,7 @@ const UserController = {
           "isSuspended",
           "isDarkMode",
           "isAdmin",
+          "isPublic"
         ],
       });
       res.status(200).json(users);
@@ -44,6 +45,8 @@ const UserController = {
           "isSuspended",
           "isDarkMode",
           "isAdmin",
+          "isPublic"
+
         ],
       });
       if (user) {
@@ -192,6 +195,29 @@ const UserController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+
+  async toggleUserPublicById(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findOne({ where: { userId } });
+
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      user.isPublic = !user.isPublic;
+      await user.save();
+
+      res.status(200).json({
+        message: `User mode changed to ${
+          user.isPublic ? "public" : "private"
+        } successfully`,
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+
 };
 
 module.exports = UserController;
