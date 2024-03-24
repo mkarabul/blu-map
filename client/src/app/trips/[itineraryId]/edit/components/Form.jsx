@@ -5,6 +5,7 @@ import React from "react";
 import CalendarEditView from "./CalendarEditView";
 import useFormState from "./useFormState";
 import { useRouter } from "next/navigation";
+import AddActivityButton from "./AddActivityButton";
 
 const Form = ({ itinerary }) => {
   const {
@@ -63,24 +64,23 @@ const Form = ({ itinerary }) => {
         </div>
         <div className="">
           <div className="mb-4">
-            <button
-              type="button"
-              className="btn btn-primary m-8"
-              onClick={() =>
-                addActivity({
-                  name: "New Activity",
-                  start:
-                    activities.length > 0 ? activities[0].start : new Date(),
-                  end:
-                    activities.length > 0
-                      ? activities[0].end
-                      : new Date(Date.now() + 3600000),
-                  id: crypto.randomUUID(),
-                })
+            <AddActivityButton
+              addActivity={addActivity}
+              defaultStart={
+                activities.length > 0
+                  ? activities[activities.length - 1].end
+                  : new Date()
               }
-            >
-              Add Activity
-            </button>
+              defaultEnd={
+                activities.length > 0
+                  ? new Date(
+                      activities[
+                        activities.length - 1
+                      ].end.getTime() + 3600000
+                    )
+                  : new Date(Date.now() + 3600000)
+              }
+            />
           </div>
         </div>
       </div>
