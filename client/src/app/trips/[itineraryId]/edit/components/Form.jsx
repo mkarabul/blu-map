@@ -6,6 +6,7 @@ import CalendarEditView from "./CalendarEditView";
 import useFormState from "./useFormState";
 import { useRouter } from "next/navigation";
 import AddActivityButton from "./AddActivityButton";
+import ActivityRecommendation from "./ActivityRecommendation";
 
 const Form = ({ itinerary }) => {
   const {
@@ -64,6 +65,21 @@ const Form = ({ itinerary }) => {
         </div>
         <div className="">
           <div className="mb-4">
+            <ActivityRecommendation
+              addActivity={addActivity}
+              defaultStart={
+                activities.length > 0
+                  ? activities[activities.length - 1].end
+                  : new Date()
+              }
+              defaultEnd={
+                activities.length > 0
+                  ? new Date(
+                      activities[activities.length - 1].end.getTime() + 3600000
+                    )
+                  : new Date(Date.now() + 3600000)
+              }
+            />
             <AddActivityButton
               addActivity={addActivity}
               defaultStart={
@@ -74,9 +90,7 @@ const Form = ({ itinerary }) => {
               defaultEnd={
                 activities.length > 0
                   ? new Date(
-                      activities[
-                        activities.length - 1
-                      ].end.getTime() + 3600000
+                      activities[activities.length - 1].end.getTime() + 3600000
                     )
                   : new Date(Date.now() + 3600000)
               }
