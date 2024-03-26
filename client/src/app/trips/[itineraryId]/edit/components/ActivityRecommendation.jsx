@@ -1,17 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import useReccState from "./useReccState";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const serverRecommendations = ["Hiking"];
-
 const ActivityRecommendation = ({ addActivity, defaultStart, defaultEnd }) => {
-  const { defaultReccs, serverReccs, deleteServerRecc } = useReccState(
-    serverRecommendations
-  );
+  const { defaultReccs, serverReccs, deleteServerRecc } = useReccState();
 
   const addRecc = (recc) => {
     addActivity({
@@ -19,16 +15,6 @@ const ActivityRecommendation = ({ addActivity, defaultStart, defaultEnd }) => {
       start: defaultStart,
       end: defaultEnd,
       id: crypto.randomUUID(),
-    });
-  };
-
-  const deleteRecc = async (recc) => {
-    deleteServerRecc(recc);
-
-    const user = useUser();
-
-    await fetch(`/api/reccs/${recc}/${user?.user.sub}`, {
-      method: "DELETE",
     });
   };
 
@@ -58,7 +44,7 @@ const ActivityRecommendation = ({ addActivity, defaultStart, defaultEnd }) => {
               <button
                 type="button"
                 className="btn btn-primary btn-sm join-item"
-                onClick={(e) => deleteRecc(recc)}
+                onClick={(e) => deleteServerRecc(recc)}
               >
                 <FontAwesomeIcon icon={faXmark} size="lg" />
               </button>

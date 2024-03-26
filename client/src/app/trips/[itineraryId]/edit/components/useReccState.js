@@ -1,20 +1,37 @@
 import { useEffect, useState } from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
-const useReccState = (serverReccs) => {
+const useReccState = () => {
   const defaultReccs = ["Food", "Travel"];
-  const [sReccs, setSReccs] = useState(serverReccs);
+  const { user, error, isLoading } = useUser();
+  const [serverReccs, setServerReccs] = useState([]);
 
   useEffect(() => {
-    setSReccs(serverReccs);
-  }, [serverReccs]);
+    const fillServerRecs = async () => {
+      if (!user) return;
 
-  const deleteServerRecc = async (recc) => {
-    setSReccs(sReccs.filter((r) => r !== recc));
+      const response = await fetch(`/api/recommendations/user/${user?.sub}`);
+      const recs = await response.json();
+
+      setServerReccs(recs.map((rec) => rec.activity));
+    };
+
+    fillServerRecs();
+  }, [user]);
+
+  const deleteServerRecc = async (rec) => {
+    setServerReccs(serverReccs.filter((r) => r !== rec));
+
+    if (!user) return;
+
+    fetch(`/api/recommendations/${user?.sub}/${rec}`, {
+      method: "DELETE",
+    });
   };
 
   return {
     defaultReccs,
-    serverReccs: sReccs,
+    serverReccs,
     deleteServerRecc,
   };
 };
