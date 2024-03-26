@@ -22,17 +22,17 @@ const followRequestController = {
     }
   },
 
-//   async getFollowRequests(req, res) {
-//     const userName = req.params.userName;
-//     try {
-//       const following = await followRequest.findAll({
-//         where: { userName: userName }
-//       });
-//       res.status(200).json(following);
-//     } catch (error) {
-//       res.status(500).json({ error: "Internal Server Error" });
-//     }
-//   },
+  async getFollowRequests(req, res) {
+    const userName = req.params.userName;
+    try {
+      const following = await followRequest.findAll({
+        where: { userName: userName }
+      });
+      res.status(200).json(following);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 
   async createFollowRequest(req, res) {
     const { userName, followingUserName } = req.body;

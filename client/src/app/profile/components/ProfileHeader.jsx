@@ -138,7 +138,7 @@ export default function ProfileHeader({
     if (updateUserResponse.ok) {
       setGenderNew("");
       setAgeNew(0);
-      setIsOpen(false);
+      setIsEditOpen(false);
     } else {
       console.error("Error updating user fields");
     }

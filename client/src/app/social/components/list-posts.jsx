@@ -46,6 +46,6 @@ export default function ListPosts() {
       ))}
     </div>
   ) : (
-    <div>No posts to display</div>
+    <div></div>
   );
 }
