@@ -1,17 +1,15 @@
-import { useState } from "react";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useEffect, useState } from "react";
 
 const useReccState = (serverReccs) => {
   const defaultReccs = ["Food", "Travel"];
   const [sReccs, setSReccs] = useState(serverReccs);
 
+  useEffect(() => {
+    setSReccs(serverReccs);
+  }, [serverReccs]);
+
   const deleteServerRecc = async (recc) => {
     setSReccs(sReccs.filter((r) => r !== recc));
-
-    const userId = await useUser().user.sub;
-    await fetch(`/api/reccs/${recc}/${userId}`, {
-      method: "DELETE",
-    });
   };
 
   return {
