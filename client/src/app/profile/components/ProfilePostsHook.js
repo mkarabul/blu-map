@@ -34,23 +34,7 @@ const useLoadPosts = () => {
 
       try {
         const response = await fetch(`api/profile-trip/user/${userId}`);
-        const data = await response.json();
-        const imageFetchPromises = data.map((post) =>
-          fetch(`api/profile-trip/${post.tripId}/images`)
-        );
-
-        const imageResponses = await Promise.all(imageFetchPromises);
-        const imagesData = await Promise.all(
-          imageResponses.map((res) => res.json())
-        );
-
-        for (let i = 0; i < data.length; i++) {
-          if (imagesData[i].length > 0) {
-            data[i].images = imagesData[i];
-          } else {
-            data[i].images = ["https://via.placeholder.com/150"];
-          }
-        }
+        let data = await response.json();
         setPosts(data);
       } catch (error) {
         console.error("Error loading posts:", error);

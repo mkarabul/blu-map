@@ -1,6 +1,10 @@
+"use client";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ShareButton from "../../profile/components/ShareButton";
 import Link from "next/link";
+import { useState } from "react";
+
 import {
   faThumbsUp,
   faThumbsDown,
@@ -24,6 +28,19 @@ export default function ProfilePost({
   tripId,
   images,
 }) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const handleNextImage = () => {
+    if (currentImageIndex < images.length - 1) {
+      setCurrentImageIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+
+  const handlePrevImage = () => {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex((prevIndex) => prevIndex - 1);
+    }
+  };
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
       <div className="card-body p-5">
@@ -44,18 +61,26 @@ export default function ProfilePost({
           />
         </div>
         {/* Images Row */}
-        <div className="flex justify-between space-x-4 mb-4">
-          <img src={images[0]} alt="Image 1" className="rounded-lg" />
-          {/* <img
-            src="https://via.placeholder.com/150"
-            alt="Image 1"
-            className="w-1/2 rounded-lg"
-          />
+        <div className="flex flex-col items-center space-y-4 mb-4">
           <img
-            src="https://via.placeholder.com/150"
-            alt="Image 2"
-            className="w-1/2 rounded-lg"
-          /> */}
+            src={images[currentImageIndex]}
+            alt={`Image ${currentImageIndex + 1}`}
+            className="rounded-lg"
+          />
+          <div className="flex justify-center space-x-4 w-full">
+            <button
+              onClick={handlePrevImage}
+              disabled={currentImageIndex === 0}
+            >
+              Prev
+            </button>
+            <button
+              onClick={handleNextImage}
+              disabled={currentImageIndex === images.length - 1}
+            >
+              Next
+            </button>
+          </div>
         </div>
         {/* Trip description */}
         <Link href={`/post/${uuid}`}>

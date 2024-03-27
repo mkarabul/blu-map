@@ -16,6 +16,7 @@ const Trips = () => {
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
   const [tripId, setTripId] = useState("");
+  const [emptyFieldError, setEmptyFieldError] = useState("");
 
   const validFileTypes = ["image/jpeg", "image/jpg", "image/png"];
 
@@ -43,10 +44,19 @@ const Trips = () => {
 
   const closeModal = () => {
     document.getElementById("my_modal_4").close();
+    setEmptyFieldError("");
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (title === "" || description === "" || tripDate === "") {
+      setEmptyFieldError("Please fill out all fields.");
+      return;
+    }
+    if (images.length === 0) {
+      setEmptyFieldError("Please upload at least one image.");
+      return;
+    }
     const body = {
       header: title,
       description,
@@ -57,10 +67,6 @@ const Trips = () => {
     };
     try {
       await createUserPost(body);
-      if (images.length === 0) {
-        closeModal();
-        return;
-      }
       const form = new FormData();
       for (let i = 0; i < images.length; i++) {
         form.append("image", images[i]);
@@ -116,18 +122,27 @@ const Trips = () => {
         <div className="modal-box w-full">
           <h3 className="font-bold text-lg mb-4">Create a new post</h3>
           <form onSubmit={handleSubmit}>
+            {emptyFieldError !== "" && (
+              <div className="text-red-500 text-center">{emptyFieldError}</div>
+            )}
             <label className="block mb-2">
               Title:
               <input
                 type="text"
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  setEmptyFieldError("");
+                }}
                 className="w-full px-3 py-2 border rounded mt-1"
               />
             </label>
             <label className="block mb-2">
               Description:
               <textarea
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                  setEmptyFieldError("");
+                }}
                 className="w-full px-3 py-2 border rounded mt-1 h-20"
               />
             </label>
@@ -136,7 +151,10 @@ const Trips = () => {
               <input
                 type="text"
                 placeholder="YYYY-MM-DD"
-                onChange={(e) => setTripDate(e.target.value)}
+                onChange={(e) => {
+                  setTripDate(e.target.value);
+                  setEmptyFieldError("");
+                }}
                 className="w-full px-3 py-2 border rounded mt-1"
               />
             </label>
@@ -146,7 +164,10 @@ const Trips = () => {
               <input
                 type="file"
                 placeholder="Upload images"
-                onChange={handleUpload}
+                onChange={(e) => {
+                  handleUpload(e);
+                  setEmptyFieldError("");
+                }}
                 multiple
                 className="w-full px-3 py-2 border rounded mt-1"
               />

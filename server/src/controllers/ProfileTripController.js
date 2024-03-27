@@ -6,6 +6,7 @@ const {
 } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { v4: uuidv4 } = require("uuid");
+const sharp = require("sharp");
 
 const s3Client = new S3Client({
   region: process.env.BUCKET_REGION,
@@ -53,8 +54,23 @@ const ProfileTripsController = {
           "images",
         ],
       });
+      for (let i = 0; i < profileTrips.length; i++) {
+        const imageUrls = [];
+        for (let j = 0; j < profileTrips[i].images.length; j++) {
+          const command = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `${profileTrips[i].tripId}/${profileTrips[i].images[j]}`,
+          });
+          const url = await getSignedUrl(s3Client, command, {
+            expiresIn: 3600,
+          });
+          imageUrls.push(url);
+        }
+        profileTrips[i].images = imageUrls;
+      }
       res.status(200).json(profileTrips);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -85,11 +101,22 @@ const ProfileTripsController = {
           "isPublic",
           "isSocial",
           "tripId",
+          "images",
         ],
       });
       if (!profileTrip.isPublic) {
         return res.status(403).json({ error: "Trip is not public" });
       }
+      const imageUrls = [];
+      for (let i = 0; i < profileTrip.images.length; i++) {
+        const command = new GetObjectCommand({
+          Bucket: process.env.BUCKET_NAME,
+          Key: `${profileTrip.tripId}/${profileTrip.images[i]}`,
+        });
+        const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+        imageUrls.push(url);
+      }
+      profileTrip.images = imageUrls;
       res.status(200).json(profileTrip);
     } catch (error) {
       console.error(error);
@@ -108,8 +135,23 @@ const ProfileTripsController = {
           "header",
           "tripDate",
           "tripId",
+          "images",
         ],
       });
+      for (let i = 0; i < profileTrips.length; i++) {
+        const imageUrls = [];
+        for (let j = 0; j < profileTrips[i].images.length; j++) {
+          const command = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `${profileTrips[i].tripId}/${profileTrips[i].images[j]}`,
+          });
+          const url = await getSignedUrl(s3Client, command, {
+            expiresIn: 3600,
+          });
+          imageUrls.push(url);
+        }
+        profileTrips[i].images = imageUrls;
+      }
       res.status(200).json(profileTrips);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
@@ -120,7 +162,15 @@ const ProfileTripsController = {
     const images = req.files;
     const imageArray = [];
     for (let i = 0; i < images.length; i++) {
-      const { originalname, buffer, mimetype } = images[i];
+      const { originalname, mimetype } = images[i];
+      const buffer = await sharp(images[i].buffer)
+        .resize({
+          height: 600,
+          width: 800,
+          fit: "contain",
+          background: { r: 255, g: 255, b: 255, alpha: 1 },
+        })
+        .toBuffer();
       const uniqueName = `${uuidv4()}-${originalname}`;
       imageArray.push(uniqueName);
       const params = {
@@ -159,9 +209,6 @@ const ProfileTripsController = {
         return res.status(404).json({ error: "Trip not found" });
       }
       const images = profileTrip.images;
-      if (images === null || images.length === 0) {
-        return res.status(200).send([]);
-      }
       const imageUrls = [];
       for (let i = 0; i < images.length; i++) {
         const command = new GetObjectCommand({
