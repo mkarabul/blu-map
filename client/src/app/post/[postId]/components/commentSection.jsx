@@ -98,9 +98,14 @@ const CommentSection = ({ postId }) => {
               color: "white",
               borderRadius: "15px",
               padding: "10px",
+              transition: "transform 0.2s",
             }}
+            onMouseOver={(e) =>
+              (e.currentTarget.style.transform = "scale(1.02)")
+            }
+            onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
-            {comment.userName}: {comment.comment}
+            <strong>{comment.userName}</strong>: {comment.comment}
           </div>
         ))}
       </div>
