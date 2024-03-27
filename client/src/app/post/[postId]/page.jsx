@@ -49,6 +49,7 @@ const Post = async ({ params }) => {
     <div className="container mx-auto h-screen">
       <div className="flex-1 flex justify-center items-center">
         <SocialPost
+          uuid={postId}
           header={post.header}
           description={post.description}
           tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
