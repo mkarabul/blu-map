@@ -3,7 +3,7 @@ const sequelize = require("../config/database");
 
 const Like = sequelize.define("Like", {
   postId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   userId: {

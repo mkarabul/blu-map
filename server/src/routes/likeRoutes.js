@@ -3,9 +3,9 @@ const router = express.Router();
 const LikeController = require("../controllers/LikeController");
 
 // create a new like
-router.post("/", LikeController.createLike);
+router.patch("/post/:postId", LikeController.createLike);
 
 // get all likes
-router.get("/", LikeController.getAllLikes);
+router.get("/post/:postId", LikeController.getLikeByPost);
 
 module.exports = router;

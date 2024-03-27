@@ -3,9 +3,9 @@ const router = express.Router();
 const DislikeController = require("../controllers/DislikeController");
 
 // create a new dislike
-router.post("/", DislikeController.createDislike);
+router.patch("/post/:postId", DislikeController.createDislike);
 
 // get all dislikes
-router.get("/", DislikeController.getAllDislikes);
+router.get("/post/:postId", DislikeController.getDislikeByPost);
 
 module.exports = router;
