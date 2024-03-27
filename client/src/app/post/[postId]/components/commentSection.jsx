@@ -10,7 +10,6 @@ const CommentSection = ({ postId }) => {
   const [userData, setUserData] = useState({});
   const [userName, setUserName] = useState("");
   const userId = user?.sub;
-  //const userName = user?.name;
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -18,7 +17,7 @@ const CommentSection = ({ postId }) => {
         try {
           const response = await fetch(`/api/users/${userId}`);
           const data = await response.json();
-          setUserName(data.userName); // assuming the API returns an object with a userName property
+          setUserName(data.userName);
         } catch (error) {
           console.error("Error fetching userName:", error);
         }
@@ -28,37 +27,42 @@ const CommentSection = ({ postId }) => {
     fetchUserName();
   }, [userId]);
 
-  // useEffect(() => {
-  //   fetchComments();
-  // }, [postId]);
-
-  // const fetchComments = async () => {
-  //   const response = await fetch(`/api/profile-trip/${postId}/comments`);
-  //   const data = await response.json();
-  //   setComments(data);
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     //const userId = userData.userId;
     //const tripId = tripId;
     if (!comment.trim()) return;
+    const newComment = {
+      userId,
+      comment,
+      postId,
+      userName,
+    };
     await fetch(`/api/comments/post/${postId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        userId,
-        comment,
-        postId,
-        userName,
-      }),
+      body: JSON.stringify(newComment),
     });
-    setComments([...comments, comment]);
+    setComments([...comments, newComment]);
     setComment("");
     console.log("Comment submitted");
   };
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await fetch(`/api/comments/post/${postId}`);
+        const data = await response.json();
+        setComments(data);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    fetchComments();
+  }, [postId]);
 
   return (
     <div className="flex-initial flex flex-col items-center justify-center border border-white p-4 shadow-lg rounded-lg">
@@ -96,7 +100,7 @@ const CommentSection = ({ postId }) => {
               padding: "10px",
             }}
           >
-            {userName}: {comment}
+            {comment.userName}: {comment.comment}
           </div>
         ))}
       </div>
