@@ -6,7 +6,12 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const ActivityRecommendation = ({ addActivity, defaultStart, defaultEnd }) => {
+const ActivityRecommendation = ({
+  addActivity,
+  defaultStart,
+  defaultEnd,
+  dataTestId,
+}) => {
   const { defaultReccs, serverReccs, deleteServerRecc } = useReccState();
 
   const addRecc = (recc) => {
@@ -19,7 +24,10 @@ const ActivityRecommendation = ({ addActivity, defaultStart, defaultEnd }) => {
   };
 
   return (
-    <ul className="p-4 bg-base-200 w-full rounded-lg mb-2">
+    <ul
+      className="p-4 bg-base-200 w-full rounded-lg mb-2"
+      data-testid="activity-recommendation"
+    >
       {defaultReccs
         ? defaultReccs.map((recc) => (
             <li

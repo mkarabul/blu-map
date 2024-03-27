@@ -10,6 +10,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "test:file": "npm test --",
     "test:verbose": "jest --verbose",
     "test:single": "npm test -- --testNamePattern"
   },
