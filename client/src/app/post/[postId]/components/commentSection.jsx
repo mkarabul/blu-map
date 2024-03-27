@@ -1,10 +1,32 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
-const CommentSection = ({ userName, postId, userId }) => {
+const CommentSection = ({ postId }) => {
+  //console.log("userName in CommentSection:", userName);
+  const { user } = useUser();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [userData, setUserData] = useState({});
+  const [userName, setUserName] = useState("");
+  const userId = user?.sub;
+  //const userName = user?.name;
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      if (userId) {
+        try {
+          const response = await fetch(`/api/users/${userId}`);
+          const data = await response.json();
+          setUserName(data.userName); // assuming the API returns an object with a userName property
+        } catch (error) {
+          console.error("Error fetching userName:", error);
+        }
+      }
+    };
+
+    fetchUserName();
+  }, [userId]);
 
   // useEffect(() => {
   //   fetchComments();
@@ -18,7 +40,7 @@ const CommentSection = ({ userName, postId, userId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userId = userData.userId;
+    //const userId = userData.userId;
     //const tripId = tripId;
     if (!comment.trim()) return;
     await fetch(`/api/comments/post/${postId}`, {
@@ -26,7 +48,12 @@ const CommentSection = ({ userName, postId, userId }) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId, comment, tripId: postId, userName }),
+      body: JSON.stringify({
+        userId,
+        comment,
+        postId,
+        userName,
+      }),
     });
     setComments([...comments, comment]);
     setComment("");
