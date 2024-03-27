@@ -12,7 +12,6 @@ const ChartsPage = ({ themeClasses }) => {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState([]);
   const [theme] = useState(getTheme());
-  const [hasAccess, setAccess] = useState(false);
   const { user } = useUser();
   const userID = user?.sub;
 
@@ -30,13 +29,7 @@ const ChartsPage = ({ themeClasses }) => {
         
         const data = await response.json();
         setUserData(data);
-        const currentUserData = data.find(user => user.userId === userID);
-        if (currentUserData && currentUserData.isAdmin) {
-          setAccess(true);
-        } else {
-          setUserData(null);
-          throw new Error("Not Admin");
-        }
+
       } catch (error) {
         console.error(error);
       } finally {
@@ -47,20 +40,7 @@ const ChartsPage = ({ themeClasses }) => {
   }, [userID]);
 
 
-  if (loading) {
-    return (
-      <div className="p-5 min-h-screen flex justify-center items-center">
-        <h2 className="text-xl font-bold">Checking access permissions...</h2>
-      </div>
-    );
-  }
-  if (!hasAccess) {
-    return (
-      <div className="p-5 min-h-screen flex justify-center items-center">
-        <h2 className="text-xl font-bold">You do not have permission to access this page.</h2>
-      </div>
-    );
-  }
+
 
   const getAgeDemographicsData = () => {
     const ageGroups = {
@@ -151,7 +131,6 @@ const ChartsPage = ({ themeClasses }) => {
     aspectRatio: 1,
   };
 
-  if (!loading && hasAccess) {
     return (
       <div className={`p-5 min-h-screen ${themeClasses} transition-colors duration-500`}>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4'>
@@ -172,7 +151,7 @@ const ChartsPage = ({ themeClasses }) => {
         </div>
       </div>
     );
-  }
+  
  
 };
 

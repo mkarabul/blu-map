@@ -36,7 +36,6 @@ const useLoadTrips = () => {
         throw new Error("Error deleting trip");
       }
       setTrips(trips.filter((trip) => trip.uuid !== tripId));
-      console.log(trips);
     } catch (error) {
       console.error("Error deleting trip:", error);
     } finally {

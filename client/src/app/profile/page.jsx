@@ -24,7 +24,7 @@ export default function Page() {
         age={userData.age}
         isOwner={true}
       />
-      <ListPosts posts={posts} isLoading={isLoading} />
+      <ListPosts posts={posts} isLoading={isLoading} isOwner={true} userName={userData.userName} />
     </div>
   );
 }

@@ -18,6 +18,7 @@ const ProfileTripsController = {
       });
       res.status(201).json(newProfileTrip);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -38,8 +39,6 @@ const ProfileTripsController = {
           "isPublic",
           "isSocial",
           "tripId",
-          "likes",
-          "dislikes",
         ],
       });
       // likeDislike = null;
@@ -73,6 +72,7 @@ const ProfileTripsController = {
 
       res.status(200).json(profileTrips);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -85,6 +85,7 @@ const ProfileTripsController = {
       });
       res.status(200).json(publicProfileTrips);
     } catch (error) {
+      console.error(error);
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
@@ -116,6 +117,7 @@ const ProfileTripsController = {
       }
       res.status(200).json(profileTrip);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -131,12 +133,31 @@ const ProfileTripsController = {
           "header",
           "tripDate",
           "tripId",
-          "likes",
-          "dislikes",
+          "isPublic",
         ],
       });
       res.status(200).json(profileTrips);
     } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+
+  async togglePublicbyUUID(req, res) {
+    try {
+      const { uuid } = req.params;
+      const profileTrip = await ProfileTrip.findOne({
+        where: { uuid },
+      });
+
+      profileTrip.isPublic = !profileTrip.isPublic;
+      await profileTrip.save();
+
+      res.status(200).json({
+        message: `Post is ${profileTrip.isPublic ? "public" : "private"} now`,
+      });
+    } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -157,6 +178,26 @@ const ProfileTripsController = {
       profileTrip.increment("dislikes");
       res.status(200).json(profileTrip);
     } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+
+  async togglePublicbyUUID(req, res) {
+    try {
+      const { uuid } = req.params;
+      const profileTrip = await ProfileTrip.findOne({
+        where: { uuid },
+      });
+
+      profileTrip.isPublic = !profileTrip.isPublic;
+      await profileTrip.save();
+
+      res.status(200).json({
+        message: `Post is ${profileTrip.isPublic ? "public" : "private"} now`,
+      });
+    } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },

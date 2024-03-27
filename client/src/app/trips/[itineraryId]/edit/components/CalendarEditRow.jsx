@@ -64,7 +64,6 @@ const CalendarRow = ({ activity, activityUtils }) => {
 
     return (timeString) => {
       let newTime = parseTimeString(timeString);
-      console.log(newTime);
       if (!newTime) {
         const newActivity = {
           ...activity,

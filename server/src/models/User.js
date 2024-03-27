@@ -57,10 +57,10 @@ const User = sequelize.define("User", {
     allowNULL: false,
     defaultValue: false,
   },
-  isBlocked: {
+  isPublic: {
     type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
+    allowNULL: false,
+    defaultValue: true,
   },
 });
 

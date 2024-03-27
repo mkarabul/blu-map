@@ -18,10 +18,12 @@ const UserController = {
           "isSuspended",
           "isDarkMode",
           "isAdmin",
+          "isPublic"
         ],
       });
       res.status(200).json(users);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -44,6 +46,8 @@ const UserController = {
           "isSuspended",
           "isDarkMode",
           "isAdmin",
+          "isPublic"
+
         ],
       });
       if (user) {
@@ -52,6 +56,7 @@ const UserController = {
         res.status(404).json({ error: "User not found" });
       }
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -90,6 +95,7 @@ const UserController = {
 
       res.status(201).json({ message: "User created successfully", user });
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -106,6 +112,7 @@ const UserController = {
         res.status(404).json({ error: "User not found" });
       }
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -126,6 +133,7 @@ const UserController = {
         } successfully.`,
       });
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -147,6 +155,7 @@ const UserController = {
         }`,
       });
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -169,6 +178,7 @@ const UserController = {
         } successfully`,
       });
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -189,9 +199,33 @@ const UserController = {
       await user.save();
       res.status(200).json({ message: "User updated successfully", user });
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+
+  async toggleUserPublicById(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findOne({ where: { userId } });
+
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      user.isPublic = !user.isPublic;
+      await user.save();
+
+      res.status(200).json({
+        message: `User mode changed to ${
+          user.isPublic ? "public" : "private"
+        } successfully`,
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+
 };
 
 module.exports = UserController;

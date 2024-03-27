@@ -6,6 +6,9 @@ const itineraryRoutes = require("./itineraryRoutes");
 const adminRoutes = require("./adminRoutes");
 const socialPostRoutes = require("./socialPostRoutes");
 const notificationRoutes = require("./notificationRoutes");
+const reportRoutes = require("./reportRoutes");
+const followSystemRoutes = require("./followSystemRoutes");
+const followRequestRoutes = require("./followRequestRoutes");
 const likeRoutes = require("./likeRoutes");
 const dislikeRoutes = require("./dislikeRoutes");
 const commentRoutes = require("./commentRoutes");
@@ -20,4 +23,8 @@ router.use("/notification", notificationRoutes);
 router.use("/likes", likeRoutes);
 router.use("/dislikes", dislikeRoutes);
 router.use("/comments", commentRoutes);
+router.use("/reports", reportRoutes);
+router.use("/follow", followSystemRoutes);
+router.use("/follow-request", followRequestRoutes);
+
 module.exports = router;

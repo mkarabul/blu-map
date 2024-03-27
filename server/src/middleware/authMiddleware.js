@@ -1,10 +1,10 @@
 const { auth } = require("express-oauth2-jwt-bearer");
 const { UserInfoClient } = require("auth0");
 
+const cache = require("../config/cache");
+
 const issuerBaseUrl = process.env.AUTH0_ISSUER_BASE_URL;
 const audience = process.env.AUTH0_AUDIENCE || "http://localhost:5000/";
-
-const cachedUsers = {};
 
 const checkJwt = auth({
   audience: audience,
@@ -18,8 +18,10 @@ const userInfoClient = new UserInfoClient({
 const getUserInfoMiddleware = async (req, res, next) => {
   const token = req.auth.token;
 
-  if (cachedUsers[token]) {
-    req.user = cachedUsers[token];
+  const cachedUser = await cache.get(token);
+
+  if (cachedUser) {
+    req.user = JSON.parse(cachedUser);
     next();
     return;
   }
@@ -27,7 +29,7 @@ const getUserInfoMiddleware = async (req, res, next) => {
   const userInfo = await userInfoClient.getUserInfo(token);
 
   req.user = userInfo.data;
-  cachedUsers[token] = userInfo.data;
+  cache.set(token, JSON.stringify(userInfo.data));
   next();
 };
 
