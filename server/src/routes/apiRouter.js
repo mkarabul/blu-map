@@ -8,6 +8,7 @@ const socialPostRoutes = require("./socialPostRoutes");
 const notificationRoutes = require("./notificationRoutes");
 const likeRoutes = require("./likeRoutes");
 const dislikeRoutes = require("./dislikeRoutes");
+const commentRoutes = require("./commentRoutes");
 const router = express.Router();
 
 router.use("/users", userRoutes);
@@ -18,4 +19,5 @@ router.use("/social-post", socialPostRoutes);
 router.use("/notification", notificationRoutes);
 router.use("/likes", likeRoutes);
 router.use("/dislikes", dislikeRoutes);
+router.use("/comments", commentRoutes);
 module.exports = router;

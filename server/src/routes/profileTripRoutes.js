@@ -33,7 +33,7 @@ router.patch(
   ProfileTripController.incrementDislikes
 );
 
-router.patch("/:uuid/comments", ProfileTripController.createComment);
+router.post("/:uuid/comments", ProfileTripController.createComment);
 
 //router.get("/:uuid/comments", ProfileTripController.getComments);
 

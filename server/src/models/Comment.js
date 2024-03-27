@@ -15,8 +15,8 @@ const Comment = sequelize.define("Comment", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  tripId: {
-    type: DataTypes.INTEGER,
+  postId: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
 });

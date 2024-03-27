@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import { getSession } from "@auth0/nextjs-auth0";
 
 import SocialPost from "../../social/components/social-post";

@@ -3,10 +3,13 @@ const Comment = require("../models/Comment");
 const CommentController = {
   async createComment(req, res) {
     try {
-      const { postId, text } = req.body;
+      const { postId, comment, userId, userName } = req.body;
+      console.log(req.body);
       const newComment = await Comment.create({
         postId,
-        text,
+        comment,
+        userId,
+        userName,
       });
       res.status(201).json(newComment);
     } catch (error) {
@@ -15,7 +18,7 @@ const CommentController = {
     }
   },
 
-  async fetchComments(req, res) {
+  async getCommentsByPost(req, res) {
     try {
       const { postId } = req.params;
       const comments = await Comment.findAll({

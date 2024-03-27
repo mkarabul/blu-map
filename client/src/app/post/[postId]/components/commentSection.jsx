@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-const CommentSection = ({ userName, postId }) => {
+const CommentSection = ({ userName, postId, userId }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [userData, setUserData] = useState({});
@@ -21,12 +21,12 @@ const CommentSection = ({ userName, postId }) => {
     const userId = userData.userId;
     //const tripId = tripId;
     if (!comment.trim()) return;
-    await fetch(`/api/profile-trip/${postId}/comments`, {
-      method: "PATCH",
+    await fetch(`/api/comments/post/${postId}`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId, comment, tripId: postId }),
+      body: JSON.stringify({ userId, comment, tripId: postId, userName }),
     });
     setComments([...comments, comment]);
     setComment("");
