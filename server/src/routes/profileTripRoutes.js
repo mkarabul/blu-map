@@ -24,6 +24,8 @@ router.get(
 router.get("/public/:userName", ProfileTripController.getPublicProfileTrips);
 
 router.get("/:uuid", ProfileTripController.getTripById);
+router.patch("/:uuid/toggle-public", ProfileTripController.togglePublicbyUUID);
+
 
 router.get("", ProfileTripController.getSocialProfileTrips);
 

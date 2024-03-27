@@ -5,26 +5,28 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 export default function ListPosts() {
   const [posts, setPosts] = useState([]);
   const { user } = useUser();
+
   useEffect(() => {
     async function fetchPostsAndFollowings() {
+      const userID = user?.sub;
+      const userNameResponse = await fetch(`/api/admin/${userID}`);
+      const { userName } = await userNameResponse.json();
+
+      const followingResponse = await fetch(`/api/follow/following/${userName}`);
+      const followingData = await followingResponse.json();
+
+      const followingUserNames = followingData.map(following => following.followingUserName);
+
       const postsResponse = await fetch("/api/profile-trip/");
       const allPosts = await postsResponse.json();
-  
-      const updatedPosts = allPosts
-      .filter(post => post.isPublic)
-      .map(post => ({
-        ...post,
-      }));
 
-    setPosts(updatedPosts);
-  
-      setPosts(updatedPosts);
+      const filteredPosts = allPosts.filter(post => followingUserNames.includes(post.userName));
+
+      setPosts(filteredPosts);
     }
-  
+
     fetchPostsAndFollowings();
-  }, []);
-  
-  
+  }, [user?.sub]); 
 
   return posts.length > 0 ? (
     <div>

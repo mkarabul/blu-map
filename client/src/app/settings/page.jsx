@@ -33,6 +33,7 @@ export default function Page() {
           throw new Error('Failed to fetch user data');
         }
         const userData = await response.json();
+
         setMode(userData.isPublic ? 'public' : 'private');
         setLoading(false);
       } catch (error) {
@@ -67,6 +68,30 @@ export default function Page() {
 
       setMode(newMode);
       alert(`You are now in ${newMode} mode`);
+
+      const adminResponse = await fetch(`/api/admin/${userID}`);
+      const userData = await adminResponse.json();
+      const userName = userData.userName;
+    
+      const postResponse = await fetch(`/api/profile-trip`);
+      const postData = await postResponse.json();
+    
+      for (const post of postData) {
+        if (post.userName === userName) {
+          console.log(post.uuid);
+          await fetch(`/api/profile-trip/${post.uuid}/toggle-public`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              isPublic: !post.isPublic
+            })
+          });
+        }
+      }
+
+      
     } catch (error) {
       console.error('Error toggling mode:', error);
     }
