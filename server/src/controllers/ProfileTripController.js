@@ -77,11 +77,33 @@ const ProfileTripsController = {
   async getPublicProfileTrips(req, res) {
     try {
       const { userName } = req.params;
-      const publicProfileTrips = await ProfileTrip.findAll({
+      const profileTrips = await ProfileTrip.findAll({
         where: { userName, isPublic: true },
-        attributes: ["uuid", "userName", "description", "header", "tripDate"],
+        attributes: [
+          "uuid",
+          "userName",
+          "description",
+          "header",
+          "tripDate",
+          "tripId",
+          "images",
+        ],
       });
-      res.status(200).json(publicProfileTrips);
+      for (let i = 0; i < profileTrips.length; i++) {
+        const imageUrls = [];
+        for (let j = 0; j < profileTrips[i].images.length; j++) {
+          const command = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `${profileTrips[i].tripId}/${profileTrips[i].images[j]}`,
+          });
+          const url = await getSignedUrl(s3Client, command, {
+            expiresIn: 3600,
+          });
+          imageUrls.push(url);
+        }
+        profileTrips[i].images = imageUrls;
+      }
+      res.status(200).json(profileTrips);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });

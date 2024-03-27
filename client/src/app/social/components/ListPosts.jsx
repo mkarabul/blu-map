@@ -30,6 +30,7 @@ export default function ListPosts() {
           userName={post.userName}
           tripId={post.tripId}
           clickable={true}
+          images={post.images}
         />
       ))}
     </>

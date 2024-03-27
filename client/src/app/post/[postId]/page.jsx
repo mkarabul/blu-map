@@ -44,6 +44,7 @@ const Post = async ({ params }) => {
         userName={post.userName}
         tripId={post.tripId}
         clickable={false}
+        images={post.images}
       />
     </div>
   );

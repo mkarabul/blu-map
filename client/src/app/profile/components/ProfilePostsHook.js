@@ -34,7 +34,7 @@ const useLoadPosts = () => {
 
       try {
         const response = await fetch(`api/profile-trip/user/${userId}`);
-        let data = await response.json();
+        const data = await response.json();
         setPosts(data);
       } catch (error) {
         console.error("Error loading posts:", error);
