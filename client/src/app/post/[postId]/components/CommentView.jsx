@@ -27,7 +27,7 @@ const CommentView = (props) => {
   }, [user]);
 
   return (
-    <div className=" flex justify-between hover:scale-[1.05] duration-200 join">
+    <div className=" flex justify-between hover:scale-[1.05] duration-200 join m-2">
       <div className="text-left p-2 bg-blue-500 text-white rounded-lg shadow-lg join-item flex-grow">
         <strong>{userName}</strong>: {comment}
       </div>
