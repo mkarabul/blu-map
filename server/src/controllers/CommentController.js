@@ -8,7 +8,6 @@ const CommentController = {
       const user = await User.findByPk(userId);
       const { userName } = user;
 
-      console.log(req.body);
       const newComment = await Comment.create({
         postId,
         comment,

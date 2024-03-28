@@ -1,16 +1,33 @@
 const Like = require("../models/Like");
+const Dislike = require("../models/Dislike");
 
 const LikeController = {
   async createLike(req, res) {
     try {
       const { postId, userId } = req.body;
-      console.log("hello from like controller");
-      console.log(req.body);
-      const newLike = await Like.create({
-        postId,
-        userId,
+      const existingLike = await Like.findOne({
+        where: { postId, userId },
       });
-      res.status(201).json(newLike);
+
+      const existingDislike = await Dislike.findOne({
+        where: { postId, userId },
+      });
+
+      if (existingDislike) {
+        await Dislike.destroy({
+          where: { postId, userId },
+        });
+      }
+
+      if (existingLike) {
+        await Like.destroy({
+          where: { postId, userId },
+        });
+        return res.status(204).send();
+      } else {
+        const newLike = await Like.create({ postId, userId });
+        return res.status(201).json(newLike);
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
