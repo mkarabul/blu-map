@@ -12,6 +12,6 @@ const Dislike = sequelize.define("Dislike", {
   },
 });
 
-Dislike.sync();
+Dislike.sync({ alter: true });
 
 module.exports = Dislike;

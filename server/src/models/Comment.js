@@ -28,6 +28,6 @@ const Comment = sequelize.define("Comment", {
   },
 });
 
-Comment.sync();
+Comment.sync({ alter: true });
 
 module.exports = Comment;

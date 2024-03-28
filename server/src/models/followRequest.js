@@ -15,6 +15,6 @@ const followRequest = sequelize.define("followRequest", {
 
 });
 
-followRequest.sync();
+followRequest.sync({ alter: true });
 
 module.exports = followRequest;
