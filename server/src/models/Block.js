@@ -1,22 +1,22 @@
-// const { DataTypes } = require("sequelize");
-// const sequelize = require("../config/database");
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
 
-// const Block = sequelize.define("Block", {
-//   //   uuid: {
-//   //     type: DataTypes.UUID,
-//   //     defaultValue: DataTypes.UUIDV4,
-//   //     primaryKey: true,
-//   //   },
-//   userId: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-//   blockedUserId: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-// });
+const Block = sequelize.define("Block", {
+  //   uuid: {
+  //     type: DataTypes.UUID,
+  //     defaultValue: DataTypes.UUIDV4,
+  //     primaryKey: true,
+  //   },
+  userId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  blockedUserId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
 
-// Block.sync();
+Block.sync();
 
-// module.exports = Block;
+module.exports = Block;

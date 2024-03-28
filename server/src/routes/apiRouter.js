@@ -13,7 +13,7 @@ const followRequestRoutes = require("./followRequestRoutes");
 const likeRoutes = require("./likeRoutes");
 const dislikeRoutes = require("./dislikeRoutes");
 const commentRoutes = require("./commentRoutes");
-//const blockRoutes = require("./blockRoutes");
+const blockRoutes = require("./blockRoutes");
 const router = express.Router();
 
 router.use("/users", userRoutes);
@@ -29,6 +29,6 @@ router.use("/comments", commentRoutes);
 router.use("/reports", reportRoutes);
 router.use("/follow", followSystemRoutes);
 router.use("/follow-request", followRequestRoutes);
-//router.use("/block", blockRoutes);
+router.use("/block", blockRoutes);
 
 module.exports = router;
