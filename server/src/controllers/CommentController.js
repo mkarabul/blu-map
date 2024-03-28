@@ -34,6 +34,21 @@ const CommentController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+
+  async deleteComment(req, res) {
+    try {
+      const { uuid } = req.params;
+      const comment = await Comment.findByPk(uuid);
+      if (!comment) {
+        return res.status(404).json({ error: "Comment not found" });
+      }
+      await comment.destroy();
+      res.json({ message: "Comment deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 };
 
 module.exports = CommentController;
