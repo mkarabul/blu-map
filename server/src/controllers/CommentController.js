@@ -4,7 +4,6 @@ const CommentController = {
   async createComment(req, res) {
     try {
       const { postId, comment, userId, userName } = req.body;
-      console.log(req.body);
       const newComment = await Comment.create({
         postId,
         comment,

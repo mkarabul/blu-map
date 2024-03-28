@@ -23,11 +23,8 @@ export default function SocialPost({
   likes: initialLikes,
   dislikes: initialDislikes,
 }) {
-  const { likes, dislikes, addLike, addDislike } = RepSystem(
-    initialLikes,
-    initialDislikes,
-    uuid
-  );
+  const { likes, dislikes, addLike, addDislike, userLiked, userDisliked } =
+    RepSystem(initialLikes, initialDislikes, uuid);
 
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
@@ -66,12 +63,19 @@ export default function SocialPost({
         {/* Buttons on the bottom of a post */}
         <div className="flex flex-col md:flex-row justify-start items-center mt-4">
           <div className="flex flex-grow space-x-2 mb-2 md:mb-0">
-            <button className="btn btn-outline rounded-full" onClick={addLike}>
+            <button
+              className={`btn btn-outline rounded-full ${
+                userLiked ? "bg-green-500 text-white" : ""
+              }`}
+              onClick={addLike}
+            >
               <FontAwesomeIcon icon={faThumbsUp} />
               <p> {likes} </p>
             </button>
             <button
-              className="btn btn-outline rounded-full"
+              className={`btn btn-outline rounded-full ${
+                userDisliked ? "bg-red-500 text-white" : ""
+              }`}
               onClick={addDislike}
             >
               <FontAwesomeIcon icon={faThumbsDown} />
