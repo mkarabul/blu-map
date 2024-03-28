@@ -42,7 +42,7 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
   isPublic: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: false,
+    defaultValue: true,
   },
   isSocial: {
     type: DataTypes.BOOLEAN,
