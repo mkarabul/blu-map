@@ -189,6 +189,9 @@ export default function ProfileHeader({
         <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
           <span>Age: {age}</span>
         </div>
+        <button className="btn btn-error w-full rounded-full shadow mt-4">
+          Block User
+        </button>
       </div>
       {!isOwner && (
         <div className="flex mt-6 space-x-3">
