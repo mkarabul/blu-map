@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SocialPost from "./social-post";
+import SocialPost from "@/app/social/components/social-post";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function ListPosts() {

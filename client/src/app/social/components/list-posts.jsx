@@ -9,6 +9,7 @@ export default function ListPosts() {
     async function fetchPostsAndFollowings() {
       const postsResponse = await fetch("/api/profile-trip/");
       const allPosts = await postsResponse.json();
+      console.log(allPosts);
   
       const updatedPosts = allPosts
       .filter(post => post.isPublic)
@@ -17,9 +18,7 @@ export default function ListPosts() {
       }));
 
     setPosts(updatedPosts);
-  
-      setPosts(updatedPosts);
-    }
+      }
   
     fetchPostsAndFollowings();
   }, []);

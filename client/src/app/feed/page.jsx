@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import SocialPost from "./components/social-post";
 import ListPosts from "./components/list-posts";
 function FeedPage() {
   const [theme, setTheme] = useState("dark");
