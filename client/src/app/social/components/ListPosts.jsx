@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
-import SocialPost from "./social-post";
+import SocialPost from "./SocialPost";
 
 export default function ListPosts() {
   const [posts, setPosts] = useState([]);
@@ -28,6 +30,9 @@ export default function ListPosts() {
             day: "numeric",
           })}
           userName={post.userName}
+          tripId={post.tripId}
+          clickable={true}
+          images={post.images}
         />
       ))}
     </>

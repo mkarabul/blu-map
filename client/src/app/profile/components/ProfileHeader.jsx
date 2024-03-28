@@ -1,7 +1,10 @@
 "use client";
 
 import { useUser } from "@auth0/nextjs-auth0/client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useReportLogic } from "./ReportHook";
+import { useFollow } from "./FollowHook";
+import { handleBlockUser } from "./BlockUser";
 
 export default function ProfileHeader({
   postCount,
@@ -9,11 +12,148 @@ export default function ProfileHeader({
   gender,
   age,
   isOwner,
+  profileName,
 }) {
   const { user } = useUser();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [genderNew, setGenderNew] = useState("");
   const [ageNew, setAgeNew] = useState(0);
+  const [profileNameNew, setProfileNameNew] = useState("");
+
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
+
+  const { handleFollow, handleUnfollow } = useFollow(user, userName);
+
+  const openEditDialog = () => setIsEditOpen(true);
+  const closeEditDialog = () => setIsEditOpen(false);
+
+  const [isBlocked, setIsBlocked] = useState(false);
+
+  const handleBlockToggle = async () => {
+    try {
+      const response = await handleBlockUser(user, userName, !isBlocked);
+
+      if (response.ok) {
+        setIsBlocked(!isBlocked);
+      } else {
+        throw new Error("Failed to toggle block status");
+      }
+    } catch (error) {
+      console.error("Error toggling block status:", error);
+    }
+  };
+
+  const {
+    isReportOpen,
+    header,
+    description,
+    reportType,
+    setHeader,
+    setDescription,
+    setReportType,
+    openReportDialog,
+    closeReportDialog,
+    handleReportSubmit,
+  } = useReportLogic(user, userName);
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    if (!userName) {
+      return;
+    }
+
+    const checkFollowStatus = async () => {
+      if (user && userName) {
+        try {
+          const response2 = await fetch(
+            `http://localhost:5000/api/admin/${user?.sub}`
+          );
+          if (!response2.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const data = await response2.json();
+          const dataUserName = data.userName;
+
+          const response = await fetch(`/api/follow/followers/${userName}`);
+          if (response.ok) {
+            const followingUsers = await response.json();
+            const isFollowing = followingUsers.some(
+              (follower) => follower.userName === dataUserName
+            );
+            setIsFollowing(isFollowing);
+          } else {
+            throw new Error("Failed to fetch following status");
+          }
+        } catch (error) {
+          console.error("Error fetching following status:", error);
+        }
+      }
+    };
+
+    const fetchFollowers = async () => {
+      try {
+        const response = await fetch(`/api/follow/followers/${userName}`);
+        if (response.ok) {
+          const data = await response.json();
+          setFollowersCount(data.length);
+        } else {
+          throw new Error("Failed to fetch followers");
+        }
+      } catch (error) {
+        console.error("Error fetching follow:", error);
+      }
+    };
+
+    const fetchFollowing = async () => {
+      try {
+        const response = await fetch(`/api/follow/following/${userName}`);
+        if (response.ok) {
+          const data = await response.json();
+          setFollowingCount(data.length);
+        } else {
+          throw new Error("Failed to fetch following");
+        }
+      } catch (error) {
+        console.error("Error fetching following:", error);
+      }
+    };
+
+    Promise.all([fetchFollowers(), fetchFollowing(), checkFollowStatus()]).then(
+      () => {
+        setIsLoading(false);
+      }
+    );
+  }, [user?.sub, userName]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <h1>loading...</h1>
+      </div>
+    );
+  }
+
+  const followUnfollowButton = isFollowing ? (
+    <button
+      onClick={handleUnfollow}
+      className="btn-unfollow transition duration-150 ease-in-out"
+    >
+      <i className="fas fa-user-minus mr-2"></i>
+      Unfollow
+    </button>
+  ) : (
+    <button
+      onClick={handleFollow}
+      className="btn-follow transition duration-150 ease-in-out"
+    >
+      <i className="fas fa-user-plus mr-2"></i>
+      Follow
+    </button>
+  );
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,94 +161,187 @@ export default function ProfileHeader({
     const updateUserResponse = await fetch(`/api/users/${user?.sub}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ genderNew, ageNew }),
+      body: JSON.stringify({ genderNew, ageNew, profileNameNew }),
     });
 
     if (updateUserResponse.ok) {
       setGenderNew("");
       setAgeNew(0);
+      setIsEditOpen(false);
+      setProfileNameNew("");
       setIsOpen(false);
     } else {
       console.error("Error updating user fields");
     }
   };
-
-  const openDialog = () => {
-    setIsOpen(true);
-  };
-
-  const closeDialog = () => {
-    setIsOpen(false);
-  };
-
   return (
-    <div className="profile-header bg-primary w-full text-center p-10 relative flex flex-col items-center justify-center">
-      <div className="avatar">
-        <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-          <img src="/default-pfp.png" />
+    <div className="profile-header bg-gradient-to-r from-blue-500 to-indigo-600 w-full text-center py-10 relative flex flex-col items-center justify-center rounded-lg shadow-lg">
+      <div className="avatar mb-4 group">
+        <div className="w-24 h-24 rounded-full overflow-hidden group-hover:ring-2 group-hover:ring-indigo-300">
+          <img
+            src="/default-pfp.png"
+            alt="Profile avatar"
+            className="rounded-full transition duration-300 ease-in-out"
+          />
         </div>
       </div>
-      <p className="text-white text-base mt-4">{userName}</p>
-      <div className="flex space-x-4 text-white text-base mt-4">
-        <p>Followers: 0</p>
-        <p>Posts: {postCount}</p>
+      <h1 className="text-white text-3xl font-semibold">{userName}</h1>
+      <div className="flex space-x-4 text-white mt-4">
+        <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center cursor-pointer">
+          <i className="fas fa-user-friends mr-2"></i>
+          <span>Followers: {followersCount}</span>
+        </div>
+        <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center cursor-pointer">
+          <i className="fas fa-user-plus mr-2"></i>
+          <span>Following: {followingCount}</span>
+        </div>
       </div>
-      {age !== 0 && gender !== "" && (
-        <>
-          <div className="flex space-x-4 text-white text-base mt-4">
-            <p>Gender: {gender}</p>
-            <p>Age: {age}</p>
-          </div>
-        </>
+
+      <div className="flex space-x-4 text-white mt-4">
+        <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
+          <i className="fas fa-pencil-alt mr-2"></i>
+          <span>Posts: {postCount}</span>
+        </div>
+      </div>
+      <div className="mt-4">
+        <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center mr-2">
+          <span>Gender: {gender}</span>
+        </div>
+        <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
+          <span>Age: {age}</span>
+        </div>
+        {!isOwner && (
+          <button
+            onClick={handleBlockToggle}
+            className="btn btn-error w-full rounded-full shadow mt-4"
+          >
+            {isBlocked ? "Unblock User" : "Block User"}
+          </button>
+        )}
+      </div>
+      {!isOwner && (
+        <div className="flex mt-6 space-x-3">
+          {followUnfollowButton}
+
+          <button
+            onClick={openReportDialog}
+            className="btn-report-issue transition duration-150 ease-in-out"
+          >
+            <i className="fas fa-exclamation-triangle mr-2"></i>
+            Report Issue
+          </button>
+        </div>
       )}
       {isOwner && (
-        <div
-          className="absolute top-2 right-2 text-white text-base cursor-pointer"
-          onClick={openDialog}
-        >
-          Edit
+        <div className="flex space-x-3 mt-6">
+          <button
+            onClick={openEditDialog}
+            className="btn-edit-profile transition duration-150 ease-in-out"
+          >
+            <i className="fas fa-edit mr-2"></i>
+            Edit Profile
+          </button>
         </div>
       )}
-      <dialog open={isOpen} id="share_modal" className="modal">
-        <div className="modal-box">
-          <form method="dialog" onSubmit={handleSubmit}>
-            <button
-              onClick={closeDialog}
-              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+
+      <dialog open={isEditOpen} className="modal">
+        <form onSubmit={handleSubmit} className="modal-box">
+          <button
+            onClick={closeEditDialog}
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            ✕
+          </button>
+          <div className="flex flex-col mt-4">
+            <label htmlFor="genderNew" className="text-white text-base">
+              Gender:
+            </label>
+            <input
+              type="text"
+              id="genderNew"
+              className="input input-bordered"
+              value={genderNew}
+              onChange={(e) => setGenderNew(e.target.value)}
+              placeholder="Enter your gender"
+            />
+          </div>
+          <div className="flex flex-col mt-4">
+            <label htmlFor="ageNew" className="text-white text-base">
+              Age:
+            </label>
+            <input
+              type="number"
+              id="ageNew"
+              className="input input-bordered"
+              value={ageNew}
+              onChange={(e) => setAgeNew(parseInt(e.target.value))}
+              placeholder="Enter your age"
+            />
+          </div>
+          <button type="submit" className="btn btn-primary mt-4">
+            Submit
+          </button>
+        </form>
+      </dialog>
+
+      <dialog open={isReportOpen} className="modal">
+        <form onSubmit={handleReportSubmit} className="modal-box">
+          <button
+            onClick={closeReportDialog}
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            ✕
+          </button>
+          <div className="flex flex-col mt-4">
+            <label htmlFor="header" className="text-white text-base">
+              Header:
+            </label>
+            <input
+              type="text"
+              id="header"
+              className="input input-bordered"
+              value={header}
+              onChange={(e) => setHeader(e.target.value)}
+              required
+              placeholder="Report Header"
+            />
+          </div>
+          <div className="flex flex-col mt-4">
+            <label htmlFor="description" className="text-white text-base">
+              Description:
+            </label>
+            <textarea
+              id="description"
+              className="textarea textarea-bordered"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+              placeholder="Report Description"
+            ></textarea>
+          </div>
+          <div className="flex flex-col mt-4">
+            <label htmlFor="reportType" className="text-white text-base">
+              Type of Report:
+            </label>
+            <select
+              id="reportType"
+              className="select select-bordered"
+              value={reportType}
+              onChange={(e) => setReportType(e.target.value)}
+              required
             >
-              ✕
-            </button>
-            <div className="flex flex-col mt-4">
-              <label htmlFor="gender" className="text-white text-base">
-                Gender:
-              </label>
-              <input
-                type="text"
-                id="gender"
-                className="w-full px-4 py-2 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
-                placeholder="Enter your gender"
-                value={genderNew}
-                onChange={(e) => setGenderNew(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col mt-4">
-              <label htmlFor="age" className="text-white text-base">
-                Age:
-              </label>
-              <input
-                type="number"
-                id="age"
-                className="w-full px-4 py-2 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
-                placeholder="Enter your age"
-                value={ageNew}
-                onChange={(e) => setAgeNew(e.target.value)}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary mt-4">
-              Submit
-            </button>
-          </form>
-        </div>
+              <option value="">Select a type</option>
+              <option value="Conduct Issue">Conduct Issue</option>
+              <option value="Spam">Spam</option>
+              <option value="Inappropriate Content">
+                Inappropriate Content
+              </option>
+            </select>
+          </div>
+          <button type="submit" className="btn btn-primary mt-4">
+            Submit Report
+          </button>
+        </form>
       </dialog>
     </div>
   );

@@ -12,46 +12,85 @@ import {
   faRightToBracket,
   faMoon,
   faSun,
+  faEye,
+  faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import ThemeChanger from "./components/ThemeChanger";
 
 export default function Page() {
-  // let currUser = "auth0|65df5cc6f0c1754329eca25c";
+  const { user } = useUser();
+  const userID = user?.sub;
 
-  // const [theme, setTheme] = useState('dark');
-  // const [isLoading, setIsLoading] = useState(true);
-
-  // useEffect(() => {
-  // Commented out API fetch to mimic local storage retrieval
-  // const fetchTheme = async () => {
-  //   try {
-  //     const response = await fetch(`http://localhost:5000/api/users/${currUser}`);
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch user data');
-  //     }
-  //     const data = await response.json();
-  //     const isDarkMode = data.isDarkMode;
-  //     setTheme(isDarkMode ? 'dark' : 'light');
-  //     document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-  //   } catch (error) {
-  //     console.error('Error fetching user data for theme:', error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-  // fetchTheme();
   const [theme, setTheme] = useState("dark");
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    setTheme(savedTheme);
-    document.documentElement.setAttribute("data-theme", savedTheme);
-  }, []);
+  const [mode, setMode] = useState("public");
+  const [loading, setLoading] = useState(true);
 
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    localStorage.setItem("theme", newTheme);
-    setTheme(newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
+  useEffect(() => {
+    const fetchUserMode = async () => {
+      try {
+        const response = await fetch(`/api/admin/${userID}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const userData = await response.json();
+
+        setMode(userData.isPublic ? "public" : "private");
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserMode();
+  }, [userID]);
+
+  const toggleMode = async () => {
+    try {
+      const newMode = mode === "public" ? "private" : "public";
+      const response = await fetch(`/api/users/${userID}/toggle-public`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ mode: newMode }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to toggle mode");
+      }
+
+      setMode(newMode);
+      alert(`You are now in ${newMode} mode`);
+
+      const adminResponse = await fetch(`/api/admin/${userID}`);
+      const userData = await adminResponse.json();
+      const userName = userData.userName;
+
+      const postResponse = await fetch(`/api/profile-trip`);
+      const postData = await postResponse.json();
+
+      for (const post of postData) {
+        if (post.userName === userName) {
+          await fetch(`/api/profile-trip/${post.uuid}/toggle-public`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              isPublic: !post.isPublic,
+            }),
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error toggling mode:", error);
+    }
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Display loading message
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -65,19 +104,14 @@ export default function Page() {
           link="settings"
         />
         <Option
-          icon={theme === "dark" ? faSun : faMoon}
-          header="Dark Mode"
-          context="Toggle between Light and Dark mode"
+          icon={mode === "public" ? faEye : faEyeSlash}
+          header="Public/Private Mode"
+          context="Toggle between Public and Private modes"
           link="settings"
-          onClick={toggleTheme}
+          onClick={toggleMode}
           isToggle={true}
         />
-        {/* <Option
-          icon={faBell}
-          header="Notifications"
-          context="Message & Trip Notifications"
-          link="settings"
-        /> */}
+        <ThemeChanger />
         <NotificationButton
           icon={faBell}
           header="Notifications"

@@ -20,8 +20,8 @@ export default function OtherDailyNotifications({
   return (
     <div className="flex items-center justify-between mt-2">
       <div>
-        <span className="text-white mr-2">{hour} :</span>
-        <span className="text-white">{minute}</span>
+        <span className="mr-2">{hour} :</span>
+        <span className="">{minute}</span>
       </div>
       <button
         onClick={(event) => handleDelete(event)}

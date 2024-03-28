@@ -59,13 +59,6 @@ describe("Admin Routes", () => {
     expect(response.statusCode).toBe(200);
   });
 
-  test("PATCH /:userId/toggle-darkmode", async () => {
-    const response = await request(app)
-      .patch("/testAdmin/toggle-darkmode")
-      .send();
-    expect(response.statusCode).toBe(200);
-  });
-
   test("DELETE /:id", async () => {
     const response = await request(app).delete("/testAdmin");
     expect(response.statusCode).toBe(200);
@@ -88,13 +81,6 @@ describe("Fail Cases Admin Routes", () => {
   test("PATCH /:userId/toggle-admin", async () => {
     const response = await request(app).patch("/testAdmin/toggle-admin").send();
     expect(response.statusCode).toBe(500);
-  });
-
-  test("PATCH /:userId/toggle-darkmode", async () => {
-    const response = await request(app)
-      .patch("/testAdmin/toggle-darkmode")
-      .send();
-    expect(response.statusCode).toBe(404);
   });
 
   test("DELETE /:id", async () => {
