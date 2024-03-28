@@ -4,12 +4,8 @@ import {
 } from "@auth0/nextjs-auth0/edge";
 import { NextResponse } from "next/server";
 
-export default withMiddlewareAuthRequired(async (req) => {
+const authMiddleware = withMiddlewareAuthRequired(async (req) => {
   // Ignore the middleware for the /api/auth/* routes
-  if (req.nextUrl.pathname.startsWith("/api/auth")) {
-    return;
-  }
-
   let response;
 
   if (req.nextUrl.pathname.startsWith("/api")) {
@@ -39,7 +35,33 @@ const rewriteToAPI = async (req) => {
   return NextResponse.rewrite(url);
 };
 
+export default async function middleware(req) {
+  if (req.nextUrl.pathname.startsWith("/api/auth")) {
+    return;
+  }
+
+  const user = await getSession();
+  if (
+    user ||
+    req.nextUrl.pathname.startsWith("/trips") ||
+    req.nextUrl.pathname.startsWith("/feed") ||
+    req.nextUrl.pathname.startsWith("/settings") ||
+    req.nextUrl.pathname.startsWith("/notifications") ||
+    req.nextUrl.pathname.startsWith("/profile")
+  ) {
+    return authMiddleware(req);
+  }
+
+  return rewriteToAPI(req);
+}
+
 export const config = {
-  matcher: ["/trips/:path*", "/api/:path*"],
-  // matcher: ["/trips/:path*"],
+  matcher: [
+    "/trips/:path*",
+    "/api/:path*",
+    "/feed/:path*",
+    "/settings/:path*",
+    "/notifications/:path*",
+    "/profile",
+  ],
 };
