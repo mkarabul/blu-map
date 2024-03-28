@@ -29,6 +29,31 @@ export default function ProfileHeader({
 
   const [isBlocked, setIsBlocked] = useState(false);
 
+  useEffect(() => {
+    const fetchBlockStatus = async () => {
+      try {
+        const response = await fetch(`/api/block/profile/${user?.sub}`);
+        if (response.ok) {
+          const blockedUsers = await response.json();
+          const isBlocked = blockedUsers.some(
+            (blockedUser) => blockedUser.blockedUserId === userName
+          );
+          setIsBlocked(isBlocked);
+        } else {
+          throw new Error("Failed to fetch block status");
+        }
+      } catch (error) {
+        console.error("Error fetching block status:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (!isOwner && user) {
+      fetchBlockStatus();
+    }
+  }, [user, userName, isOwner]);
+
   const handleBlockToggle = async () => {
     try {
       const response = await handleBlockUser(user, userName, !isBlocked);
