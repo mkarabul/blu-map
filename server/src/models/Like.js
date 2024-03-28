@@ -12,6 +12,6 @@ const Like = sequelize.define("Like", {
   },
 });
 
-Like.sync();
+Like.sync({ alter: true });
 
 module.exports = Like;
