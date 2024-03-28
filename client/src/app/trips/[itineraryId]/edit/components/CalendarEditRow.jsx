@@ -8,8 +8,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 import { formatTime } from "../../components/utils";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const CalendarRow = ({ activity, activityUtils }) => {
+  const { user, error, isLoading } = useUser();
   const { id, start, end, name } = activity;
 
   const [activityState, setActivityState] = useState({
@@ -52,7 +54,7 @@ const CalendarRow = ({ activity, activityUtils }) => {
         parsedHours += 12;
       }
 
-      if(meridiem && meridiem === "AM" && parsedHours === 12) {
+      if (meridiem && meridiem === "AM" && parsedHours === 12) {
         parsedHours = 0;
       }
 
@@ -109,6 +111,16 @@ const CalendarRow = ({ activity, activityUtils }) => {
     updateActivity(newActivity);
   };
 
+  const updateActivityName = async () => {
+    updateActivity(activityState);
+
+    if (!user) return;
+
+    fetch(`/api/recommendations/${user?.sub}/${activityState.name}`, {
+      method: "POST",
+    });
+  };
+
   return (
     <tr>
       <td>
@@ -136,11 +148,7 @@ const CalendarRow = ({ activity, activityUtils }) => {
           onChange={(event) => {
             setActivityState({ ...activityState, name: event.target.value });
           }}
-          onBlur={() => {
-            updateActivity({
-              ...activityState,
-            });
-          }}
+          onBlur={updateActivityName}
         />
       </td>
       <td>
