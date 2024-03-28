@@ -33,13 +33,12 @@ export default async function Navbar() {
         <div className="form-control"></div>
         <div className="dropdown dropdown-end" style={{ paddingTop: "0rem" }}>
           {/* Conditional rendering for the Feed button */}
-          {user && (
-            <Link href="/feed">
-              <button className="btn btn-outline mr-4" style={{ width: "10rem" }}>
-                Feed
-              </button>
-            </Link>
-          )}
+          <Link href="/feed">
+            <button className="btn btn-outline mr-4" style={{ width: "10rem" }}>
+              Feed
+            </button>
+          </Link>
+
           <Link href="/social">
             <button className="btn btn-outline mr-4" style={{ width: "10rem" }}>
               Social
