@@ -1,4 +1,5 @@
-const Friend = require("../models/followSystem");
+const Friend = require("../models/Friend");
+const User = require("../models/User");
 
 const FriendController = {
   async getUserFriends(req, res) {
@@ -45,7 +46,13 @@ const FriendController = {
   async addFriend(req, res) {
     const { userId, friendUserName } = req.body;
     try {
-      await Friend.create({ userId, friendUserName });
+      const user = await User.findOne({ where: { userId } });
+      const userName = user.userName;
+      const friend = await User.findOne({
+        where: { userName: friendUserName },
+      });
+      const friendUserId = friend.userId;
+      await Friend.create({ userName, userId, friendUserName, friendUserId });
       res.status(201).json({ message: "Friend request sent successfully" });
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });

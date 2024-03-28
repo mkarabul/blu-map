@@ -1,25 +1,39 @@
 const express = require("express");
-const multer = require("multer");
-const ProfileTripController = require("../controllers/FriendController");
+const FriendController = require("../controllers/FriendController");
 const {
   checkJwt,
   getUserInfoMiddleware,
 } = require("../middleware/authMiddleware");
+const Friend = require("../models/Friend");
 
 const router = express.Router();
 
 router.post(
-  "",
+  "/:userName",
   checkJwt,
   getUserInfoMiddleware,
-  ProfileTripController.createProfileTrip
+  FriendController.addFriend
+);
+
+router.patch(
+  "/:userName/accept-friend",
+  checkJwt,
+  getUserInfoMiddleware,
+  FriendController.acceptFriend
 );
 
 router.get(
-  "/user/:userId",
+  "/:userId/friends",
   checkJwt,
   getUserInfoMiddleware,
-  ProfileTripController.getProfileTrips
+  FriendController.getUserFriends
+);
+
+router.get(
+  "/:userId/is-friend",
+  checkJwt,
+  getUserInfoMiddleware,
+  FriendController.isFriend
 );
 
 module.exports = router;
