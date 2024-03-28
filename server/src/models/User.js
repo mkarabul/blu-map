@@ -19,6 +19,10 @@ const User = sequelize.define("User", {
     allowNull: false,
     unique: true,
   },
+  profileName: {
+    type: DataTypes.STRING,
+    defaultValue: "",
+  },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -50,12 +54,12 @@ const User = sequelize.define("User", {
   isDarkMode: {
     type: DataTypes.BOOLEAN,
     allowNULL: false,
-    defaultValue: true
+    defaultValue: true,
   },
   isAdmin: {
     type: DataTypes.BOOLEAN,
     allowNULL: false,
-    defaultValue: false
+    defaultValue: false,
   },
   isPublic: {
     type: DataTypes.BOOLEAN,

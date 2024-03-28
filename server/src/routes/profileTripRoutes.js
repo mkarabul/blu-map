@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const ProfileTripController = require("../controllers/ProfileTripController");
 const {
   checkJwt,
@@ -6,6 +7,9 @@ const {
 } = require("../middleware/authMiddleware");
 
 const router = express.Router();
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 router.post(
   "",
@@ -26,7 +30,22 @@ router.get("/public/:userName", ProfileTripController.getPublicProfileTrips);
 router.get("/:uuid", ProfileTripController.getTripById);
 router.patch("/:uuid/toggle-public", ProfileTripController.togglePublicbyUUID);
 
-
 router.get("", ProfileTripController.getSocialProfileTrips);
+
+router.patch("/:uuid/increment-likes", ProfileTripController.incrementLikes);
+router.patch(
+  "/:uuid/increment-dislikes",
+  ProfileTripController.incrementDislikes
+);
+
+router.patch(
+  "/:tripId/images",
+  checkJwt,
+  getUserInfoMiddleware,
+  upload.array("image", 5),
+  ProfileTripController.updateTripImages
+);
+
+router.get("/:tripId/images", ProfileTripController.getTripImages);
 
 module.exports = router;

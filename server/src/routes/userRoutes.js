@@ -16,6 +16,13 @@ router.get(
 );
 router.get("/username/:userName", UserController.getUserByUsername);
 
+router.get(
+  "/theme/:userId",
+  checkJwt,
+  getUserInfoMiddleware,
+  UserController.getUserThemeByUserId
+);
+
 router.post("/", checkJwt, getUserInfoMiddleware, UserController.createUser);
 router.delete("/:userId", UserController.deleteUserByUserId);
 router.patch(
@@ -30,8 +37,14 @@ router.put(
   UserController.updateUserByUserId
 );
 
+router.put(
+  "/theme/:userId",
+  checkJwt,
+  getUserInfoMiddleware,
+  UserController.updateUserThemeByUserId
+);
+
 router.patch("/:userId/toggle-admin", UserController.toggleUserAdminStatusById);
-router.patch("/:userId/toggle-darkmode", UserController.toggleUserDarkModeById);
 
 router.patch("/:userId/toggle-public", UserController.toggleUserPublicById);
 

@@ -15,6 +15,6 @@ const followSystem = sequelize.define("followSystem", {
 
 });
 
-followSystem.sync();
+followSystem.sync({ alter: true });
 
 module.exports = followSystem;
