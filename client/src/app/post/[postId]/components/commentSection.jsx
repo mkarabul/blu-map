@@ -74,6 +74,10 @@ const CommentSection = ({ postId }) => {
       try {
         const response = await fetch(`/api/comments/post/${postId}`);
         const data = await response.json();
+        if (!response.ok) {
+          console.error("Failed to fetch comments");
+          return;
+        }
         setComments(data);
       } catch (error) {
         console.error("Error fetching comments:", error);
