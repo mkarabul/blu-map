@@ -88,6 +88,8 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
                 day: "numeric",
               })}
               userName={post.userName}
+              tripId={post.tripId}
+              images={post.images}
             />
           ))}
           {filteredPosts.length === 0 && (
