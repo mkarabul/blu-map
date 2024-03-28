@@ -2,15 +2,12 @@ import React from "react";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const CommentDeleteButton = ({ uuid }) => {
-  const handleDelete = async () => {
-    await fetch(`/api/comments/${uuid}`, {
-      method: "DELETE",
-    });
-  };
-
+const CommentDeleteButton = ({ deleteComment, uuid }) => {
   return (
-    <button className="btn btn-error join-item" onClick={handleDelete}>
+    <button
+      className="btn btn-error join-item"
+      onClick={() => deleteComment(uuid)}
+    >
       <FontAwesomeIcon icon={faTrash} />
     </button>
   );

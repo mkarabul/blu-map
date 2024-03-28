@@ -4,7 +4,9 @@ import React, { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import CommentDeleteButton from "./CommentDeleteButton";
 
-const CommentView = ({ userName, comment }) => {
+const CommentView = (props) => {
+  const { userName, comment } = props;
+
   const { user } = useUser();
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -25,11 +27,11 @@ const CommentView = ({ userName, comment }) => {
   }, [user]);
 
   return (
-    <div className=" flex justify-between hover:scale-110 duration-200 join">
+    <div className=" flex justify-between hover:scale-[1.05] duration-200 join">
       <div className="text-left p-2 bg-blue-500 text-white rounded-lg shadow-lg join-item flex-grow">
         <strong>{userName}</strong>: {comment}
       </div>
-      {isAdmin && <CommentDeleteButton />}
+      {isAdmin && <CommentDeleteButton {...props} />}
     </div>
   );
 };
