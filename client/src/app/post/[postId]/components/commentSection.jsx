@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import CommentView from "./CommentView";
 
 const CommentSection = ({ postId }) => {
   //console.log("userName in CommentSection:", userName);
@@ -90,23 +91,7 @@ const CommentSection = ({ postId }) => {
       </form>
       <div className="w-full max-w-xl" style={{ paddingBottom: "5rem" }}>
         {comments.map((comment, index) => (
-          <div
-            key={index}
-            className="text-left p-2 mb-2"
-            style={{
-              backgroundColor: "rgb(33,138,255)",
-              color: "white",
-              borderRadius: "15px",
-              padding: "10px",
-              transition: "transform 0.2s",
-            }}
-            onMouseOver={(e) =>
-              (e.currentTarget.style.transform = "scale(1.02)")
-            }
-            onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
-            <strong>{comment.userName}</strong>: {comment.comment}
-          </div>
+          <CommentView key={index} {...comment} />
         ))}
       </div>
     </div>
