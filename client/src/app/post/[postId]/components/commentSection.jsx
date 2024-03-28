@@ -10,23 +10,24 @@ const CommentSection = ({ postId }) => {
   const [comments, setComments] = useState([]);
   const [userData, setUserData] = useState({});
   const [userName, setUserName] = useState("");
-  const userId = user?.sub;
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
+    if (!user) return;
+
     const fetchUserName = async () => {
-      if (userId) {
-        try {
-          const response = await fetch(`/api/users/${userId}`);
-          const data = await response.json();
-          setUserName(data.userName);
-        } catch (error) {
-          console.error("Error fetching userName:", error);
-        }
+      setUserId(user.sub);
+      try {
+        const response = await fetch(`/api/users/${userId}`);
+        const data = await response.json();
+        setUserName(data.userName);
+      } catch (error) {
+        console.error("Error fetching userName:", error);
       }
     };
 
     fetchUserName();
-  }, [userId]);
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,16 +40,33 @@ const CommentSection = ({ postId }) => {
       postId,
       userName,
     };
-    await fetch(`/api/comments/post/${postId}`, {
+
+    const response = await fetch(`/api/comments/post/${postId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newComment),
     });
-    setComments([...comments, newComment]);
+
+    if (!response.ok) {
+      console.error("Failed to submit comment");
+      return;
+    }
+
+    const data = await response.json();
+
+    setComments([...comments, data]);
     setComment("");
+
     console.log("Comment submitted");
+  };
+
+  const deleteComment = async (uuid) => {
+    await fetch(`/api/comments/${uuid}`, {
+      method: "DELETE",
+    });
+    setComments(comments.filter((comment) => comment.uuid !== uuid));
   };
 
   useEffect(() => {
@@ -67,7 +85,7 @@ const CommentSection = ({ postId }) => {
 
   return (
     <div className="flex-initial flex flex-col items-center justify-center border border-white p-4 shadow-lg rounded-lg">
-      <h3 className="text-xl font-semibold mb-4">Comments Section</h3>
+      <h3 className="text-xl font-semibold mb-2">Comments Section</h3>
       <form className="w-full max-w-xl flex flex-col" onSubmit={handleSubmit}>
         <div className="flex flex-col mb-4 md:flex-row">
           <textarea
@@ -90,8 +108,12 @@ const CommentSection = ({ postId }) => {
         </div>
       </form>
       <div className="w-full max-w-xl" style={{ paddingBottom: "5rem" }}>
-        {comments.map((comment, index) => (
-          <CommentView key={index} {...comment} />
+        {comments.map((comment) => (
+          <CommentView
+            key={comment.uuid}
+            deleteComment={deleteComment}
+            {...comment}
+          />
         ))}
       </div>
     </div>
