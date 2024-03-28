@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ShareButton from "../../profile/components/ShareButton";
 import Link from "next/link";
-import { RepSystem } from "../components/rep_system";
+import { RepSystem } from "./RepSystem";
 
 export default function SocialPost({
   uuid,

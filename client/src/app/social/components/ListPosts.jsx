@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SocialPost from "./social-post";
+import SocialPost from "./SocialPost";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function ListPosts() {
@@ -9,26 +9,24 @@ export default function ListPosts() {
     async function fetchPostsAndFollowings() {
       const postsResponse = await fetch("/api/profile-trip/");
       const allPosts = await postsResponse.json();
-  
-      const updatedPosts = allPosts
-      .filter(post => post.isPublic)
-      .map(post => ({
-        ...post,
-      }));
 
-    setPosts(updatedPosts);
-  
+      const updatedPosts = allPosts
+        .filter((post) => post.isPublic)
+        .map((post) => ({
+          ...post,
+        }));
+
+      setPosts(updatedPosts);
+
       setPosts(updatedPosts);
     }
-  
+
     fetchPostsAndFollowings();
   }, []);
-  
-  
 
   return posts.length > 0 ? (
     <div>
-      {posts.map(post => (
+      {posts.map((post) => (
         <SocialPost
           key={post.uuid}
           uuid={post.uuid}

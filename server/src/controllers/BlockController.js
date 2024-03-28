@@ -14,6 +14,22 @@ const BlockController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async removeBlock(req, res) {
+    try {
+      const { userId, blockedUserId } = req.body;
+      const block = await Block.findOne({
+        where: { userId, blockedUserId },
+      });
+      if (!block) {
+        return res.status(404).json({ error: "Block not found" });
+      }
+      await block.destroy();
+      res.status(204).end();
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 
   async getBlockedUsers(req, res) {
     try {

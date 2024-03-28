@@ -4,6 +4,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import React, { useState, useEffect } from "react";
 import { useReportLogic } from "./ReportHook";
 import { useFollow } from "./FollowHook";
+import { handleBlockUser } from "./BlockUser";
 
 export default function ProfileHeader({
   postCount,
@@ -25,6 +26,22 @@ export default function ProfileHeader({
 
   const openEditDialog = () => setIsEditOpen(true);
   const closeEditDialog = () => setIsEditOpen(false);
+
+  const [isBlocked, setIsBlocked] = useState(false);
+
+  const handleBlockToggle = async () => {
+    try {
+      const response = await handleBlockUser(user, userName, !isBlocked);
+
+      if (response.ok) {
+        setIsBlocked(!isBlocked);
+      } else {
+        throw new Error("Failed to toggle block status");
+      }
+    } catch (error) {
+      console.error("Error toggling block status:", error);
+    }
+  };
 
   const {
     isReportOpen,
@@ -189,9 +206,14 @@ export default function ProfileHeader({
         <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
           <span>Age: {age}</span>
         </div>
-        <button className="btn btn-error w-full rounded-full shadow mt-4">
-          Block User
-        </button>
+        {!isOwner && (
+          <button
+            onClick={handleBlockToggle}
+            className="btn btn-error w-full rounded-full shadow mt-4"
+          >
+            {isBlocked ? "Unblock User" : "Block User"}
+          </button>
+        )}
       </div>
       {!isOwner && (
         <div className="flex mt-6 space-x-3">

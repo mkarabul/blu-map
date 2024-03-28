@@ -20,4 +20,11 @@ router.get(
   BlockController.getBlockedUsers
 );
 
+router.delete(
+  "/profile/:userId",
+  checkJwt,
+  getUserInfoMiddleware,
+  BlockController.removeBlock
+);
+
 module.exports = router;
