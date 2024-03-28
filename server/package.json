@@ -9,15 +9,19 @@
     "test:file": "npm test --"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.535.0",
+    "@aws-sdk/s3-request-presigner": "^3.535.0",
     "auth0": "^4.3.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-oauth2-jwt-bearer": "^1.6.0",
+    "multer": "^1.4.5-lts.1",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "redis": "^4.6.13",
     "sequelize": "^6.37.1",
+    "sharp": "^0.33.3",
     "unique-username-generator": "^1.3.0"
   },
   "devDependencies": {

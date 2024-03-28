@@ -1,34 +1,26 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import SocialPost from "./SocialPost";
-import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function ListPosts() {
   const [posts, setPosts] = useState([]);
-  const { user } = useUser();
+
+  const getPosts = async () => {
+    const response = await fetch("/api/profile-trip/");
+    const data = await response.json();
+    setPosts(data);
+  };
+
   useEffect(() => {
-    async function fetchPostsAndFollowings() {
-      const postsResponse = await fetch("/api/profile-trip/");
-      const allPosts = await postsResponse.json();
-
-      const updatedPosts = allPosts
-        .filter((post) => post.isPublic)
-        .map((post) => ({
-          ...post,
-        }));
-
-      setPosts(updatedPosts);
-
-      setPosts(updatedPosts);
-    }
-
-    fetchPostsAndFollowings();
+    getPosts();
   }, []);
 
-  return posts.length > 0 ? (
-    <div>
+  return posts && posts.length ? (
+    <>
       {posts.map((post) => (
         <SocialPost
-          key={post.uuid}
+          key={post.id}
           uuid={post.uuid}
           header={post.header}
           description={post.description}
@@ -38,11 +30,12 @@ export default function ListPosts() {
             day: "numeric",
           })}
           userName={post.userName}
-          likes={post.likes}
-          dislikes={post.dislikes}
+          tripId={post.tripId}
+          clickable={true}
+          images={post.images}
         />
       ))}
-    </div>
+    </>
   ) : (
     <div></div>
   );

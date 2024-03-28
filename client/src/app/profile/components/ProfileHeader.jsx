@@ -12,12 +12,14 @@ export default function ProfileHeader({
   gender,
   age,
   isOwner,
+  profileName,
 }) {
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(true);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [genderNew, setGenderNew] = useState("");
   const [ageNew, setAgeNew] = useState(0);
+  const [profileNameNew, setProfileNameNew] = useState("");
 
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
@@ -159,13 +161,15 @@ export default function ProfileHeader({
     const updateUserResponse = await fetch(`/api/users/${user?.sub}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ genderNew, ageNew }),
+      body: JSON.stringify({ genderNew, ageNew, profileNameNew }),
     });
 
     if (updateUserResponse.ok) {
       setGenderNew("");
       setAgeNew(0);
       setIsEditOpen(false);
+      setProfileNameNew("");
+      setIsOpen(false);
     } else {
       console.error("Error updating user fields");
     }

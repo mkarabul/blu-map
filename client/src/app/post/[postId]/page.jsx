@@ -1,45 +1,31 @@
-import React, { use } from "react";
+import React from "react";
 import { getSession } from "@auth0/nextjs-auth0";
 
 import SocialPost from "../../social/components/SocialPost";
 import CommentSection from "./components/commentSection";
-import { getPosts } from "../../profile/[userName]/page";
 
-const getPostAndUser = async (postId, session) => {
+const getPost = async (postId) => {
+  const user = await getSession();
+
   const response = await fetch(
     `${process.env.API_URL}/api/profile-trip/${postId}`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
+        Authorization: `Bearer ${user.accessToken}`,
       },
     }
   );
 
   const post = await response.json();
 
-  const uuid = post.userId;
-  const usernameResponse = await fetch(
-    `${process.env.API_URL}/api/users/${uuid}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-    }
-  );
-
-  const { username } = await usernameResponse.json();
-
-  return { post, username };
+  return post;
 };
 
 const Post = async ({ params }) => {
   const { postId } = params;
-  const session = await getSession();
-  const { post, username } = await getPostAndUser(postId, session);
+  const post = await getPost(postId);
 
   if (!post) {
     return null;
@@ -50,6 +36,7 @@ const Post = async ({ params }) => {
       <div className="flex-1 flex justify-center items-center">
         <SocialPost
           uuid={postId}
+          ket={postId}
           header={post.header}
           description={post.description}
           tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
@@ -60,6 +47,9 @@ const Post = async ({ params }) => {
           userName={post.userName}
           likes={post.likes}
           dislikes={post.dislikes}
+          tripId={post.tripId}
+          clickable={false}
+          images={post.images}
         />
       </div>
       <CommentSection

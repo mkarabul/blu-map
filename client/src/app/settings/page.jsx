@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
 import Option from "./components/Option";
 import Profile from "./components/SettingsProfile";
@@ -13,9 +13,10 @@ import {
   faMoon,
   faSun,
   faEye,
-  faEyeSlash
+  faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import ThemeChanger from "./components/ThemeChanger";
 
 export default function Page() {
   const { user } = useUser();
@@ -30,40 +31,33 @@ export default function Page() {
       try {
         const response = await fetch(`/api/admin/${userID}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch user data');
+          throw new Error("Failed to fetch user data");
         }
         const userData = await response.json();
 
-        setMode(userData.isPublic ? 'public' : 'private');
+        setMode(userData.isPublic ? "public" : "private");
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     };
-  
+
     fetchUserMode();
   }, [userID]);
-
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    localStorage.setItem("theme", newTheme);
-    setTheme(newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
-  };
 
   const toggleMode = async () => {
     try {
       const newMode = mode === "public" ? "private" : "public";
       const response = await fetch(`/api/users/${userID}/toggle-public`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ mode: newMode })
+        body: JSON.stringify({ mode: newMode }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to toggle mode');
+        throw new Error("Failed to toggle mode");
       }
 
       setMode(newMode);
@@ -72,28 +66,25 @@ export default function Page() {
       const adminResponse = await fetch(`/api/admin/${userID}`);
       const userData = await adminResponse.json();
       const userName = userData.userName;
-    
+
       const postResponse = await fetch(`/api/profile-trip`);
       const postData = await postResponse.json();
-    
+
       for (const post of postData) {
         if (post.userName === userName) {
-          console.log(post.uuid);
           await fetch(`/api/profile-trip/${post.uuid}/toggle-public`, {
-            method: 'PATCH',
+            method: "PATCH",
             headers: {
-              'Content-Type': 'application/json'
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              isPublic: !post.isPublic
-            })
+              isPublic: !post.isPublic,
+            }),
           });
         }
       }
-
-      
     } catch (error) {
-      console.error('Error toggling mode:', error);
+      console.error("Error toggling mode:", error);
     }
   };
 
@@ -113,14 +104,6 @@ export default function Page() {
           link="settings"
         />
         <Option
-          icon={theme === "dark" ? faSun : faMoon}
-          header="Dark Mode"
-          context="Toggle between Light and Dark mode"
-          link="settings"
-          onClick={toggleTheme}
-          isToggle={true}
-        />
-        <Option
           icon={mode === "public" ? faEye : faEyeSlash}
           header="Public/Private Mode"
           context="Toggle between Public and Private modes"
@@ -128,6 +111,7 @@ export default function Page() {
           onClick={toggleMode}
           isToggle={true}
         />
+        <ThemeChanger />
         <NotificationButton
           icon={faBell}
           header="Notifications"

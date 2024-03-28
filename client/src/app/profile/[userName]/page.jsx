@@ -1,5 +1,5 @@
 import React from "react";
-import ListPosts from "../components/ListPosts";
+import ListPosts from "../../social/components/ListPosts";
 import ProfileHeader from "../components/ProfileHeader";
 import { getSession } from "@auth0/nextjs-auth0";
 
@@ -22,6 +22,7 @@ const getUserData = async (user, userName) => {
       gender: optionalData.gender,
       age: optionalData.age,
       userName: optionalData.userName,
+      profileName: optionalData.profileName,
     };
   } catch (error) {
     console.error("Error loading optional user data:", error);
@@ -87,10 +88,8 @@ const getPosts = async (user, userName, attemptsLeft = 2) => {
 export default async function Page({ params }) {
   const { userName } = params;
   const user = getSession();
-  const [posts, userData] = await Promise.all([
-    getPosts(user, userName),
-    getUserData(user, userName),
-  ]);
+  const posts = await getPosts(user, userName);
+  const userData = await getUserData(user, userName);
 
   return (
     <div>
@@ -99,6 +98,7 @@ export default async function Page({ params }) {
         userName={userData.userName}
         gender={userData.gender}
         age={userData.age}
+        profileName={userData.profileName}
         isOwner={false}
       />
       <ListPosts

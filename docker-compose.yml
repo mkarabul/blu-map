@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   client:
     build: ./client
@@ -27,6 +27,10 @@ services:
       - AUTH0_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
       - DB_URL=${DB_URL}
       - REDIS_URL=redis://redis:6379
+      - BUCKET_NAME=${BUCKET_NAME}
+      - BUCKET_REGION=${BUCKET_REGION}
+      - ACCESS_KEY=${ACCESS_KEY}
+      - SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}
     ports:
       - 5000:5000
     depends_on:

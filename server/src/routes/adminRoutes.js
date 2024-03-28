@@ -12,7 +12,6 @@ router.patch(
   "/:userId/toggle-suspend",
   UserController.toggleUserSuspensionById
 );
-router.patch('/:userId/toggle-admin', UserController.toggleUserAdminStatusById);
-router.patch('/:userId/toggle-darkmode', UserController.toggleUserDarkModeById);
+router.patch("/:userId/toggle-admin", UserController.toggleUserAdminStatusById);
 
 module.exports = router;
