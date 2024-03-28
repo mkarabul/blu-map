@@ -1,5 +1,5 @@
 import React from "react";
-import ListPosts from "../components/ListPosts";
+import ListPosts from "../../social/components/ListPosts";
 import ProfileHeader from "../components/ProfileHeader";
 
 import { getSession } from "@auth0/nextjs-auth0";
@@ -54,10 +54,8 @@ const getPosts = async (user, userName) => {
 export default async function Page({ params }) {
   const { userName } = params;
   const user = getSession();
-  const [posts, userData] = await Promise.all([
-    getPosts(user, userName),
-    getUserData(user, userName),
-  ]);
+  const posts = await getPosts(user, userName);
+  const userData = await getUserData(user, userName);
 
   return (
     <div>
