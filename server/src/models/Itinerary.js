@@ -42,6 +42,6 @@ const Itinerary = sequelize.define("Itinerary", {
   },
 });
 
-Itinerary.sync({ alter: true });
+Itinerary.sync();
 
 module.exports = Itinerary;
