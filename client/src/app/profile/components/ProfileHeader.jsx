@@ -1,7 +1,5 @@
-"use client";
-
-import { useUser } from "@auth0/nextjs-auth0/client";
 import React, { useState, useEffect } from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { useReportLogic } from "./ReportHook";
 import { useFollow } from "./FollowHook";
 import { handleBlockUser } from "./BlockUser";
@@ -199,6 +197,15 @@ export default function ProfileHeader({
       console.error("Error updating user fields");
     }
   };
+
+  if (isBlocked) {
+    return (
+      <div>
+        <h1>This profile is not available.</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="profile-header bg-gradient-to-r from-blue-500 to-indigo-600 w-full text-center py-10 relative flex flex-col items-center justify-center rounded-lg shadow-lg">
       <div className="avatar mb-4 group">

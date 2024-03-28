@@ -16,7 +16,7 @@ export const handleBlockUser = async (user, userName, block) => {
     });
 
     if (response.ok) {
-      console.log("Success");
+      console.log("Success for Block/Unblock User");
     } else {
       console.error("Failed to handle block:", response.statusText);
     }
