@@ -1,11 +1,13 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import FollowRequests from "./components/FollowRequestPopup";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import FriendNotification from "./components/FriendNotification";
 
 export default function Notifications() {
   const [showModal, setShowModal] = useState(false);
   const [connections, setConnections] = useState([]);
+  const [friendRequests, setFriendRequests] = useState([]);
 
   const { user } = useUser();
 
@@ -17,6 +19,7 @@ export default function Notifications() {
           if (userNameResponse.ok) {
             const { userName } = await userNameResponse.json();
             await fetchConnections(userName);
+            await fetchFriendRequests(userName);
           }
         } catch (error) {
           console.error("Error fetching user name:", error);
@@ -29,22 +32,40 @@ export default function Notifications() {
 
   const fetchConnections = async (userName) => {
     try {
-      const followersResponse = await fetch(`/api/follow/followers/${userName}`);
-      const followingsResponse = await fetch(`/api/follow/following/${userName}`);
+      const followersResponse = await fetch(
+        `/api/follow/followers/${userName}`
+      );
+      const followingsResponse = await fetch(
+        `/api/follow/following/${userName}`
+      );
       if (followersResponse.ok && followingsResponse.ok) {
         const followersData = await followersResponse.json();
         const followingsData = await followingsResponse.json();
 
         const combinedData = [
-          ...followersData.map(item => ({ ...item, type: 'follower' })),
-          ...followingsData.map(item => ({ ...item, type: 'following' }))
+          ...followersData.map((item) => ({ ...item, type: "follower" })),
+          ...followingsData.map((item) => ({ ...item, type: "following" })),
         ];
 
-        combinedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        combinedData.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
         setConnections(combinedData);
       }
     } catch (error) {
       console.error("Error fetching connections:", error);
+    }
+  };
+
+  const fetchFriendRequests = async (userName) => {
+    try {
+      const response = await fetch(`/api/friend/${user?.sub}/pending-friends`);
+      if (response.ok) {
+        const data = await response.json();
+        setFriendRequests(data);
+      }
+    } catch (error) {
+      console.error("Error fetching friend requests:", error);
     }
   };
 
@@ -74,14 +95,37 @@ export default function Notifications() {
       )}
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold">Connections</h2>
+        <div>
+          {friendRequests.length > 0 && (
+            <div>
+              <p>You have {friendRequests.length} friend requests.</p>
+              <div className="block p-4 border-2 border-gray-200 rounded shadow">
+                {friendRequests.map((friendRequest, index) => (
+                  <FriendNotification
+                    key={index}
+                    userName={friendRequest.userName}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
         <div className="grid grid-cols-1 gap-4">
           {connections.map((connection, index) => (
-            <div key={index} className="block p-4 border-2 border-gray-200 rounded shadow">
+            <div
+              key={index}
+              className="block p-4 border-2 border-gray-200 rounded shadow"
+            >
               {/* Display who started following whom */}
-              {connection.type === 'follower' ?
-                <p>{connection.userName} started following you.</p> :
-                <p>You started following {connection.followingUserName}.</p>}
-              <p className="text-sm text-gray-500">Connected on {new Date(connection.createdAt).toLocaleDateString()}</p>
+              {connection.type === "follower" ? (
+                <p>{connection.userName} started following you.</p>
+              ) : (
+                <p>You started following {connection.followingUserName}.</p>
+              )}
+              <p className="text-sm text-gray-500">
+                Connected on{" "}
+                {new Date(connection.createdAt).toLocaleDateString()}
+              </p>
             </div>
           ))}
         </div>

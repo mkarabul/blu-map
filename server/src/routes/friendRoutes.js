@@ -36,4 +36,11 @@ router.get(
   FriendController.isFriend
 );
 
+router.get(
+  "/:userId/pending-friends",
+  checkJwt,
+  getUserInfoMiddleware,
+  FriendController.getPendingFriends
+);
+
 module.exports = router;

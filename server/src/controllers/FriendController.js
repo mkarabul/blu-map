@@ -86,6 +86,19 @@ const FriendController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async getPendingFriends(req, res) {
+    const { userId } = req.params;
+    try {
+      const friends = await Friend.findAll({
+        where: { friendId: userId, isPending: true },
+        attributes: ["userName"],
+      });
+      res.status(200).json(friends);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 };
 
 module.exports = FriendController;

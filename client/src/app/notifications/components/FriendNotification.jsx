@@ -2,55 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import Link from "next/link";
 
-export default function FriendButton({ userName }) {
+export default function FriendNotification({ userName }) {
   const [isFriend, setIsFriend] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [isRequesting, setIsRequesting] = useState(false);
   const [isError, setIsError] = useState(false);
   const { user } = useUser();
-
-  const checkFriendStatus = async () => {
-    try {
-      const response = await fetch(
-        `/api/friend/${userName}/${user?.sub}/is-friend`
-      );
-      const data = await response.json();
-      console.log("data", data);
-      if (data && Object.keys(data).length !== 0) {
-        setIsFriend(data.isFriend);
-        setIsPending(data.isPending);
-      }
-    } catch (error) {
-      console.error("Error checking friend status:", error);
-      setIsError(true);
-    }
-  };
-
-  useEffect(() => {
-    checkFriendStatus();
-  }, []);
-
-  const handleFriendRequest = async () => {
-    setIsRequesting(true);
-    try {
-      const response = await fetch(`/api/friend/${userName}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: user?.sub }),
-      });
-      const data = await response.json();
-      if (data && Object.keys(data).length !== 0) {
-        setIsPending(true);
-      }
-    } catch (error) {
-      console.error("Error sending friend request:", error);
-      setIsError(true);
-    }
-    setIsRequesting(false);
-  };
 
   const handleFriendAccept = async () => {
     setIsRequesting(true);
@@ -77,7 +36,7 @@ export default function FriendButton({ userName }) {
     setIsRequesting(false);
   };
 
-  const handleUnfriend = async () => {
+  const handleFriendReject = async () => {
     setIsRequesting(true);
     try {
       const response = await fetch(
@@ -104,30 +63,32 @@ export default function FriendButton({ userName }) {
 
   return (
     <div>
-      {isFriend ? (
+      <Link href={`/profile/${userName}`}>
+        <div className="flex items-center space-x-4">
+          <img
+            src="/default-pfp.png"
+            alt="User Profile"
+            className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
+          />
+          <span>{userName}</span>
+        </div>
+      </Link>
+      <div style={{ textAlign: "right" }}>
         <button
-          onClick={handleUnfriend}
+          onClick={handleFriendAccept}
+          disabled={isRequesting}
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+        >
+          Accept
+        </button>
+        <button
+          onClick={handleFriendReject}
           disabled={isRequesting}
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
         >
-          Unfriend
+          Reject
         </button>
-      ) : isPending ? (
-        <button
-          disabled={isRequesting}
-          className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Pending Friend Request
-        </button>
-      ) : (
-        <button
-          onClick={handleFriendRequest}
-          disabled={isRequesting}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Add Friend
-        </button>
-      )}
+      </div>
     </div>
   );
 }
