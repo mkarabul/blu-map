@@ -145,34 +145,6 @@ const FriendController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
-  async getAllActiveFriends(req, res) {
-    try {
-      const friends = await Friend.findAll({
-        where: { isPending: false },
-        attributes: [
-          [Friend.sequelize.literal('"friendUserName"'), "userName"],
-        ],
-      });
-      res.status(200).json(friends);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  },
-  async getAllPendingFriends(req, res) {
-    try {
-      const friends = await Friend.findAll({
-        where: { isPending: true },
-        attributes: [
-          [Friend.sequelize.literal('"friendUserName"'), "userName"],
-        ],
-      });
-      res.status(200).json(friends);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  },
 };
 
 module.exports = FriendController;
