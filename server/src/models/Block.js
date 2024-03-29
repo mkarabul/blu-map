@@ -7,7 +7,7 @@ const Block = sequelize.define("Block", {
   //     defaultValue: DataTypes.UUIDV4,
   //     primaryKey: true,
   //   },
-  userName: {
+  userId: {
     type: DataTypes.STRING,
     allowNull: false,
   },

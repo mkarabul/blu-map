@@ -65,37 +65,41 @@ export default function ProfilePost({
             uuid={uuid}
           />
         </div>
-        <div className="flex flex-col items-center space-y-4 mb-4">
-          <img
-            src={images[currentImageIndex]}
-            alt={`Image ${currentImageIndex + 1}`}
-            className="rounded-lg"
-          />
-          <div className="flex justify-center space-x-4 w-full items-center">
-            <button
-              onClick={handlePrevImage}
-              disabled={currentImageIndex === 0}
-            >
-              <FontAwesomeIcon icon={faArrowLeft} />
-            </button>
-            <div className="flex space-x-2">
-              {images.map((image, index) => (
-                <span
-                  key={index}
-                  className={`inline-block rounded-full bg-gray-400 ${
-                    currentImageIndex === index ? "h-3 w-3" : "h-2 w-2"
-                  }`}
-                />
-              ))}
+        {/* Images */}
+
+        {images && images.length > 1 && (
+          <div className="flex flex-col items-center space-y-4 mb-4">
+            <img
+              src={images[currentImageIndex]}
+              alt={`Image ${currentImageIndex + 1}`}
+              className="rounded-lg"
+            />
+            <div className="flex justify-center space-x-4 w-full items-center">
+              <button
+                onClick={handlePrevImage}
+                disabled={currentImageIndex === 0}
+              >
+                <FontAwesomeIcon icon={faArrowLeft} />
+              </button>
+              <div className="flex space-x-2">
+                {images.map((image, index) => (
+                  <span
+                    key={index}
+                    className={`inline-block rounded-full bg-gray-400 ${
+                      currentImageIndex === index ? "h-3 w-3" : "h-2 w-2"
+                    }`}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={handleNextImage}
+                disabled={currentImageIndex === images.length - 1}
+              >
+                <FontAwesomeIcon icon={faArrowRight} />
+              </button>
             </div>
-            <button
-              onClick={handleNextImage}
-              disabled={currentImageIndex === images.length - 1}
-            >
-              <FontAwesomeIcon icon={faArrowRight} />
-            </button>
           </div>
-        </div>
+        )}
         {/* Trip description */}
         <Link href={`/post/${uuid}`}>
           <div className="text-3xl font-bold text-gray-700 my-2">{header}</div>
