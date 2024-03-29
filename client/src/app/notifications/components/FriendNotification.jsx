@@ -9,6 +9,8 @@ export default function FriendNotification({ userName }) {
   const [isPending, setIsPending] = useState(false);
   const [isRequesting, setIsRequesting] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+
   const { user } = useUser();
 
   const handleFriendAccept = async () => {
@@ -69,7 +71,10 @@ export default function FriendNotification({ userName }) {
       </Link>
       <div style={{ textAlign: "right" }}>
         <button
-          onClick={handleFriendAccept}
+          onClick={() => {
+            handleFriendAccept();
+            setRefreshKey((oldKey) => oldKey + 1);
+          }}
           disabled={isRequesting}
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
         >

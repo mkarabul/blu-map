@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ListFriends from "./ListFriends";
+import Link from "next/link";
+import FriendButton from "../../profile/components/FriendButton";
 
 export default function SearchButton() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,7 +15,6 @@ export default function SearchButton() {
       const data = await response.json();
       if (Array.isArray(data)) {
         setAllFriends(data);
-        setFriends(data);
       } else {
         console.error("Unexpected response structure:", data);
       }
@@ -23,36 +23,58 @@ export default function SearchButton() {
     fetchFriends();
   }, []);
 
-  const searchFriends = (currentSearchTerm) => {
-    if (currentSearchTerm === "") {
+  useEffect(() => {
+    searchFriends();
+  }, [searchTerm]);
+
+  const searchFriends = () => {
+    if (searchTerm === "") {
       setFriends(allFriends);
     } else {
       const filteredFriends = allFriends.filter((friend) =>
-        friend.userName.toLowerCase().includes(currentSearchTerm.toLowerCase())
+        friend.userName.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFriends(filteredFriends);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={(e) => {
-          setSearchTerm(e.target.value);
-          searchFriends(e.target.value); // Use the current value directly
-        }}
-        placeholder="Search for friends"
-        className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
-      />
-      <button
-        onClick={() => searchFriends(searchTerm)}
-        className="absolute right-0 top-0 mt-2 mr-2"
-      >
-        {/* SVG for search icon */}
-      </button>
-      <ListFriends friends={friends} />
+    <div className="flex flex-col items-center justify-center relative">
+      <div className="relative">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
+          placeholder="Search for friends"
+          className="border-2 border-gray-300 bg-white h-10 px-5 pr-10 rounded-lg text-sm focus:outline-none"
+        />
+        <button
+          onClick={() => {
+            setSearchTerm("");
+            setFriends(allFriends);
+          }}
+          className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+        >
+          X
+        </button>
+      </div>
+      {friends.map((friend) => (
+        <div className="flex items-center space-x-4 mb-4">
+          <Link href={`/profile/${friend.userName}`}>
+            <div className="flex items-center space-x-4">
+              <img
+                src="/default-pfp.png"
+                alt="User Profile"
+                className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
+              />
+              <span>{friend.userName}</span>
+            </div>
+          </Link>
+          <FriendButton userName={friend.userName} />
+        </div>
+      ))}
     </div>
   );
 }
