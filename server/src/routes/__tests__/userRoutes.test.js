@@ -28,7 +28,19 @@ describe("User Routes", () => {
     const response = await request(app).post("/").send();
     expect(response.statusCode).toBe(201);
 
-    createdId = response.body.id;
+    createdId = response.body.user.userId;
+  });
+
+  test("GET /theme/:userId - Successfully retrieves user's theme", async () => {
+    const response = await request(app).get("/theme/testUserId");
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  test("PUT /theme/:userId - Successfully updates user's theme", async () => {
+    const response = await request(app).put("/theme/testUserId");
+
+    expect(response.statusCode).toBe(200);
   });
 
   test("GET /users/:userId", async () => {
@@ -110,6 +122,18 @@ describe("Fail cases User routes", () => {
         })
       );
     expect(response.statusCode).toBe(404);
+  });
+
+  test("GET /theme/:userId - Get a non-existent user's theme", async () => {
+    const response = await request(app).get("/theme/notTestUserId");
+
+    expect(response.statusCode).toBe(404);
+  });
+
+  test("PUT /theme/:userId - Updates a non-existent user's theme", async () => {
+    const response = await request(app).put("/theme/notTestUserId");
+
+    expect(response.statusCode).toBe(403);
   });
 
   test("PATCH /users/:userId/toggle-suspend", async () => {
