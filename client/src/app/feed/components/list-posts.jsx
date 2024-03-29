@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SocialPost from "./social-post";
+import SocialPost from "../../social/components/SocialPost";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function ListPosts() {
@@ -32,17 +32,20 @@ export default function ListPosts() {
     <div>
       {posts.map(post => (
         <SocialPost
-          key={post.uuid}
-          uuid={post.uuid}
-          header={post.header}
-          description={post.description}
-          tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-          userName={post.userName}
-        />
+        key={post.id}
+        uuid={post.uuid}
+        header={post.header}
+        description={post.description}
+        tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+        userName={post.userName}
+        tripId={post.tripId}
+        clickable={true}
+        images={post.images}
+      />
       ))}
     </div>
   ) : (

@@ -260,6 +260,26 @@ const UserController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async updateUserModeByUserId(req, res) {
+    try {
+      const { userId } = req.params;
+      const { isPublic } = req.body;
+      // if (!isPublic) {
+      //   return res.status(500).json({ error: "Internal Server Error" });
+      // }
+      const user = await User.findOne({ where: { userId } });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      user.isPublic = isPublic;
+      await user.save();
+      res.status(200).json({ message: "User mode updated successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  
 };
 
 module.exports = UserController;
