@@ -8,7 +8,8 @@ export const handleBlockUser = async (user, userName, block) => {
 
   try {
     const method = block ? "POST" : "DELETE";
-    const response = await fetch(`/api/block/profile/${user.sub}`, {
+
+    const response = await fetch(`/api/block/${userName}/${user.sub}`, {
       method,
       headers: {
         "Content-Type": "application/json",
