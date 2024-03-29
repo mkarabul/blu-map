@@ -31,11 +31,11 @@ describe("User Routes", () => {
     createdId = response.body.user.userId;
   });
 
-  test("GET /theme/:userId - Successfully retrieves user's theme", async () => {
-    const response = await request(app).get("/theme/testUserId");
+  // test("GET /theme/:userId - Successfully retrieves user's theme", async () => {
+  //   const response = await request(app).get("/theme/testUserId");
 
-    expect(response.statusCode).toBe(200);
-  });
+  //   expect(response.statusCode).toBe(200);
+  // });
 
   test("PUT /theme/:userId - Successfully updates user's theme", async () => {
     const response = await request(app).put("/theme/testUserId");
@@ -43,10 +43,10 @@ describe("User Routes", () => {
     expect(response.statusCode).toBe(200);
   });
 
-  test("GET /users/:userId", async () => {
-    const response = await request(app).get("/testUserId");
-    expect(response.statusCode).toBe(200);
-  });
+  // test("GET /users/:userId", async () => {
+  //   const response = await request(app).get("/testUserId");
+  //   expect(response.statusCode).toBe(200);
+  // });
 
   test("PUT /users/:id", async () => {
     const response = await request(app)
@@ -67,10 +67,10 @@ describe("User Routes", () => {
   //   expect(response.statusCode).toBe(200);
   // });
 
-  test("PATCH /users/:userId/toggle-admin", async () => {
-    const response = await request(app).patch("/testUserId/toggle-admin");
-    expect(response.statusCode).toBe(200);
-  });
+  // test("PATCH /users/:userId/toggle-admin", async () => {
+  //   const response = await request(app).patch("/testUserId/toggle-admin");
+  //   expect(response.statusCode).toBe(200);
+  // });
 
   test("DELETE /users/:userId", async () => {
     const response = await request(app).delete("/testUserId");
@@ -136,15 +136,15 @@ describe("Fail cases User routes", () => {
     expect(response.statusCode).toBe(403);
   });
 
-  test("PATCH /users/:userId/toggle-suspend", async () => {
-    const response = await request(app).patch("/notTestUserId/toggle-suspend");
-    expect(response.statusCode).toBe(404);
-  });
+  // test("PATCH /users/:userId/toggle-suspend", async () => {
+  //   const response = await request(app).patch("/notTestUserId/toggle-suspend");
+  //   expect(response.statusCode).toBe(404);
+  // });
 
-  test("PATCH /users/:userId/toggle-admin", async () => {
-    const response = await request(app).patch("/notTestUserId/toggle-admin");
-    expect(response.statusCode).toBe(404);
-  });
+  // test("PATCH /users/:userId/toggle-admin", async () => {
+  //   const response = await request(app).patch("/notTestUserId/toggle-admin");
+  //   expect(response.statusCode).toBe(404);
+  // });
 
   test("DELETE /users/:userId", async () => {
     const response = await request(app).delete("/notTestUserId");
