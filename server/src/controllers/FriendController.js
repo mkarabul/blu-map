@@ -8,7 +8,9 @@ const FriendController = {
     try {
       let friends = await Friend.findAll({
         where: { userId, isPending: false },
-        attributes: ["friendUserName"],
+        attributes: [
+          [Friend.sequelize.literal('"friendUserName"'), "userName"],
+        ],
       });
 
       const friends2 = await Friend.findAll({

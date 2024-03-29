@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
 
-export default function FriendNotification({ userName }) {
-  const [isFriend, setIsFriend] = useState(false);
-  const [isPending, setIsPending] = useState(false);
+export default function FriendNotification({
+  userName,
+  onResponse,
+  setConfirmationMessage,
+  setErrorMessage,
+}) {
   const [isRequesting, setIsRequesting] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0);
 
   const { user } = useUser();
 
@@ -25,12 +26,15 @@ export default function FriendNotification({ userName }) {
       });
       const data = await response.json();
       if (data && Object.keys(data).length !== 0) {
-        setIsFriend(true);
-        setIsPending(false);
+        setConfirmationMessage("Friend request accepted.");
+        setErrorMessage("");
+        onResponse(userName);
       }
     } catch (error) {
       console.error("Error accepting friend request:", error);
-      setIsError(true);
+      setConfirmationMessage("");
+      setErrorMessage("Failed to accept friend request.");
+      onResponse(userName);
     }
     setIsRequesting(false);
   };
@@ -47,12 +51,13 @@ export default function FriendNotification({ userName }) {
       });
       const data = await response.json();
       if (data && Object.keys(data).length !== 0) {
-        setIsFriend(false);
-        setIsPending(false);
+        setConfirmationMessage("Friend request rejected.");
+        setErrorMessage("");
       }
     } catch (error) {
       console.error("Error rejecting friend request:", error);
-      setIsError(true);
+      setConfirmationMessage("");
+      setErrorMessage("Failed to recejt friend request.");
     }
     setIsRequesting(false);
   };
@@ -73,7 +78,6 @@ export default function FriendNotification({ userName }) {
         <button
           onClick={() => {
             handleFriendAccept();
-            setRefreshKey((oldKey) => oldKey + 1);
           }}
           disabled={isRequesting}
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
@@ -81,7 +85,9 @@ export default function FriendNotification({ userName }) {
           Accept
         </button>
         <button
-          onClick={handleFriendReject}
+          onClick={() => {
+            handleFriendReject();
+          }}
           disabled={isRequesting}
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
         >

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import FriendButton from "../../profile/components/FriendButton";
 
 export default function SearchButton() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,7 +39,7 @@ export default function SearchButton() {
 
   return (
     <div className="flex flex-col items-center justify-center relative">
-      <div className="relative">
+      <div className="relative mb-4">
         <input
           type="text"
           value={searchTerm}
@@ -72,7 +71,6 @@ export default function SearchButton() {
               <span>{friend.userName}</span>
             </div>
           </Link>
-          <FriendButton userName={friend.userName} />
         </div>
       ))}
     </div>

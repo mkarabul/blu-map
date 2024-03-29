@@ -8,6 +8,8 @@ export default function Notifications() {
   const [showModal, setShowModal] = useState(false);
   const [connections, setConnections] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { user } = useUser();
 
@@ -69,6 +71,12 @@ export default function Notifications() {
     }
   };
 
+  const handleFriendRequestResponse = (userName) => {
+    setFriendRequests((prevRequests) =>
+      prevRequests.filter((request) => request.userName !== userName)
+    );
+  };
+
   return (
     <div className={`container mx-auto px-8 my-8`}>
       <h1 className="text-center text-4xl font-bold mb-4">Notifications</h1>
@@ -94,6 +102,14 @@ export default function Notifications() {
         </div>
       )}
       <div className="space-y-4">
+        {confirmationMessage !== "" && (
+          <div className="text-green-500 text-center">
+            {confirmationMessage}
+          </div>
+        )}
+        {errorMessage !== "" && (
+          <div className="text-red-500 text-center">{errorMessage}</div>
+        )}
         <h2 className="text-2xl font-semibold">Connections</h2>
         <div>
           {friendRequests.length > 0 && (
@@ -104,6 +120,9 @@ export default function Notifications() {
                   <FriendNotification
                     key={index}
                     userName={friendRequest.userName}
+                    onResponse={handleFriendRequestResponse}
+                    setConfirmationMessage={setConfirmationMessage}
+                    setErrorMessage={setErrorMessage}
                   />
                 ))}
               </div>
