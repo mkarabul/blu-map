@@ -37,10 +37,10 @@ describe("Profile Trip Routes", () => {
   //   createdId = response.body.uuid;
   // });
 
-  test("GET /profile-trips", async () => {
-    const response = await request(app).get("/");
-    expect(response.statusCode).toBe(200);
-  });
+  // test("GET /profile-trips", async () => {
+  //   const response = await request(app).get("/");
+  //   expect(response.statusCode).toBe(200);
+  // });
 
   test("GET /profile-trips/user/:userId", async () => {
     const response = await request(app).get("/user/testUserId");

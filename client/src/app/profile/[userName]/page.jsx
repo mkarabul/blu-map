@@ -1,5 +1,6 @@
 import React from "react";
-import ListPosts from "../../social/components/ListPosts";
+// import ListPosts from "../../social/components/ListPosts";
+import ListPosts from "../components/ListPosts";
 import ProfileHeader from "../components/ProfileHeader";
 import { getSession } from "@auth0/nextjs-auth0";
 

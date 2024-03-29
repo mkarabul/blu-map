@@ -31,6 +31,13 @@ router.get("/:uuid", ProfileTripController.getTripById);
 router.patch("/:uuid/toggle-public", ProfileTripController.togglePublicbyUUID);
 
 router.get("", ProfileTripController.getSocialProfileTrips);
+router.get("/social/", ProfileTripController.getSocialPublicProfileTrips);
+
+
+router.put(
+  "/user/:userId/switch-mode",
+  ProfileTripController.updateProfileTripModebyID
+);
 
 router.patch("/:uuid/increment-likes", ProfileTripController.incrementLikes);
 router.patch(

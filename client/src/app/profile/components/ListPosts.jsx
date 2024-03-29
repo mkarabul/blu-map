@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import ProfilePost from "./ProfilePost";
-
+import SocialPost from "../../social/components/SocialPost";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
@@ -15,7 +15,7 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
   useEffect(() => {
     const checkProfilePrivacy = async () => {
       setIsLoadingPrivacy(true);
-      const response = await fetch(`/api/users`);
+      const response = await fetch(`/api/admin`);
       const usersData = await response.json();
       const userProfile = usersData.find(user => user.userName === userName);
       
@@ -60,6 +60,7 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
         setFilteredPosts([]);
       }
     }
+
   }, [posts, isOwner, isProfilePrivate, isFollowing, isLoadingPrivacy, isLoadingFollowing]);
 
   const isLoading = isLoadingPosts || isLoadingPrivacy || isLoadingFollowing;
@@ -75,22 +76,40 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
       ) : (
         <>
           {filteredPosts.map((post) => (
-            <ProfilePost
-              key={post.uuid}
-              uuid={post.uuid}
-              header={post.header}
-              description={post.description}
-              isPublic={post.isPublic}
-              isSocial={post.isSocial}
-              tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-              userName={post.userName}
-              tripId={post.tripId}
-              images={post.images}
-            />
+            isOwner ? (
+              <ProfilePost
+                key={post.uuid}
+                uuid={post.uuid}
+                header={post.header}
+                description={post.description}
+                isPublic={post.isPublic}
+                isSocial={post.isSocial}
+                tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+                userName={post.userName}
+                tripId={post.tripId}
+                images={post.images}
+              />
+            ) : (
+              <SocialPost
+                key={post.id}
+                uuid={post.uuid}
+                header={post.header}
+                description={post.description}
+                tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+                userName={post.userName}
+                tripId={post.tripId}
+                clickable={true}
+                images={post.images}
+              />
+            )
           ))}
           {filteredPosts.length === 0 && (
             <h3 className="text-center">
