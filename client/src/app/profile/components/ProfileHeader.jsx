@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useReportLogic } from "./ReportHook";
 import { useFollow } from "./FollowHook";
 import { handleBlockUser } from "./BlockUser";
+import FriendButton from "./FriendButton";
 
 export default function ProfileHeader({
   postCount,
@@ -186,6 +187,7 @@ export default function ProfileHeader({
         </div>
       </div>
       <h1 className="text-white text-3xl font-semibold">{userName}</h1>
+      <FriendButton userName={userName} />
       <div className="flex space-x-4 text-white mt-4">
         <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center cursor-pointer">
           <i className="fas fa-user-friends mr-2"></i>

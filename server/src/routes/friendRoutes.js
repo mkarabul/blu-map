@@ -30,7 +30,7 @@ router.get(
 );
 
 router.get(
-  "/:userId/is-friend",
+  "/:userName/:userId/is-friend",
   checkJwt,
   getUserInfoMiddleware,
   FriendController.isFriend

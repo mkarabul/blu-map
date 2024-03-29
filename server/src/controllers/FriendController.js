@@ -3,8 +3,9 @@ const User = require("../models/User");
 
 const FriendController = {
   async getUserFriends(req, res) {
-    const userId = req.params.userId;
-    const friendId = req.params.userId;
+    const { userId } = req.params;
+    const friendId = userId;
+    console.log("userId", userId);
     try {
       const friends = await Friend.findAll({
         where: { userId, isPending: false },
@@ -18,43 +19,56 @@ const FriendController = {
       }
       res.status(200).json(friends);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
   async isFriend(req, res) {
-    const { userId, friendUserName } = req.body;
+    const { userName, userId } = req.params;
     const friendId = userId;
-    const userName = friendUserName;
     try {
-      const friend = await Friend.findOne({
-        where: { userId, friendUserName, isPending: false },
+      let friend = await Friend.findOne({
+        where: { userName, friendId },
       });
       if (friend === null) {
-        const friend = await Friend.findOne({
-          where: { friendId, userName, isPending: false },
+        friend = await Friend.findOne({
+          where: { friendUserName: userName, userId },
         });
       }
-      if (friend) {
-        res.status(200).json({ isFriend: true });
+      if (friend === null) {
+        res.status(200).json({ isFriend: false, isPending: false });
       } else {
-        res.status(200).json({ isFriend: false });
+        const isPending = friend.isPending;
+        if (isPending) {
+          res.status(200).json({ isFriend: false, isPending: true });
+        } else {
+          res.status(200).json({ isFriend: true, isPending: false });
+        }
       }
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
   async addFriend(req, res) {
-    const { userId, friendUserName } = req.body;
+    const { userName } = req.params;
+    const { userId } = req.body;
     try {
-      const user = await User.findOne({ where: { userId } });
-      const userName = user.userName;
-      const friend = await User.findOne({
-        where: { userName: friendUserName },
+      const friend = await User.findOne({ where: { userName } });
+      const friendId = friend.userId;
+      const user = await User.findOne({
+        where: { userId: userId },
       });
-      const friendUserId = friend.userId;
-      await Friend.create({ userName, userId, friendUserName, friendUserId });
+      const currentUser = user.userName;
+      await Friend.create({
+        userName: currentUser,
+        userId,
+        friendUserName: userName,
+        friendId,
+      });
       res.status(201).json({ message: "Friend request sent successfully" });
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -68,6 +82,7 @@ const FriendController = {
       await friend.save();
       res.status(200).json({ message: "Friend request accepted successfully" });
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
