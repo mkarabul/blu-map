@@ -67,7 +67,7 @@ export default function ProfilePost({
         </div>
         {/* Images */}
 
-        {images && images.length > 1 && (
+        {images && images.length > 0 && (
           <div className="flex flex-col items-center space-y-4 mb-4">
             <img
               src={images[currentImageIndex]}
