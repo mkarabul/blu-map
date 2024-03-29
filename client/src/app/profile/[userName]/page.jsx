@@ -103,7 +103,7 @@ export default async function Page({ params }) {
         profileName={userData.profileName}
         isOwner={false}
       />
-      <BlockedView user={user} userId={userName}>
+      <BlockedView userName={userName}>
         {/* <ListPosts /> */}
         <ListPosts
           posts={posts}
