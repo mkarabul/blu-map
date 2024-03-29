@@ -61,38 +61,42 @@ export default function SocialPost({
             </div>
           </Link>
         </div>
+
         {/* Images Row */}
-        <div className="flex flex-col items-center space-y-4 mb-4">
-          <img
-            src={images[currentImageIndex]}
-            alt={`Image ${currentImageIndex + 1}`}
-            className="rounded-lg"
-          />
-          <div className="flex justify-center space-x-4 w-full items-center">
-            <button
-              onClick={handlePrevImage}
-              disabled={currentImageIndex === 0}
-            >
-              <FontAwesomeIcon icon={faArrowLeft} />
-            </button>
-            <div className="flex space-x-2">
-              {images.map((image, index) => (
-                <span
-                  key={index}
-                  className={`inline-block rounded-full bg-gray-400 ${
-                    currentImageIndex === index ? "h-3 w-3" : "h-2 w-2"
-                  }`}
-                />
-              ))}
+        {images && images.length > 0 && (
+          <div className="flex flex-col items-center space-y-4 mb-4">
+            <img
+              src={images[currentImageIndex]}
+              alt={`Image ${currentImageIndex + 1}`}
+              className="rounded-lg"
+            />
+            <div className="flex justify-center space-x-4 w-full items-center">
+              <button
+                onClick={handlePrevImage}
+                disabled={currentImageIndex === 0}
+              >
+                <FontAwesomeIcon icon={faArrowLeft} />
+              </button>
+              <div className="flex space-x-2">
+                {images.map((image, index) => (
+                  <span
+                    key={index}
+                    className={`inline-block rounded-full bg-gray-400 ${
+                      currentImageIndex === index ? "h-3 w-3" : "h-2 w-2"
+                    }`}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={handleNextImage}
+                disabled={currentImageIndex === images.length - 1}
+              >
+                <FontAwesomeIcon icon={faArrowRight} />
+              </button>
             </div>
-            <button
-              onClick={handleNextImage}
-              disabled={currentImageIndex === images.length - 1}
-            >
-              <FontAwesomeIcon icon={faArrowRight} />
-            </button>
           </div>
-        </div>
+        )}
+
         {/* Trip description */}
         {clickable ? (
           <Link href={`/post/${uuid}`}>
@@ -115,6 +119,7 @@ export default function SocialPost({
             </div>
           </>
         )}
+
         {/* Buttons on the bottom of a post */}
         <div className="flex flex-col md:flex-row justify-start items-center mt-4">
           <div className="flex flex-grow space-x-2 mb-2 md:mb-0">
@@ -148,6 +153,7 @@ export default function SocialPost({
               </button>
             </Link>
           </div>
+
           {/* Separate div for the last button (right-most) */}
           {clickable ? (
             <Link href={`/post/${uuid}`}>
