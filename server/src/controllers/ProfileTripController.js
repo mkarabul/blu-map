@@ -135,9 +135,7 @@ const ProfileTripsController = {
           "images",
         ],
       });
-      if (!profileTrip.isPublic) {
-        return res.status(403).json({ error: "Trip is not public" });
-      }
+  
       const imageUrls = [];
       for (let i = 0; i < profileTrip.images.length; i++) {
         const command = new GetObjectCommand({
