@@ -48,48 +48,38 @@ export default function Page() {
   const toggleMode = async () => {
     try {
       const newMode = mode === "public" ? "private" : "public";
-      const response = await fetch(`/api/users/${userID}/toggle-public`, {
-        method: "PATCH",
+      alert(`You are trying now in ${newMode} mode`);
+      const response = await fetch(`/api/users/mode/${userID}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ mode: newMode }),
+        body: JSON.stringify({ "isPublic": newMode === "public" })
       });
 
       if (!response.ok) {
-        throw new Error("Failed to toggle mode");
+        throw new Error("Failed");
       }
 
       setMode(newMode);
-      alert(`You are now in ${newMode} mode`);
-
-      const adminResponse = await fetch(`/api/admin/${userID}`);
-      const userData = await adminResponse.json();
-      const userName = userData.userName;
-
-      const postResponse = await fetch(`/api/profile-trip`);
-      const postData = await postResponse.json();
-
-      for (const post of postData) {
-        if (post.userName === userName) {
-          await fetch(`/api/profile-trip/${post.uuid}/toggle-public`, {
-            method: "PATCH",
-            headers: {
+      const response2 = await fetch(`/api/profile-trip/user/${userID}/switch-mode`, {
+          method: "PUT",
+          headers: {
               "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              isPublic: !post.isPublic,
-            }),
-          });
-        }
+          },
+          body: JSON.stringify({ "isPublic": newMode === "public" })
+      });
+      if (!response2.ok) {
+        throw new Error("Failed");
       }
+    
     } catch (error) {
       console.error("Error toggling mode:", error);
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Display loading message
+    return <div>Loading...</div>;
   }
 
   return (

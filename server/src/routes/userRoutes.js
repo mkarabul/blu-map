@@ -44,6 +44,12 @@ router.put(
   UserController.updateUserThemeByUserId
 );
 
+
+router.put(
+  "/mode/:userId",
+  UserController.updateUserModeByUserId
+);
+
 router.patch("/:userId/toggle-admin", UserController.toggleUserAdminStatusById);
 
 router.patch("/:userId/toggle-public", UserController.toggleUserPublicById);
