@@ -50,4 +50,11 @@ router.get(
   FriendController.getPendingFriends
 );
 
+router.delete(
+  "/:userName",
+  checkJwt,
+  getUserInfoMiddleware,
+  FriendController.deleteFriend
+);
+
 module.exports = router;

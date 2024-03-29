@@ -8,6 +8,9 @@ const {
 const router = express.Router();
 
 router.get("/", UserController.getAllUsers);
+
+router.get("/usernames", UserController.getAllUsernames);
+
 router.get(
   "/:userId",
   checkJwt,
@@ -44,15 +47,10 @@ router.put(
   UserController.updateUserThemeByUserId
 );
 
-
-router.put(
-  "/mode/:userId",
-  UserController.updateUserModeByUserId
-);
+router.put("/mode/:userId", UserController.updateUserModeByUserId);
 
 router.patch("/:userId/toggle-admin", UserController.toggleUserAdminStatusById);
 
 router.patch("/:userId/toggle-public", UserController.toggleUserPublicById);
-
 
 module.exports = router;

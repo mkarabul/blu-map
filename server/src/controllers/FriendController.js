@@ -5,18 +5,18 @@ const FriendController = {
   async getUserFriends(req, res) {
     const { userId } = req.params;
     const friendId = userId;
-    console.log("userId", userId);
     try {
-      const friends = await Friend.findAll({
+      let friends = await Friend.findAll({
         where: { userId, isPending: false },
         attributes: ["friendUserName"],
       });
-      if (friends.length === 0) {
-        const friends = await Friend.findAll({
-          where: { friendId, isPending: false },
-          attributes: ["userName"],
-        });
-      }
+
+      const friends2 = await Friend.findAll({
+        where: { friendId, isPending: false },
+        attributes: ["userName"],
+      });
+
+      friends = friends.concat(friends2);
       res.status(200).json(friends);
     } catch (error) {
       console.error(error);
@@ -74,9 +74,7 @@ const FriendController = {
   },
   async acceptFriend(req, res) {
     const { userName } = req.params;
-    console.log(req.body);
     const { userId } = req.body;
-    console.log("userId", userId);
     try {
       const friend = await Friend.findOne({
         where: { userName, friendId: userId },
@@ -91,9 +89,7 @@ const FriendController = {
   },
   async rejectFriend(req, res) {
     const { userName } = req.params;
-    console.log(req.body);
     const { userId } = req.body;
-    console.log("userId", userId);
     try {
       const friend = await Friend.findOne({
         where: { userName, friendId: userId },
@@ -113,6 +109,29 @@ const FriendController = {
         attributes: ["userName"],
       });
       res.status(200).json(friends);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  async deleteFriend(req, res) {
+    const { userName } = req.params;
+    const { userId } = req.body;
+    const friendId = userId;
+    try {
+      let friend = await Friend.findOne({
+        where: { userName, friendId },
+      });
+      if (friend === null) {
+        friend = await Friend.findOne({
+          where: { friendUserName: userName, userId },
+        });
+      }
+      if (friend === null) {
+        return res.status(404).json({ error: "Friend not found" });
+      }
+      await friend.destroy();
+      res.status(200).json({ message: "Friend deleted successfully" });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });

@@ -28,6 +28,17 @@ const UserController = {
     }
   },
 
+  async getAllUsernames(req, res) {
+    try {
+      const users = await User.findAll({
+        attributes: ["userName"],
+      });
+      res.status(200).json(users);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
   // Method to get a user by userId
   async getUserByUserId(req, res) {
     try {
@@ -279,7 +290,6 @@ const UserController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
-  
 };
 
 module.exports = UserController;

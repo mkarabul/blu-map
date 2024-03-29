@@ -16,7 +16,6 @@ export default function FriendButton({ userName }) {
         `/api/friend/${userName}/${user?.sub}/is-friend`
       );
       const data = await response.json();
-      console.log("data", data);
       if (data && Object.keys(data).length !== 0) {
         setIsFriend(data.isFriend);
         setIsPending(data.isPending);
@@ -52,44 +51,16 @@ export default function FriendButton({ userName }) {
     setIsRequesting(false);
   };
 
-  const handleFriendAccept = async () => {
-    setIsRequesting(true);
-    try {
-      const response = await fetch(
-        `${process.env.API_URL}/api/friends/accept/${userName}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      const data = await response.json();
-      if (data && Object.keys(data).length !== 0) {
-        setIsFriend(true);
-        setIsPending(false);
-      }
-    } catch (error) {
-      console.error("Error accepting friend request:", error);
-      setIsError(true);
-    }
-    setIsRequesting(false);
-  };
-
   const handleUnfriend = async () => {
     setIsRequesting(true);
     try {
-      const response = await fetch(
-        `${process.env.API_URL}/api/friends/reject/${userName}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const response = await fetch(`/api/friend/${userName}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user?.sub }),
+      });
       const data = await response.json();
       if (data && Object.keys(data).length !== 0) {
         setIsFriend(false);
