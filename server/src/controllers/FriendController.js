@@ -81,6 +81,9 @@ const FriendController = {
       const friend = await Friend.findOne({
         where: { userName, friendId: userId },
       });
+      if (!friend) {
+        return res.status(404).json({ error: "Friend request not found" });
+      }
       friend.isPending = false;
       await friend.save();
       res.status(200).json({ message: "Friend request accepted successfully" });
@@ -96,6 +99,9 @@ const FriendController = {
       const friend = await Friend.findOne({
         where: { userName, friendId: userId },
       });
+      if (!friend) {
+        return res.status(404).json({ error: "Friend request not found" });
+      }
       await friend.destroy();
       res.status(200).json({ message: "Friend request rejected successfully" });
     } catch (error) {
@@ -134,6 +140,34 @@ const FriendController = {
       }
       await friend.destroy();
       res.status(200).json({ message: "Friend deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  async getAllActiveFriends(req, res) {
+    try {
+      const friends = await Friend.findAll({
+        where: { isPending: false },
+        attributes: [
+          [Friend.sequelize.literal('"friendUserName"'), "userName"],
+        ],
+      });
+      res.status(200).json(friends);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  async getAllPendingFriends(req, res) {
+    try {
+      const friends = await Friend.findAll({
+        where: { isPending: true },
+        attributes: [
+          [Friend.sequelize.literal('"friendUserName"'), "userName"],
+        ],
+      });
+      res.status(200).json(friends);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
