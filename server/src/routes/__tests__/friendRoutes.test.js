@@ -1,13 +1,44 @@
 const request = require("supertest");
 const express = require("express");
 const friendRoutes = require("../friendRoutes");
+const userRoutes = require("../userRoutes");
+const User = require("../../models/User");
+
+const users = [
+  {
+    userId: "testUserId1",
+    userName: "testUserName1",
+    accessToken: "test1",
+    email: "test1@email.com",
+  },
+  {
+    userId: "testUserId2",
+    userName: "testUserName2",
+    accessToken: "test2",
+    email: "test2@email.com",
+  },
+];
 
 jest.mock("../../middleware/authMiddleware", () => ({
   checkJwt: jest.fn((req, res, next) => {
     next();
   }),
   getUserInfoMiddleware: jest.fn((req, res, next) => {
-    req.user = { sub: "testUserId" };
+    if (req.headers.Authorization === "test1") {
+      req.user = {
+        sub: "testUserId1",
+        userName: "testUserName1",
+        accessToken: "test1",
+        email: "testuser1@mail.com",
+      };
+    } else {
+      req.user = {
+        sub: "testUserId2",
+        userName: "testUserName2",
+        accessToken: "test2",
+        email: "testuser2@mail.com",
+      };
+    }
     next();
   }),
 }));
@@ -15,30 +46,95 @@ jest.mock("../../middleware/authMiddleware", () => ({
 const app = express();
 app.use(express.json());
 app.use("/", friendRoutes);
+app.use("/api/users", userRoutes);
 
 describe("Friend Routes - Success Cases", () => {
+  beforeAll(async () => {
+    const user1 = await User.create({
+      userId: users[0].userId,
+      email: users[0].email,
+      userName: users[0].userName,
+    });
+    const user2 = await User.create({
+      userId: users[1].userId,
+      email: users[1].email,
+      userName: users[1].userName,
+    });
+
+    console.log(user1, user2);
+  });
+
+  afterAll(async () => {
+    await User.destroy({
+      where: {
+        userId: users[0].userId,
+      },
+    });
+
+    await User.destroy({
+      where: {
+        userId: users[1].userId,
+      },
+    });
+  });
+
+  test("POST /:userName - Send a successful friend request", async () => {
+    const response = await request(app)
+      .post("/testUserName2")
+      .send({ userId: "testUserId1" });
+    expect(response.statusCode).toBe(201);
+  });
+
+  test("PATCH /:userName/reject-friend - Reject a friend request", async () => {
+    const response = await request(app)
+      .patch("/testUserName1/reject-friend")
+      .send({ userId: "testUserId2" });
+    expect(response.statusCode).toBe(200);
+  });
+
+  test("POST /:userName - Send a successful friend request", async () => {
+    const response = await request(app)
+      .post("/testUserName2")
+      .send({ userId: "testUserId1" });
+    expect(response.statusCode).toBe(201);
+  });
+
+  test("PATCH /:userName/accept-friend - Accept a friend request", async () => {
+    const response = await request(app)
+      .patch("/testUserName1/accept-friend")
+      .send({ userId: "testUserId2" });
+    expect(response.statusCode).toBe(200);
+  });
+
+  test("DELETE /:userName - Delete a friend", async () => {
+    const response = await request(app)
+      .delete("/testUserName1")
+      .send({ userId: "testUserId2" });
+    expect(response.statusCode).toBe(200);
+  });
+
   test("GET /:userId/friends - Get user's friends", async () => {
-    const response = await request(app).get("/testUserId/friends");
+    const response = await request(app).get("/testUserId1/friends");
     expect(response.statusCode).toBe(200);
     expect(response.body).toBeInstanceOf(Array);
   });
 
   test("GET /:userName/:userId/is-friend - Check if users are friends", async () => {
     const response = await request(app).get(
-      "/testUserName/testUserId/is-friend"
+      "/testUserName/testUserId1/is-friend"
     );
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty("isFriend");
   });
 
   test("GET /:userId/pending-friends - Get user's pending friend requests", async () => {
-    const response = await request(app).get("/testUserId/pending-friends");
+    const response = await request(app).get("/testUserId1/pending-friends");
     expect(response.statusCode).toBe(200);
     expect(response.body).toBeInstanceOf(Array);
   });
 
   test("GET /:userId/friends - Validate response content", async () => {
-    const response = await request(app).get("/testUserId/friends");
+    const response = await request(app).get("/testUserId1/friends");
     expect(response.statusCode).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
   });
@@ -64,18 +160,6 @@ describe("Friend Routes - Not Found Cases", () => {
       .delete("/nonExistingUserName")
       .send({ userId: "testUserId" });
     expect(response.statusCode).toBe(404);
-  });
-
-  test("Successfully get all active friends", async () => {
-    const response = await request(app).get("/active-friends");
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toBeInstanceOf(Array);
-  });
-
-  test("Successfully get all pending friends", async () => {
-    const response = await request(app).get("/pending-friends");
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toBeInstanceOf(Array);
   });
 });
 
