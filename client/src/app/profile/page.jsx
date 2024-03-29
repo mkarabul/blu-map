@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import ListPosts from "./components/ListPosts";
 import ProfileHeader from "./components/ProfileHeader";
 import useLoadPosts from "./components/ProfilePostsHook";

@@ -3,14 +3,22 @@
 import React, { useState, useEffect } from "react";
 import SocialPost from "./SocialPost";
 
+import { useUser } from "@auth0/nextjs-auth0/client";
+
+
 export default function ListPosts() {
   const [posts, setPosts] = useState([]);
 
+  const { user } = useUser();
+  
+
   const getPosts = async () => {
-    const response = await fetch("/api/profile-trip/");
+    const response = await fetch(`/api/profile-trip/`);
     const data = await response.json();
+    console.log(data);
     setPosts(data);
   };
+  
 
   useEffect(() => {
     getPosts();

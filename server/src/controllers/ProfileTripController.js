@@ -1,4 +1,5 @@
 const ProfileTrip = require("../models/ProfileTrip");
+const Following = require("../models/followSystem");
 const Like = require("../models/Like");
 const Dislike = require("../models/Dislike");
 const Comment = require("../models/Comment");
@@ -134,9 +135,7 @@ const ProfileTripsController = {
           "images",
         ],
       });
-      if (!profileTrip.isPublic) {
-        return res.status(403).json({ error: "Trip is not public" });
-      }
+  
       const imageUrls = [];
       for (let i = 0; i < profileTrip.images.length; i++) {
         const command = new GetObjectCommand({
@@ -313,6 +312,66 @@ const ProfileTripsController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+
+
+  async updateProfileTripModebyID(req, res) {
+    const { userId } = req.params;
+    const { isPublic } = req.body;
+  
+    try {
+      const [updatedCount] = await ProfileTrip.update(
+        { isPublic: isPublic }, 
+        { where: { userId: userId } }
+      );
+  
+      res.json({ message: "Profile trips updated successfully", details: { updatedCount: updatedCount } });
+    } catch (error) {
+      console.error("Error updating profile trips", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+
+  async getSocialPublicProfileTrips(req, res) {
+    const { userId } = req.params;
+    try {
+      const profileTripsData = await ProfileTrip.findAll({
+        where: { isSocial: true },
+        attributes: [
+          "id",
+          "uuid",
+          "userName",
+          "description",
+          "header",
+          "tripDate",
+          "tripId",
+          "isPublic",
+          "images",
+        ],
+      });
+      const profileTrips = profileTripsData.filter(trip => trip.isPublic);
+
+      for (let i = 0; i < profileTrips.length; i++) {
+        const imageUrls = [];
+        for (let j = 0; j < profileTrips[i].images.length; j++) {
+          const command = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `${profileTrips[i].tripId}/${profileTrips[i].images[j]}`,
+          });
+          const url = await getSignedUrl(s3Client, command, {
+            expiresIn: 3600,
+          });
+          imageUrls.push(url);
+        }
+        profileTrips[i].images = imageUrls;
+      }
+      res.status(200).json(profileTrips);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+
+  
 };
 
 module.exports = ProfileTripsController;

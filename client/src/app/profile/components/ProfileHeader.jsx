@@ -153,7 +153,6 @@ export default function ProfileHeader({
       setAgeNew(0);
       setIsEditOpen(false);
       setProfileNameNew("");
-      setIsOpen(false);
     } else {
       console.error("Error updating user fields");
     }
