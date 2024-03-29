@@ -18,6 +18,13 @@ router.post(
   ProfileTripController.createProfileTrip
 );
 
+router.delete(
+  "/:uuid",
+  checkJwt,
+  getUserInfoMiddleware,
+  ProfileTripController.deleteProfileTrip
+);
+
 router.get(
   "/user/:userId",
   checkJwt,
@@ -32,7 +39,6 @@ router.patch("/:uuid/toggle-public", ProfileTripController.togglePublicbyUUID);
 
 router.get("", ProfileTripController.getSocialProfileTrips);
 router.get("/social/", ProfileTripController.getSocialPublicProfileTrips);
-
 
 router.put(
   "/user/:userId/switch-mode",

@@ -39,6 +39,20 @@ const ProfileTripsController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async deleteProfileTrip(req, res) {
+    try {
+      const { uuid } = req.params;
+      const profileTrip = await ProfileTrip.findOne({ where: { uuid } });
+      if (!profileTrip) {
+        return res.status(404).json({ error: "Trip not found" });
+      }
+      await profileTrip.destroy();
+      res.status(200).json({ message: "Trip deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
   async getProfileTrips(req, res) {
     try {
       const { userId } = req.params;
