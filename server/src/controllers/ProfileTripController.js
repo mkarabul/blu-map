@@ -331,11 +331,12 @@ const ProfileTripsController = {
     }
   },
 
+
   async getSocialPublicProfileTrips(req, res) {
-    const { userId } = req.params;
     try {
-      const profileTripsData = await ProfileTrip.findAll({
-        where: { isSocial: true },
+      const profileTrips = await ProfileTrip.findAll({
+        where: { isSocial: true,
+                  isPublic: true },
         attributes: [
           "id",
           "uuid",
@@ -348,8 +349,6 @@ const ProfileTripsController = {
           "images",
         ],
       });
-      const profileTrips = profileTripsData.filter(trip => trip.isPublic);
-
       for (let i = 0; i < profileTrips.length; i++) {
         const imageUrls = [];
         for (let j = 0; j < profileTrips[i].images.length; j++) {

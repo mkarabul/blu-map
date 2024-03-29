@@ -31,7 +31,7 @@ router.get("/:uuid", ProfileTripController.getTripById);
 router.patch("/:uuid/toggle-public", ProfileTripController.togglePublicbyUUID);
 
 router.get("", ProfileTripController.getSocialProfileTrips);
-router.get("/social/", ProfileTripController.getSocialPublicProfileTrips);
+router.get("/social/public", ProfileTripController.getSocialPublicProfileTrips);
 
 
 router.put(

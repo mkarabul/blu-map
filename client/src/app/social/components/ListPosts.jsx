@@ -13,7 +13,7 @@ export default function ListPosts() {
   
 
   const getPosts = async () => {
-    const response = await fetch(`/api/profile-trip/`);
+    const response = await fetch(`/api/profile-trip/social/public`);
     const data = await response.json();
     console.log(data);
     setPosts(data);
