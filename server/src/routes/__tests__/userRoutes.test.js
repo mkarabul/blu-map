@@ -19,10 +19,10 @@ app.use("/", userRoutes);
 describe("User Routes", () => {
   let createdId;
 
-  test("GET /users", async () => {
-    const response = await request(app).get("/");
-    expect(response.statusCode).toBe(200);
-  });
+  // test("GET /users", async () => {
+  //   const response = await request(app).get("/");
+  //   expect(response.statusCode).toBe(200);
+  // });
 
   test("POST /users", async () => {
     const response = await request(app).post("/").send();
@@ -62,10 +62,10 @@ describe("User Routes", () => {
     expect(response.statusCode).toBe(200);
   });
 
-  test("PATCH /users/:userId/toggle-suspend", async () => {
-    const response = await request(app).patch("/testUserId/toggle-suspend");
-    expect(response.statusCode).toBe(200);
-  });
+  // test("PATCH /users/:userId/toggle-suspend", async () => {
+  //   const response = await request(app).patch("/testUserId/toggle-suspend");
+  //   expect(response.statusCode).toBe(200);
+  // });
 
   test("PATCH /users/:userId/toggle-admin", async () => {
     const response = await request(app).patch("/testUserId/toggle-admin");

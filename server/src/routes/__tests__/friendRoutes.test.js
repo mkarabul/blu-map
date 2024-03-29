@@ -4,6 +4,8 @@ const friendRoutes = require("../friendRoutes");
 const userRoutes = require("../userRoutes");
 const User = require("../../models/User");
 
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
 const users = [
   {
     userId: "testUserId1",
@@ -60,8 +62,6 @@ describe("Friend Routes - Success Cases", () => {
       email: users[1].email,
       userName: users[1].userName,
     });
-
-    console.log(user1, user2);
   });
 
   afterAll(async () => {
