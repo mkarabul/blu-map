@@ -45,6 +45,19 @@ describe("Profile Trip Routes", () => {
     expect(response.statusCode).toBe(200);
   });
 
+  test("PUT /user/:userId/switch-mode", async () => {
+    const requestBody = {
+      isPublic: true,
+    };
+  
+    const response = await request(app)
+      .put("/user/testUserId/switch-mode")
+      .send(requestBody);
+  
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty("message", "Profile trips updated successfully");
+  });
+  
   test("GET / - Get social profile trips", async () => {
     const response = await request(app).get("/");
     expect(response.statusCode).toBe(200);
