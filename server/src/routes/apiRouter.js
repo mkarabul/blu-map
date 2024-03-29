@@ -14,6 +14,7 @@ const likeRoutes = require("./likeRoutes");
 const dislikeRoutes = require("./dislikeRoutes");
 const commentRoutes = require("./commentRoutes");
 const blockRoutes = require("./blockRoutes");
+const friendRoutes = require("./friendRoutes");
 const router = express.Router();
 
 router.use("/users", userRoutes);
@@ -30,5 +31,6 @@ router.use("/reports", reportRoutes);
 router.use("/follow", followSystemRoutes);
 router.use("/follow-request", followRequestRoutes);
 router.use("/block", blockRoutes);
+router.use("/friend", friendRoutes);
 
 module.exports = router;
