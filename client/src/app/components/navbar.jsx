@@ -4,7 +4,6 @@ import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { getSession } from "@auth0/nextjs-auth0";
 
-
 export default async function Navbar() {
   const session = await getSession();
   const user = session?.user;
@@ -33,8 +32,7 @@ export default async function Navbar() {
       <div className="right-section flex-none gap-2">
         <div className="form-control"></div>
         <div className="dropdown dropdown-end" style={{ paddingTop: "0rem" }}>
-
-        <Link href="/feed">
+          <Link href="/feed">
             <button className="btn btn-outline mr-4" style={{ width: "10rem" }}>
               Feed
             </button>
@@ -49,7 +47,6 @@ export default async function Navbar() {
               Trips
             </button>
           </Link>
-         
         </div>
 
         {/* Profile Section */}
@@ -90,13 +87,22 @@ const UserDropdown = () => {
           </Link>
         </li>
         <li>
+          <Link id="settings-link" className="justify-between" href="/friends">
+            Friends
+          </Link>
+        </li>
+        <li>
           <Link id="settings-link" className="justify-between" href="/settings">
             Settings
           </Link>
         </li>
 
         <li>
-          <Link id="notification-link" className="justify-between" href="/notifications">
+          <Link
+            id="notification-link"
+            className="justify-between"
+            href="/notifications"
+          >
             Notifications
           </Link>
         </li>

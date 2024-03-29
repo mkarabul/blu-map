@@ -135,7 +135,6 @@ const ProfileTripsController = {
           "images",
         ],
       });
-  
       const imageUrls = [];
       for (let i = 0; i < profileTrip.images.length; i++) {
         const command = new GetObjectCommand({
@@ -195,6 +194,7 @@ const ProfileTripsController = {
       profileTrip.increment("likes");
       res.status(200).json(profileTrip);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -313,18 +313,20 @@ const ProfileTripsController = {
     }
   },
 
-
   async updateProfileTripModebyID(req, res) {
     const { userId } = req.params;
     const { isPublic } = req.body;
-  
+
     try {
       const [updatedCount] = await ProfileTrip.update(
-        { isPublic: isPublic }, 
+        { isPublic: isPublic },
         { where: { userId: userId } }
       );
-  
-      res.json({ message: "Profile trips updated successfully", details: { updatedCount: updatedCount } });
+
+      res.json({
+        message: "Profile trips updated successfully",
+        details: { updatedCount: updatedCount },
+      });
     } catch (error) {
       console.error("Error updating profile trips", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -348,7 +350,7 @@ const ProfileTripsController = {
           "images",
         ],
       });
-      const profileTrips = profileTripsData.filter(trip => trip.isPublic);
+      const profileTrips = profileTripsData.filter((trip) => trip.isPublic);
 
       for (let i = 0; i < profileTrips.length; i++) {
         const imageUrls = [];
@@ -370,8 +372,6 @@ const ProfileTripsController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
-
-  
 };
 
 module.exports = ProfileTripsController;
