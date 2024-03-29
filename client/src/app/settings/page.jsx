@@ -1,85 +1,27 @@
 "use client";
-import { useState, useEffect } from "react";
-import Option from "./components/Option";
-import Profile from "./components/SettingsProfile";
-import NotificationButton from "./components/NotificationButton";
-import {
-  faServer,
-  faUser,
-  faBell,
-  faGlobe,
-  faHeadphones,
-  faRightToBracket,
-  faMoon,
-  faSun,
-  faEye,
-  faEyeSlash,
-} from "@fortawesome/free-solid-svg-icons";
+
+import React from 'react';
 import { useUser } from "@auth0/nextjs-auth0/client";
+import usePublicPrivateMode from './components/PublicPrivateMode';
+import Profile from "./components/SettingsProfile";
+import Option from "./components/Option";
+import NotificationButton from "./components/NotificationButton";
 import ThemeChanger from "./components/ThemeChanger";
+import { 
+  faUser, faBell, faServer, faGlobe, faHeadphones, 
+  faRightToBracket, faEye, faEyeSlash 
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Page() {
   const { user } = useUser();
-  const userID = user?.sub;
-
-  const [theme, setTheme] = useState("dark");
-  const [mode, setMode] = useState("public");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchUserMode = async () => {
-      try {
-        const response = await fetch(`/api/admin/${userID}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch user data");
-        }
-        const userData = await response.json();
-
-        setMode(userData.isPublic ? "public" : "private");
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUserMode();
-  }, [userID]);
-
-  const toggleMode = async () => {
-    try {
-      const newMode = mode === "public" ? "private" : "public";
-      alert(`You are trying now in ${newMode} mode`);
-      const response = await fetch(`/api/users/mode/${userID}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ "isPublic": newMode === "public" })
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed");
-      }
-
-      setMode(newMode);
-      const response2 = await fetch(`/api/profile-trip/user/${userID}/switch-mode`, {
-          method: "PUT",
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ "isPublic": newMode === "public" })
-      });
-      if (!response2.ok) {
-        throw new Error("Failed");
-      }
-    
-    } catch (error) {
-      console.error("Error toggling mode:", error);
-    }
-  };
+  const { mode, loading, error, toggleMode } = usePublicPrivateMode(user?.sub);
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
   }
 
   return (
@@ -91,13 +33,13 @@ export default function Page() {
           icon={faUser}
           header="Account"
           context="Privacy, security, change email or number"
-          link="settings"
+          link="/settings/account"
         />
         <Option
           icon={mode === "public" ? faEye : faEyeSlash}
           header="Public/Private Mode"
           context="Toggle between Public and Private modes"
-          link="settings"
+          link="/settings/mode"
           onClick={toggleMode}
           isToggle={true}
         />
@@ -106,31 +48,31 @@ export default function Page() {
           icon={faBell}
           header="Notifications"
           context="Message & Trip Notifications"
-          link="settings"
+          link="/settings/notifications"
         />
         <Option
           icon={faServer}
           header="Data & Preferences"
-          context="User Data, Preferencesm Downloaded Trips"
-          link="settings"
+          context="User Data, Preferences, Downloaded Trips"
+          link="/settings/data"
         />
         <Option
           icon={faGlobe}
           header="Region and Language"
           context="Region & Language"
-          link="settings"
+          link="/settings/region"
         />
         <Option
           icon={faHeadphones}
           header="Customer Support"
           context="Contact Us, About Us, FAQs"
-          link="settings"
+          link="/settings/support"
         />
         <Option
           icon={faRightToBracket}
           header="Log Out"
           context="Log Out of Account"
-          link="settings"
+          link="/settings/logout"
         />
       </div>
     </div>
