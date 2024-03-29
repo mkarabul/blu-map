@@ -22,6 +22,13 @@ router.patch(
   FriendController.acceptFriend
 );
 
+router.patch(
+  "/:userName/reject-friend",
+  checkJwt,
+  getUserInfoMiddleware,
+  FriendController.rejectFriend
+);
+
 router.get(
   "/:userId/friends",
   checkJwt,

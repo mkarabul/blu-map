@@ -14,16 +14,13 @@ export default function FriendNotification({ userName }) {
   const handleFriendAccept = async () => {
     setIsRequesting(true);
     try {
-      const response = await fetch(
-        `${process.env.API_URL}/api/friends/accept/${userName}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const response = await fetch(`/api/friend/${userName}/accept-friend`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user?.sub }),
+      });
       const data = await response.json();
       if (data && Object.keys(data).length !== 0) {
         setIsFriend(true);
@@ -39,16 +36,13 @@ export default function FriendNotification({ userName }) {
   const handleFriendReject = async () => {
     setIsRequesting(true);
     try {
-      const response = await fetch(
-        `${process.env.API_URL}/api/friends/reject/${userName}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const response = await fetch(`/api/friend/${userName}/reject-friend`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user?.sub }),
+      });
       const data = await response.json();
       if (data && Object.keys(data).length !== 0) {
         setIsFriend(false);

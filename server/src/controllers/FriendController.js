@@ -73,14 +73,33 @@ const FriendController = {
     }
   },
   async acceptFriend(req, res) {
-    const { userName, friendUserId } = req.body;
+    const { userName } = req.params;
+    console.log(req.body);
+    const { userId } = req.body;
+    console.log("userId", userId);
     try {
       const friend = await Friend.findOne({
-        where: { userId: friendUserId, friendUserName: userName },
+        where: { userName, friendId: userId },
       });
       friend.isPending = false;
       await friend.save();
       res.status(200).json({ message: "Friend request accepted successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  async rejectFriend(req, res) {
+    const { userName } = req.params;
+    console.log(req.body);
+    const { userId } = req.body;
+    console.log("userId", userId);
+    try {
+      const friend = await Friend.findOne({
+        where: { userName, friendId: userId },
+      });
+      await friend.destroy();
+      res.status(200).json({ message: "Friend request rejected successfully" });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
