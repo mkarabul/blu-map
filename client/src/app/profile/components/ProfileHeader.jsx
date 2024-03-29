@@ -1,8 +1,10 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useReportLogic } from "./ReportHook";
 import { useFollow } from "./FollowHook";
-import { handleBlockUser } from "./BlockUser";
+import BlockButton from "./BlockButton";
 
 export default function ProfileHeader({
   postCount,
@@ -26,47 +28,6 @@ export default function ProfileHeader({
 
   const openEditDialog = () => setIsEditOpen(true);
   const closeEditDialog = () => setIsEditOpen(false);
-
-  const [isBlocked, setIsBlocked] = useState(false);
-
-  useEffect(() => {
-    const fetchBlockStatus = async () => {
-      try {
-        const response = await fetch(`/api/block/profile/${user?.sub}`);
-        if (response.ok) {
-          const blockedUsers = await response.json();
-          const isBlocked = blockedUsers.some(
-            (blockedUser) => blockedUser.blockedUserId === userName
-          );
-          setIsBlocked(isBlocked);
-        } else {
-          throw new Error("Failed to fetch block status");
-        }
-      } catch (error) {
-        console.error("Error fetching block status:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (!isOwner && user) {
-      fetchBlockStatus();
-    }
-  }, [user, userName, isOwner]);
-
-  const handleBlockToggle = async () => {
-    try {
-      const response = await handleBlockUser(user, userName, !isBlocked);
-
-      if (response.ok) {
-        setIsBlocked(!isBlocked);
-      } else {
-        throw new Error("Failed to toggle block status");
-      }
-    } catch (error) {
-      console.error("Error toggling block status:", error);
-    }
-  };
 
   const {
     isReportOpen,
@@ -198,14 +159,6 @@ export default function ProfileHeader({
     }
   };
 
-  if (isBlocked) {
-    return (
-      <div>
-        <h1>This profile is not available.</h1>
-      </div>
-    );
-  }
-
   return (
     <div className="profile-header bg-gradient-to-r from-blue-500 to-indigo-600 w-full text-center py-10 relative flex flex-col items-center justify-center rounded-lg shadow-lg">
       <div className="avatar mb-4 group">
@@ -242,14 +195,7 @@ export default function ProfileHeader({
         <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
           <span>Age: {age}</span>
         </div>
-        {!isOwner && (
-          <button
-            onClick={handleBlockToggle}
-            className="btn btn-error w-full rounded-full shadow mt-4"
-          >
-            {isBlocked ? "Unblock User" : "Block User"}
-          </button>
-        )}
+        <BlockButton isOwner={isOwner} userName={userName} />
       </div>
       {!isOwner && (
         <div className="flex mt-6 space-x-3">

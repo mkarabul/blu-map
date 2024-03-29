@@ -1,5 +1,10 @@
 export const handleBlockUser = async (user, userName, block) => {
-  if (!user || !userName) return;
+  if (!user || !userName) {
+    return {
+      ok: false,
+      statusText: "User or userName not provided",
+    };
+  }
 
   try {
     const method = block ? "POST" : "DELETE";
@@ -7,7 +12,6 @@ export const handleBlockUser = async (user, userName, block) => {
       method,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
       },
       body: JSON.stringify({
         userId: user.sub,
@@ -17,13 +21,19 @@ export const handleBlockUser = async (user, userName, block) => {
 
     if (response.ok) {
       console.log("Success for Block/Unblock User");
+      return response;
     } else {
       console.error("Failed to handle block:", response.statusText);
+      return {
+        ok: false,
+        statusText: response.statusText,
+      };
     }
-
-    return response;
   } catch (error) {
     console.error("Error toggling block status:", error);
-    throw new Error("Failed to toggle block status");
+    return {
+      ok: false,
+      statusText: "Failed to toggle block status",
+    };
   }
 };

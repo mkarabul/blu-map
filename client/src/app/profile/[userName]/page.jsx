@@ -2,6 +2,7 @@ import React from "react";
 import ListPosts from "../../social/components/ListPosts";
 import ProfileHeader from "../components/ProfileHeader";
 import { getSession } from "@auth0/nextjs-auth0";
+import BlockedView from "../components/BlockedView";
 
 const getUserData = async (user, userName) => {
   const accessToken = user?.accessToken;
@@ -101,12 +102,15 @@ export default async function Page({ params }) {
         profileName={userData.profileName}
         isOwner={false}
       />
-      <ListPosts
-        posts={posts}
-        isLoading={false}
-        isOwner={false}
-        userName={userData.userName}
-      />
+      <BlockedView user={user} userId={userName}>
+        {/* <ListPosts /> */}
+        <ListPosts
+          posts={posts}
+          isLoading={false}
+          isOwner={false}
+          userName={userData.userName}
+        />
+      </BlockedView>
     </div>
   );
 }

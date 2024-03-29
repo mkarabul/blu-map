@@ -43,6 +43,18 @@ const BlockController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async isBlocked(req, res) {
+    try {
+      const { userName, blockedUserId } = req.params;
+      const block = await Block.findOne({
+        where: { userId: userName, blockedUserId },
+      });
+      res.json({ blocked: !!block });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 };
 
 module.exports = BlockController;
