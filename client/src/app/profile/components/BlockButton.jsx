@@ -11,20 +11,12 @@ const BlockButton = ({ isOwner, user, userName }) => {
   useEffect(() => {
     const fetchBlockStatus = async () => {
       try {
-        const response = await fetch(`/api/block/profile/`);
-        if (response.ok) {
-          const blockedUsers = await response.json();
-          const isBlocked = blockedUsers.some(
-            (blockedUser) => blockedUser.blockedUserId === userName
-          );
-          setIsBlocked(isBlocked);
-        } else {
-          throw new Error("Failed to fetch block status");
-        }
+        const response = await fetch(`/api/block/${userName}/${user.sub}`);
+
+        const isBlocked = await response.json();
+        setIsBlocked(isBlocked);
       } catch (error) {
         console.error("Error fetching block status:", error);
-      } finally {
-        //setIsLoading(false);
       }
     };
 

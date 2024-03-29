@@ -194,7 +194,7 @@ export default function ProfileHeader({
         <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
           <span>Age: {age}</span>
         </div>
-        <BlockButton isOwner={isOwner} userName={userName} />
+        <BlockButton isOwner={isOwner} userName={userName} user={user}/>
       </div>
       {!isOwner && (
         <div className="flex mt-6 space-x-3">
