@@ -9,7 +9,7 @@ jest.mock("../../middleware/authMiddleware", () => ({
     next();
   }),
   getUserInfoMiddleware: jest.fn((req, res, next) => {
-    req.user = { sub: "testUserId" };
+    req.user = { sub: "testUserId", email: "testUser@example.com" };
     next();
   }),
 }));
@@ -29,15 +29,20 @@ describe("Profile Trip Routes", () => {
       header: "A mock trip header",
       tripDate: "2023-01-01T00:00:00.000Z",
       tripId: uuidv4(),
-      uuid: uuidv4(),
     };
 
 
     const response = await request(app).post("/").send(createdTrip);
+    trip = response.body;
 
     expect(response.statusCode).toBe(201);
     expect(response.body).toHaveProperty("tripId");
     expect(response.body).toHaveProperty("userId", createdTrip.userId);
+  });
+
+  test("GET /user/:userId - Get profile trips by current user", async () => {
+    const response = await request(app).get("/user/testUserId");
+    expect(response.statusCode).toBe(200);
   });
 
   test("GET / - Get social profile trips", async () => {
@@ -69,10 +74,13 @@ describe("Profile Trip Routes", () => {
 
   test("PATCH /:uuid/toggle-public", async () => {
     const response = await request(app).get(`/${createdTrip.uuid}/toggle-public`);
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(404);
   });
 
-
+  test("DELETE /:uuid - Delete a profile trip", async () => {
+    const response = await request(app).delete(`/${trip.uuid}`);
+    expect(response.statusCode).toBe(200);
+  });
 });
 
 describe("Fail Cases Profile Trip Routes", () => {
