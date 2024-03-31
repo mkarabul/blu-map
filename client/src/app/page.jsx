@@ -1,21 +1,11 @@
-"use client";
-
 import React from "react";
 import Footer from "./components/footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faPersonHiking } from "@fortawesome/free-solid-svg-icons";
 import { faCar } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
 
 export default function Home() {
-  const [theme, setTheme] = useState("dark");
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    setTheme(savedTheme);
-    document.documentElement.setAttribute("data-theme", savedTheme);
-  }, []);
-
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow font-serif" style={{ overflowY: "auto" }}>

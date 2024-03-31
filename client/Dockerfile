@@ -1,40 +1,25 @@
-# Use the official Node.js LTS image as the base image
-FROM node:lts-alpine as builder
-
-# Set the working directory in the container
+FROM node:lts-alpine AS base
+ 
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
-
-# Copy package.json and package-lock.json to the container
-COPY package*.json ./
-
-# Install dependencies
+COPY package.json package-lock.json ./
 RUN npm ci
-
-# Copy the rest of the application code to the container
-COPY . .
-
-# Build the Next.js application
-RUN npm run build
-
-# Use a smaller base image for the production environment
-FROM node:lts-alpine
-
-# Set the working directory in the container
+ 
+FROM base AS builder
 WORKDIR /app
-
-# Copy only the necessary files from the builder stage
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/.next ./.next
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+ 
+FROM base AS runner
+WORKDIR /app
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
-
-# Install only production dependencies
-RUN npm ci --production
-
-# Expose the port that Next.js will run on
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+USER nextjs
 EXPOSE 3000
-
-# Set the environment variable for production
-ENV NODE_ENV production
-
-# Start the Next.js application
-CMD ["npm", "start"]
+ENV PORT 3000
+CMD ["node", "server.js"]

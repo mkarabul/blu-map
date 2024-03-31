@@ -12,6 +12,8 @@ router.post("/posts", async (req, res) => {
       maker,
       images,
       date,
+      likes,
+      dislikes,
     });
     res.status(201).json(newPost);
   } catch (error) {

@@ -8,6 +8,9 @@ const {
 const router = express.Router();
 
 router.get("/", UserController.getAllUsers);
+
+router.get("/usernames", UserController.getAllUsernames);
+
 router.get(
   "/:userId",
   checkJwt,
@@ -15,6 +18,13 @@ router.get(
   UserController.getUserByUserId
 );
 router.get("/username/:userName", UserController.getUserByUsername);
+
+router.get(
+  "/theme/:userId",
+  checkJwt,
+  getUserInfoMiddleware,
+  UserController.getUserThemeByUserId
+);
 
 router.post("/", checkJwt, getUserInfoMiddleware, UserController.createUser);
 router.delete("/:userId", UserController.deleteUserByUserId);
@@ -30,7 +40,17 @@ router.put(
   UserController.updateUserByUserId
 );
 
+router.put(
+  "/theme/:userId",
+  checkJwt,
+  getUserInfoMiddleware,
+  UserController.updateUserThemeByUserId
+);
+
+router.put("/mode/:userId", UserController.updateUserModeByUserId);
+
 router.patch("/:userId/toggle-admin", UserController.toggleUserAdminStatusById);
-router.patch("/:userId/toggle-darkmode", UserController.toggleUserDarkModeById);
+
+router.patch("/:userId/toggle-public", UserController.toggleUserPublicById);
 
 module.exports = router;

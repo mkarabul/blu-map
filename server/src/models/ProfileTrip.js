@@ -42,7 +42,7 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
   isPublic: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: false,
+    defaultValue: true,
   },
   isSocial: {
     type: DataTypes.BOOLEAN,
@@ -53,6 +53,24 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
     type: DataTypes.UUID,
     allowNull: false,
     unique: true,
+  },
+  images: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: true,
+  },
+  likes: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  dislikes: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  comments: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: true,
   },
 });
 
