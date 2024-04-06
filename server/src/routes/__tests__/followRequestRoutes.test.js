@@ -2,6 +2,8 @@ const request = require("supertest");
 const express = require("express");
 const followRequestRoutes = require("../followRequestRoutes");
 
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
 jest.mock("../../middleware/authMiddleware", () => ({
   checkJwt: jest.fn((req, res, next) => {
     next();

@@ -2,6 +2,8 @@ const request = require("supertest");
 const express = require("express");
 const notificationRoutes = require("../notificationRoutes");
 
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
 const app = express();
 app.use(express.json());
 app.use("/notifications", notificationRoutes);
