@@ -1,27 +1,94 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 const NotificationsPage = ({ themeClasses }) => {
+    const { user } = useUser();
     const [notifications, setNotifications] = useState([]);
     const [showInput, setShowInput] = useState(false);
     const [newNotification, setNewNotification] = useState({ header: '', description: '' });
 
-    const toggleInputVisibility = () => {
-        setShowInput(!showInput);
-        if (showInput) {
-            setNewNotification({ header: '', description: '' }); // Reset the input fields if we're closing them
+    useEffect(() => {
+        if (user?.sub) {
+            fetchNotifications();
+        }
+    }, [user?.sub]);
+
+    const fetchNotifications = async () => {
+        try {
+            const response = await fetch(`/api/admin/notifications/get/${user?.sub}`);
+            const data = await response.json();
+            if (response.ok) {
+                setNotifications(data);
+            } else {
+                throw new Error(data.error || 'Failed to fetch notifications');
+            }
+        } catch (error) {
+            console.error("Fetching notifications error:", error);
         }
     };
 
-    const addNotification = () => {
-        // Here you might want to call an API to save the notification
-        setNotifications([...notifications, newNotification]);
-        setNewNotification({ header: '', description: '' }); // Reset the input fields
-        setShowInput(false); // Hide the input fields again
+    const addNotification = async () => {
+        if (!newNotification.header || !newNotification.description) {
+            alert("Please fill in both the header and description.");
+            return; 
+        }
+    
+        try {
+            const response = await fetch('/api/admin/notifications/post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    header: newNotification.header,
+                    description: newNotification.description,
+                    userId: user?.sub
+                }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                fetchNotifications(); 
+                toggleInputVisibility(); 
+            } else {
+                throw new Error(data.error || 'Failed to post notification');
+            }
+        } catch (error) {
+            console.error("Posting notification error:", error);
+        }
+    };
+    
+    
+    const deleteNotification = async (notificationId) => {
+        alert(notificationId);
+        try {
+            const response = await fetch(`/api/admin/notifications/delete/${notificationId}`, {
+                method: 'DELETE',
+            });
+    
+            if (response.ok) {
+                const updatedNotifications = notifications.filter(notification => notification.id !== notificationId);
+                setNotifications(updatedNotifications);
+            } else {
+                const data = await response.json();
+                throw new Error(data.error || 'Failed to delete notification');
+            }
+        } catch (error) {
+            console.error("Deleting notification error:", error);
+        }
+    };
+    
+
+    const toggleInputVisibility = () => {
+        setShowInput(!showInput);
+        if (showInput) {
+            setNewNotification({ header: '', description: '' });
+        }
     };
 
-    const deleteNotification = (indexToDelete) => {
-        setNotifications(notifications.filter((_, index) => index !== indexToDelete));
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
     };
 
     return (
@@ -57,15 +124,16 @@ const NotificationsPage = ({ themeClasses }) => {
                     </button>
                 </div>
             )}
-            <ul>
-                {notifications.map((notification, index) => (
-                    <li key={index} className="mb-2 p-2 shadow rounded flex justify-between items-center">
+           <ul>
+                {notifications.map((notification) => (
+                    <li key={notification.id} className="mb-2 p-2 shadow rounded flex justify-between items-center">
                         <div>
                             <h2 className="font-bold">{notification.header}</h2>
                             <p>{notification.description}</p>
+                            <p className="text-sm text-gray-600">{formatDate(notification.createdAt)}</p>
                         </div>
                         <button
-                            onClick={() => deleteNotification(index)}
+                            onClick={() => deleteNotification(notification.Id)}
                             className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
                         >
                             Delete
@@ -73,6 +141,7 @@ const NotificationsPage = ({ themeClasses }) => {
                     </li>
                 ))}
             </ul>
+
         </div>
     );
 };
