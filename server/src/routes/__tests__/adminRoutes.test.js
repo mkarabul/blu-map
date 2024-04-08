@@ -49,6 +49,17 @@ describe("Admin Routes", () => {
     expect(response.statusCode).toBe(200);
   });
 
+  test("GET /notifcations/get", async () => {
+    const response = await request(app).get("/notifcations/get");
+    expect(response.statusCode).toBe(200);
+  });
+
+  test("GET /notifications/get/:id", async () => {
+    const response = await request(app).get(`/notifications/get/${createdId}`);
+    expect(response.statusCode).toBe(200);
+  });
+  
+
   // test("PATCH /:userId/toggle-suspend", async () => {
   //   const response = await request(app)
   //     .patch("/testAdmin/toggle-suspend")
@@ -65,6 +76,22 @@ describe("Admin Routes", () => {
     const response = await request(app).delete("/testAdmin");
     expect(response.statusCode).toBe(200);
   });
+  test("POST /notifications/post", async () => {
+    const notificationBody = {
+      userId: "auth0|65dcfb3961353d011b2a43e5",
+      header: "yo whats good",
+      description: "nahsdfadsfd This is a detailasdfaah of the violation orasdhgasdfasdf issue being reported."
+    };
+
+    const response = await request(app)
+      .post("/notifications/post")
+      .set("Content-Type", "application/json")
+      .send(notificationBody);
+
+    expect(response.statusCode).toBe(201);
+  });
+
+
 });
 
 describe("Fail Cases Admin Routes", () => {
@@ -97,4 +124,6 @@ describe("Fail Cases Admin Routes", () => {
       .send();
     expect(response.statusCode).toBe(400);
   });
+
+
 });
