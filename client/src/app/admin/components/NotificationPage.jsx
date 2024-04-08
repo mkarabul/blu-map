@@ -129,6 +129,8 @@ const NotificationsPage = ({ themeClasses }) => {
                     <li key={notification.id} className="mb-2 p-2 shadow rounded flex justify-between items-center">
                         <div>
                             <h2 className="font-bold">{notification.header}</h2>
+                            <p>ID: {notification.Id}</p>
+
                             <p>{notification.description}</p>
                             <p className="text-sm text-gray-600">{formatDate(notification.createdAt)}</p>
                         </div>
