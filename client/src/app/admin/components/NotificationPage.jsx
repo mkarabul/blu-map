@@ -60,7 +60,6 @@ const NotificationsPage = ({ themeClasses }) => {
     
     
     const deleteNotification = async (notificationId) => {
-        alert(notificationId);
         try {
             const response = await fetch(`/api/admin/notifications/delete/${notificationId}`, {
                 method: 'DELETE',
@@ -69,8 +68,14 @@ const NotificationsPage = ({ themeClasses }) => {
             if (response.ok) {
                 const updatedNotifications = notifications.filter(notification => notification.id !== notificationId);
                 setNotifications(updatedNotifications);
+                alert("The notifcation has been deleted");
+                fetchNotifications(); 
+
+
             } else {
                 const data = await response.json();
+                alert("The notifcation has not been deleted, there was an error");
+
                 throw new Error(data.error || 'Failed to delete notification');
             }
         } catch (error) {
