@@ -54,14 +54,17 @@ export default function Page({ userName }) {
   const fiveLikesBadgeUrl = "/Badges/5-likes.jpg";
   const tenLikesBadgeUrl = "/Badges/10-likes.jpg";
   const twentyLikesBadgeUrl = "/Badges/20-likes.jpg";
+  const fiftyLikesBadgeUrl = "/Badges/50-likes.jpg";
 
   const getBadgeUrl = (likes) => {
     if (likes >= 5 && likes <= 9) {
       return fiveLikesBadgeUrl;
     } else if (likes >= 10 && likes <= 19) {
       return tenLikesBadgeUrl;
-    } else if (likes >= 20) {
+    } else if (likes >= 20 && likes <= 49) {
       return twentyLikesBadgeUrl;
+    } else if (likes >= 50) {
+      return fiftyLikesBadgeUrl;
     } else {
       return null;
     }
