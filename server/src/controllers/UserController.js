@@ -77,7 +77,7 @@ const UserController = {
       const { userName } = req.params;
       const user = await User.findOne({
         where: { userName },
-        attributes: ["userName", "age", "gender", "profileName"],
+        attributes: ["userId", "userName", "age", "gender", "profileName"],
       });
       if (user) {
         res.status(200).json(user);

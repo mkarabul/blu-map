@@ -6,6 +6,7 @@ import { useReportLogic } from "./ReportHook";
 import { useFollow } from "./FollowHook";
 import BlockButton from "./BlockButton";
 import FriendButton from "./FriendButton";
+import BadgeSystem from "./BadgeSystem";
 
 export default function ProfileHeader({
   postCount,
@@ -196,7 +197,7 @@ export default function ProfileHeader({
         <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
           <span>Age: {age}</span>
         </div>
-        <BlockButton isOwner={isOwner} userName={userName} user={user}/>
+        <BlockButton isOwner={isOwner} userName={userName} user={user} />
       </div>
       {!isOwner && (
         <div className="flex mt-6 space-x-3">
@@ -222,6 +223,7 @@ export default function ProfileHeader({
           </button>
         </div>
       )}
+      <BadgeSystem userName={userName} style={{ marginTop: "5px" }} />
 
       <dialog open={isEditOpen} className="modal">
         <form onSubmit={handleSubmit} className="modal-box">
