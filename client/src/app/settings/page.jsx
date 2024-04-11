@@ -1,5 +1,4 @@
 "use client";
-
 import React from 'react';
 import { useUser } from "@auth0/nextjs-auth0/client";
 import usePublicPrivateMode from './components/PublicPrivateMode';
@@ -7,10 +6,11 @@ import Profile from "./components/SettingsProfile";
 import Option from "./components/Option";
 import NotificationButton from "./components/NotificationButton";
 import ThemeChanger from "./components/ThemeChanger";
+import EmailVerificationButton from './components/EmailVerificationButton'; // Renamed for clarity
 import { 
   faUser, faBell, faServer, faGlobe, faHeadphones, 
-  faRightToBracket, faEye, faEyeSlash 
-} from "@fortawesome/free-solid-svg-icons";
+  faRightToBracket, faEye, faEyeSlash, faEnvelope 
+} from "@fortawesome/free-solid-svg-icons"; // Imported faEnvelope for email
 
 export default function Page() {
   const { user } = useUser();
@@ -49,6 +49,12 @@ export default function Page() {
           header="Notifications"
           context="Message & Trip Notifications"
           link="/settings/notifications"
+        />
+        <EmailVerificationButton
+          icon={faEnvelope} // Changed to faEnvelope to indicate email
+          header="Verify Email"
+          context="Confirm your email address to ensure account security"
+          link="/settings/verify-email"
         />
         <Option
           icon={faServer}
