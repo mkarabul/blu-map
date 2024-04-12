@@ -89,13 +89,13 @@ export default function Page({ userName }) {
 
   const getLikesBadgeUrl = (likes) => {
     if (likes >= 5 && likes <= 9) {
-      return fiveLikesBadgeUrl;
+      return { url: fiveLikesBadgeUrl, count: 5 };
     } else if (likes >= 10 && likes <= 19) {
-      return tenLikesBadgeUrl;
+      return { url: tenLikesBadgeUrl, count: 10 };
     } else if (likes >= 20 && likes <= 49) {
-      return twentyLikesBadgeUrl;
+      return { url: twentyLikesBadgeUrl, count: 20 };
     } else if (likes >= 50) {
-      return fiftyLikesBadgeUrl;
+      return { url: fiftyLikesBadgeUrl, count: 50 };
     } else {
       return null;
     }
@@ -103,21 +103,30 @@ export default function Page({ userName }) {
 
   const getCommentsBadgeUrl = (comments) => {
     if (comments >= 5 && comments <= 9) {
-      return fiveCommentsBadgeUrl;
+      return { url: fiveCommentsBadgeUrl, count: 5 };
     } else if (comments >= 10 && comments <= 19) {
-      return tenCommentsBadgeUrl;
+      return { url: tenCommentsBadgeUrl, count: 10 };
     } else if (comments >= 20 && comments <= 49) {
-      return twentyCommentsBadgeUrl;
+      return { url: twentyCommentsBadgeUrl, count: 20 };
     } else if (comments >= 50) {
-      return fiftyCommentsBadgeUrl;
+      return { url: fiftyCommentsBadgeUrl, count: 50 };
     } else {
       return null;
     }
   };
 
-  const badgeLikeUrl = getLikesBadgeUrl(totalLikes);
+  const badgeLike = getLikesBadgeUrl(totalLikes);
+  const badgeComment = getCommentsBadgeUrl(totalComments);
 
-  const badgeCommentUrl = getCommentsBadgeUrl(totalComments);
+  const getHoverMessage = (badgeType, count) => {
+    if (badgeType === "likes") {
+      return `Earn by liking ${count} posts!`;
+    } else if (badgeType === "comments") {
+      return `Earn by commenting on ${count} posts!`;
+    } else {
+      return "";
+    }
+  };
 
   const badgeContainerStyle = {
     display: "flex",
@@ -129,21 +138,23 @@ export default function Page({ userName }) {
   return (
     <div>
       <div style={badgeContainerStyle}>
-        {badgeLikeUrl && (
+        {badgeLike && (
           <img
-            src={badgeLikeUrl}
+            src={badgeLike.url}
             alt={`${totalLikes} Likes Badge`}
             style={imageStyle}
+            title={getHoverMessage("likes", badgeLike.count)}
           />
         )}
-        {badgeCommentUrl && (
+        {badgeComment && (
           <img
-            src={badgeCommentUrl}
+            src={badgeComment.url}
             alt={`${totalComments} Comments Badge`}
             style={imageStyle}
+            title={getHoverMessage("comments", badgeComment.count)}
           />
         )}
-        {!badgeLikeUrl && !badgeCommentUrl && (
+        {!badgeLike && !badgeComment && (
           <div>
             <p>Total Likes on Posts: {totalLikes}</p>
             <p>Total Comments on Posts: {totalComments}</p>
