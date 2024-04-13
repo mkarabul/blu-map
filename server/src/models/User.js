@@ -66,6 +66,11 @@ const User = sequelize.define("User", {
     allowNULL: false,
     defaultValue: true,
   },
+  isVertified: {
+    type: DataTypes.BOOLEAN,
+    allowNULL: false,
+    defaultValue: false,
+  }
 });
 
 User.sync({ alter: true });

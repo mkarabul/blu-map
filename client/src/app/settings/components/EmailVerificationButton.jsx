@@ -6,7 +6,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 export default function EmailVerificationButton({ icon, header, context }) {
   const { user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
-  const [verificationStep, setVerificationStep] = useState("email"); // "email" or "code"
+  const [verificationStep, setVerificationStep] = useState("email");
   const [verificationCode, setVerificationCode] = useState("");
 
   const openPopup = () => {
@@ -20,16 +20,37 @@ export default function EmailVerificationButton({ icon, header, context }) {
   };
 
   const handleSendVerificationEmail = async () => {
-    // Placeholder for sending the verification email
-    alert("Verification email sent to: " + user?.email);
-    // Move to code verification step
-    setVerificationStep("code");
-  };
+    try {
+
+      const email = user?.email;
+    if (!email) {
+      alert("No email address found for the user.");
+      return;
+    }
+      alert(email);
+
+      let url = `/api/vertification/verify/`;
+      url = url + email;
+      
+  
+      const response = await fetch(url);
+
+      if (response.ok) {
+        const data = await response.json();
+        setVerificationCode(data.verificationCode);
+        alert("Verification email sent to: " + user?.email);
+        setVerificationStep("code");
+      } else {
+        throw new Error(data.message || "Failed to fetch verification code");
+      }
+    } catch (error) {
+      alert("Error: " + error.message);
+    }
+  }; 
+  
 
   const handleVerifyCode = () => {
-    // Placeholder for verifying the code
     console.log("Verifying code:", verificationCode);
-    // You can close the dialog or show a success message here
     closeDialog();
   };
 
