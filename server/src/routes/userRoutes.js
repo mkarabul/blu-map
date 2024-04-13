@@ -48,6 +48,9 @@ router.put(
 );
 
 router.put("/mode/:userId", UserController.updateUserModeByUserId);
+router.put("/verification/:userId", UserController.updateVertificationByUserID);
+
+
 
 router.patch("/:userId/toggle-admin", UserController.toggleUserAdminStatusById);
 
