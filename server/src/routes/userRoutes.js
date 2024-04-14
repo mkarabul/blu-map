@@ -67,4 +67,6 @@ router.patch(
 
 router.get("/:userId/image", UserController.getImage);
 
+router.get("/:userName/profile-image", UserController.getProfileImage);
+
 module.exports = router;

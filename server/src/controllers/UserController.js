@@ -371,13 +371,44 @@ const UserController = {
       }
       const image = user.image;
       const imageUrls = [];
-      for (let i = 0; i < image.length; i++) {
-        const command = new GetObjectCommand({
-          Bucket: process.env.BUCKET_NAME,
-          Key: `${userId}/${image[i]}`,
-        });
-        const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
-        imageUrls.push(url);
+      if (image !== null) {
+        for (let i = 0; i < image.length; i++) {
+          const command = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `${userId}/${image[i]}`,
+          });
+          const url = await getSignedUrl(s3Client, command, {
+            expiresIn: 3600,
+          });
+          imageUrls.push(url);
+        }
+      }
+      res.status(200).json(imageUrls);
+    } catch (error) {
+      console.error("Error getting images: ", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  async getProfileImage(req, res) {
+    const { userName } = req.params;
+    try {
+      const user = await User.findOne({ where: { userName } });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      const image = user.image;
+      const imageUrls = [];
+      if (image !== null) {
+        for (let i = 0; i < image.length; i++) {
+          const command = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `${user.userId}/${image[i]}`,
+          });
+          const url = await getSignedUrl(s3Client, command, {
+            expiresIn: 3600,
+          });
+          imageUrls.push(url);
+        }
       }
       res.status(200).json(imageUrls);
     } catch (error) {
