@@ -4,6 +4,7 @@ const {
   checkJwt,
   getUserInfoMiddleware,
 } = require("../middleware/authMiddleware");
+const User = require("../models/User");
 
 const router = express.Router();
 
@@ -52,5 +53,15 @@ router.put("/mode/:userId", UserController.updateUserModeByUserId);
 router.patch("/:userId/toggle-admin", UserController.toggleUserAdminStatusById);
 
 router.patch("/:userId/toggle-public", UserController.toggleUserPublicById);
+
+router.patch(
+  "/:userId/images",
+  checkJwt,
+  getUserInfoMiddleware,
+  upload.array("image", 1),
+  UserController.updateImage
+);
+
+router.get("/:uderId/images", UserController.getImage);
 
 module.exports = router;
