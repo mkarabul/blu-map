@@ -1,16 +1,23 @@
 "use client";
 
-import React from 'react';
+import React from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import usePublicPrivateMode from './components/PublicPrivateMode';
+import usePublicPrivateMode from "./components/PublicPrivateMode";
 import Profile from "./components/SettingsProfile";
 import Option from "./components/Option";
 import NotificationButton from "./components/NotificationButton";
 import ThemeChanger from "./components/ThemeChanger";
-import { 
-  faUser, faBell, faServer, faGlobe, faHeadphones, 
-  faRightToBracket, faEye, faEyeSlash 
+import {
+  faUser,
+  faBell,
+  faServer,
+  faGlobe,
+  faHeadphones,
+  faRightToBracket,
+  faEye,
+  faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
+import ProfilePhotoUpload from "./components/ProfilePhotoUpload";
 
 export default function Page() {
   const { user } = useUser();
@@ -26,7 +33,8 @@ export default function Page() {
 
   return (
     <div className="container mx-auto p-4">
-      <Profile />
+      {/* <Profile /> */}
+      <ProfilePhotoUpload />
       <h1 className="text-2xl font-semibold mb-6">Settings</h1>
       <div className="space-y-4">
         <Option

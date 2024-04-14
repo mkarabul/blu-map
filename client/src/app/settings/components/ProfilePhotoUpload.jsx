@@ -1,15 +1,14 @@
 "use client";
 
 import React from "react";
-import Trip from "./Trip";
 import { useState } from "react";
+import useCreatePhoto from "./CreatePhotoHook";
 
 const ProfilePhotoUpload = () => {
-  const { userData, state, createUserPost, createUserImage } = useCreatePost();
+  const { userData, state, createUserImage } = useCreatePhoto();
 
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
-  const [userId, setUserId] = useState("");
   const [emptyFieldError, setEmptyFieldError] = useState("");
 
   const validFileTypes = ["image/jpeg", "image/jpg", "image/png"];
@@ -31,8 +30,7 @@ const ProfilePhotoUpload = () => {
     }
   };
 
-  const openModal = (uuid) => {
-    setTripId(uuid);
+  const openModal = () => {
     document.getElementById("my_modal_4").showModal();
   };
 
@@ -52,12 +50,11 @@ const ProfilePhotoUpload = () => {
       userName: userData.userName,
     };
     try {
-      await createUserPost(body);
       const form = new FormData();
       for (let i = 0; i < images.length; i++) {
         form.append("image", images[i]);
       }
-      await createUserImage(form, tripId);
+      await createUserImage(form, userData.userId);
       closeModal();
     } catch (error) {
       console.error("Error creating post:", error);

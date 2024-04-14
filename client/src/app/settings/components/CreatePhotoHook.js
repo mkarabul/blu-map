@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
-const useCreatePost = () => {
+const useCreatePhoto = () => {
   const { user } = useUser();
   const [userData, setUserData] = useState({});
   const [state, setState] = useState({
@@ -25,11 +25,11 @@ const useCreatePost = () => {
     }
   }, [user]);
 
-  const createUserImage = async (imageData, tripId) => {
+  const createUserImage = async (imageData, userId) => {
     setState({ ...state, isLoading: true });
 
     try {
-      const response = await fetch(`api/profile-trip/${tripId}/images`, {
+      const response = await fetch(`api/users/${userId}/image`, {
         method: "PATCH",
         body: imageData,
       });
@@ -38,7 +38,10 @@ const useCreatePost = () => {
       }
       const data = await response.json();
       setState({ ...state, isLoading: false });
-      setState({ ...state, confirmation: "Profile post created successfully" });
+      setState({
+        ...state,
+        confirmation: "Profile photo uploaded successfully",
+      });
       return data;
     } catch (error) {
       setState({ ...state, confirmation: "" });
@@ -49,4 +52,4 @@ const useCreatePost = () => {
   return { userData, state, createUserImage };
 };
 
-export default useCreatePost;
+export default useCreatePhoto;

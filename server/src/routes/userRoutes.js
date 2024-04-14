@@ -1,12 +1,15 @@
 const express = require("express");
+const multer = require("multer");
 const UserController = require("../controllers/UserController");
 const {
   checkJwt,
   getUserInfoMiddleware,
 } = require("../middleware/authMiddleware");
-const User = require("../models/User");
 
 const router = express.Router();
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 router.get("/", UserController.getAllUsers);
 
@@ -55,13 +58,13 @@ router.patch("/:userId/toggle-admin", UserController.toggleUserAdminStatusById);
 router.patch("/:userId/toggle-public", UserController.toggleUserPublicById);
 
 router.patch(
-  "/:userId/images",
+  "/:userId/image",
   checkJwt,
   getUserInfoMiddleware,
   upload.array("image", 1),
   UserController.updateImage
 );
 
-router.get("/:uderId/images", UserController.getImage);
+router.get("/:userId/image", UserController.getImage);
 
 module.exports = router;
