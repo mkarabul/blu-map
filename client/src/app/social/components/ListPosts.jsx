@@ -5,12 +5,10 @@ import SocialPost from "./SocialPost";
 
 import { useUser } from "@auth0/nextjs-auth0/client";
 
-
 export default function ListPosts() {
   const [posts, setPosts] = useState([]);
 
   const { user } = useUser();
-  
 
   const getPosts = async () => {
     const response = await fetch(`/api/profile-trip/`);
@@ -18,7 +16,6 @@ export default function ListPosts() {
     console.log(data);
     setPosts(data);
   };
-  
 
   useEffect(() => {
     getPosts();
@@ -41,6 +38,7 @@ export default function ListPosts() {
           tripId={post.tripId}
           clickable={true}
           images={post.images}
+          userPhoto={post.userPhoto}
         />
       ))}
     </>
