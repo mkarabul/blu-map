@@ -4,7 +4,7 @@ import React from "react";
 import { useState } from "react";
 import useCreatePhoto from "./CreatePhotoHook";
 
-const ProfilePhotoUpload = () => {
+const ProfilePhotoUpload = ({ refresh, setRefresh }) => {
   const { userData, state, createUserImage } = useCreatePhoto();
 
   const [images, setImages] = useState([]);
@@ -56,6 +56,7 @@ const ProfilePhotoUpload = () => {
       }
       await createUserImage(form, userData.userId);
       closeModal();
+      setRefresh(refresh + 1);
     } catch (error) {
       console.error("Error creating post:", error);
       closeModal();

@@ -1,5 +1,5 @@
 "use client";
-
+import { useState } from "react";
 import React from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import usePublicPrivateMode from "./components/PublicPrivateMode";
@@ -22,6 +22,7 @@ import ProfilePhotoUpload from "./components/ProfilePhotoUpload";
 export default function Page() {
   const { user } = useUser();
   const { mode, loading, error, toggleMode } = usePublicPrivateMode(user?.sub);
+  const [refresh, setRefresh] = useState(0);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -33,8 +34,8 @@ export default function Page() {
 
   return (
     <div className="container mx-auto p-4">
-      {/* <Profile /> */}
-      <ProfilePhotoUpload />
+      <Profile refresh={refresh} />
+      <ProfilePhotoUpload refresh={refresh} setRefresh={setRefresh} />
       <h1 className="text-2xl font-semibold mb-6">Settings</h1>
       <div className="space-y-4">
         <Option

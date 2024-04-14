@@ -369,7 +369,7 @@ const UserController = {
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-      const image = user.images;
+      const image = user.image;
       const imageUrls = [];
       for (let i = 0; i < image.length; i++) {
         const command = new GetObjectCommand({
