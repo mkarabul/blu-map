@@ -48,8 +48,22 @@ const UserController = {
   async getAllUsernames(req, res) {
     try {
       const users = await User.findAll({
-        attributes: ["userName"],
+        attributes: ["userName", "image", "userId"],
       });
+      for (let i = 0; i < users.length; i++) {
+        if (users[i].image === null) {
+          users[i].dataValues.userPhoto = null;
+        } else {
+          const command2 = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `${users[i].userId}/${users[i].image}`,
+          });
+          const url2 = await getSignedUrl(s3Client, command2, {
+            expiresIn: 3600,
+          });
+          users[i].dataValues.userPhoto = url2;
+        }
+      }
       res.status(200).json(users);
     } catch (error) {
       console.error(error);
