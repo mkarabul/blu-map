@@ -16,6 +16,8 @@ export default function Profile({ refresh }) {
       .then((data) => {
         if (data.length > 0) {
           setProfileImage(data[0]);
+        } else {
+          setProfileImage("/default-pfp.png");
         }
       })
       .catch((error) => console.error("Error:", error));
