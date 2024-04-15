@@ -7,8 +7,8 @@ const transporter = nodemailer.createTransport({
     port: 587, 
     secure: false, 
     auth: {
-        user: 'blumap2024@outlook.com',
-        pass: 'cs3072024'
+        user: 'testingcs307@outlook.com',
+        pass: 'PleaseWork123'
     },
     tls: {
         ciphers: 'SSLv3'
@@ -57,7 +57,7 @@ const VertificationController = {
           return res.status(500).json({ message: "Failed to send verification email" });
         } else {
           console.log('Email sent:', info.response);
-          res.status(200).json({ verificationCode: verificationCode }); 
+           res.status(200).json({ verificationCode: verificationCode }); 
         }
       });
     } catch (error) {
