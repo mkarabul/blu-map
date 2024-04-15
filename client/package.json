@@ -21,6 +21,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@types/eslint": "^8.56.3",
     "chart.js": "^4.4.2",
+    "cities.json": "^1.1.35",
     "framer-motion": "^11.0.5",
     "next": "^14.1.4",
     "next-themes": "^0.3.0",
