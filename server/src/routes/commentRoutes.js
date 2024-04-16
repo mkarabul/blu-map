@@ -9,6 +9,7 @@ const CommentController = require("../controllers/CommentController");
 router.post("/post/:postId", CommentController.createComment);
 
 router.get("/post/:postId", CommentController.getCommentsByPost);
+router.get("/", CommentController.getAllComments);
 
 router.delete(
   "/:uuid",

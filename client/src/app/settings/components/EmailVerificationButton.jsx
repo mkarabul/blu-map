@@ -48,12 +48,12 @@ export default function EmailVerificationButton({ icon, header, context }) {
   const handleSendVerificationEmail = async () => {
     try {
       const email = user?.email;
-      let url = `/api/verification/verify/`;
+      let url = "/api/vertification/verify/";
       url = url + email;
       const response = await fetch(url);
 
       if (response.ok) {
-
+        const data = await response.json(); 
         setServerVerificationCode(data.verificationCode);
         alert("Verification email sent to: " + user?.email);
         setVerificationStep("code");
@@ -88,7 +88,6 @@ export default function EmailVerificationButton({ icon, header, context }) {
       if (!response.ok) {
         throw new Error("Failed to verify code. Please try again later.");
       }
-
       alert("Verification code is correct! Your email is now verified.");
       closeDialog();
     } catch (error) {
@@ -115,10 +114,6 @@ export default function EmailVerificationButton({ icon, header, context }) {
             {isAlreadyVerified ? (
               <div>
                 <h3 className="text-lg font-medium mb-4">Your email is already verified.</h3>
-                <p>If you need to reverify, please proceed below.</p>
-                <div className="mt-4">
-                  <button type="button" className="btn btn-primary" onClick={handleSendVerificationEmail}>Send Verification Email Again</button>
-                </div>
               </div>
             ) : verificationStep === "email" ? (
               <>

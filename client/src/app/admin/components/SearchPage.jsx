@@ -29,13 +29,11 @@ const SearchPage = ({ themeClasses }) => {
         }
         const reportsData = await reportsResponse.json();
   
-        // Count reports for each user
         const reportCounts = reportsData.reduce((acc, report) => {
           acc[report.reportedUserName] = (acc[report.reportedUserName] || 0) + 1;
           return acc;
         }, {});
   
-        // Add reportNum to usersData
         const updatedUsersData = usersData.map(user => ({
           ...user,
           reportNum: reportCounts[user.userName] || 0
@@ -57,7 +55,7 @@ const SearchPage = ({ themeClasses }) => {
 
   const toggleSuspend = async (userId, isSuspended) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/admin/${userId}/toggle-suspend`, {
+      const response = await fetch(`/api/admin/${userId}/toggle-suspend`, {
         method: 'PATCH',
       });
       if (!response.ok) {
@@ -74,7 +72,7 @@ const SearchPage = ({ themeClasses }) => {
   
   const viewReports = async (userId) => {
     try {
-     const response = await fetch(`http://localhost:5000/api/reports/all/${userId}`);
+     const response = await fetch(`/api/reports/all/${userId}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch reports');
@@ -99,7 +97,7 @@ const SearchPage = ({ themeClasses }) => {
     };
     const deleteReport = async () => {
       try {
-        await fetch(`http://localhost:5000/api/reports/${currentReport.reportId}`, {
+        await fetch(`/api/reports/${currentReport.reportId}`, {
           method: 'DELETE',
         });
     
@@ -156,7 +154,7 @@ const SearchPage = ({ themeClasses }) => {
 
   const forceDelete = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/admin/${userId}`, {
+      const response = await fetch(`/api/admin/${userId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -256,6 +254,8 @@ const cardBgColor = themeClasses && themeClasses.includes('bg-gray-900')
         <p>Admin: {user.isAdmin ? 'True' : 'False'}</p>
         <p>Public Mode: {user.isPublic ? 'True' : 'False'}</p>
         <p>Number of Reports: {user.reportNum}</p>
+        <p>Verified: {user.isVerified ? 'True' : 'False'}</p>
+
 
           {userID !== user.userId && (
 

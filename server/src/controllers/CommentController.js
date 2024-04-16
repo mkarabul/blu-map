@@ -33,6 +33,15 @@ const CommentController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async getAllComments(req, res) {
+    try {
+      const comments = await Comment.findAll();
+      res.json(comments);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 
   async deleteComment(req, res) {
     try {

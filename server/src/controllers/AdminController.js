@@ -22,7 +22,8 @@ const UserController = {
               "isDarkMode",
               "isAdmin",
               "isPublic",
-              "isVerified"
+              "isVerified",
+              "createdAt"
             ],
           });
           res.status(200).json(users);
