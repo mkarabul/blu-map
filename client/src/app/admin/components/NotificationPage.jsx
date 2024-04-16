@@ -79,7 +79,7 @@ const NotificationsPage = ({ themeClasses }) => {
                 throw new Error(data.error || 'Failed to delete notification');
             }
         } catch (error) {
-            console.error("Deleting notification error:", error);
+            console.error("Deleting notification error ", error);
         }
     };
     
