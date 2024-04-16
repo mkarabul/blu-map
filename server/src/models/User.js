@@ -66,6 +66,10 @@ const User = sequelize.define("User", {
     allowNULL: false,
     defaultValue: true,
   },
+  image: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: true,
+  },
 });
 
 User.sync({ alter: true });

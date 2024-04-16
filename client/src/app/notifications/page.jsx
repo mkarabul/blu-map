@@ -120,6 +120,7 @@ export default function Notifications() {
                   <FriendNotification
                     key={index}
                     userName={friendRequest.userName}
+                    userPhoto={friendRequest.userPhoto}
                     onResponse={handleFriendRequestResponse}
                     setConfirmationMessage={setConfirmationMessage}
                     setErrorMessage={setErrorMessage}

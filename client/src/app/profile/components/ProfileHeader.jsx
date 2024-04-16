@@ -21,6 +21,7 @@ export default function ProfileHeader({
   const [genderNew, setGenderNew] = useState("");
   const [ageNew, setAgeNew] = useState(0);
   const [profileNameNew, setProfileNameNew] = useState("");
+  const [profileImage, setProfileImage] = useState(null);
 
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
@@ -50,6 +51,25 @@ export default function ProfileHeader({
     if (!userName) {
       return;
     }
+
+    const fetchProfilePicture = async () => {
+      try {
+        fetch(`/api/users/${userName}/profile-image`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.length > 0) {
+              setProfileImage(data[0]);
+            }
+          });
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
 
     const checkFollowStatus = async () => {
       if (user && userName) {
@@ -107,11 +127,14 @@ export default function ProfileHeader({
       }
     };
 
-    Promise.all([fetchFollowers(), fetchFollowing(), checkFollowStatus()]).then(
-      () => {
-        setIsLoading(false);
-      }
-    );
+    Promise.all([
+      fetchProfilePicture(),
+      fetchFollowers(),
+      fetchFollowing(),
+      checkFollowStatus(),
+    ]).then(() => {
+      setIsLoading(false);
+    });
   }, [user?.sub, userName]);
 
   if (isLoading) {
@@ -164,7 +187,7 @@ export default function ProfileHeader({
       <div className="avatar mb-4 group">
         <div className="w-24 h-24 rounded-full overflow-hidden group-hover:ring-2 group-hover:ring-indigo-300">
           <img
-            src="/default-pfp.png"
+            src={profileImage || "/default-pfp.png"}
             alt="Profile avatar"
             className="rounded-full transition duration-300 ease-in-out"
           />
@@ -196,7 +219,7 @@ export default function ProfileHeader({
         <div className="info-chip bg-white bg-opacity-20 py-1 px-3 rounded-full shadow inline-flex items-center">
           <span>Age: {age}</span>
         </div>
-        <BlockButton isOwner={isOwner} userName={userName} user={user}/>
+        <BlockButton isOwner={isOwner} userName={userName} user={user} />
       </div>
       {!isOwner && (
         <div className="flex mt-6 space-x-3">
