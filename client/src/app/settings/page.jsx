@@ -65,7 +65,7 @@ export default function Page() {
         <EmailVerificationButton
           icon={faEnvelope} // Changed to faEnvelope to indicate email
           header="Verify Email"
-          context="Confirm your email address to ensure account security"
+          context="Confirm your email address to ensure account security "
           link="/settings/verify-email"
         />
         <Option
@@ -78,7 +78,7 @@ export default function Page() {
           icon={faGlobe}
           header="Region and Language"
           context="Region & Language"
-          link="/settings/region"
+          link="/settings/region" 
         />
         <Option
           icon={faHeadphones}
