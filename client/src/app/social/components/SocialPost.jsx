@@ -15,6 +15,7 @@ import {
 import ShareButton from "../../profile/components/ShareButton";
 import Link from "next/link";
 import { RepSystem } from "./RepSystem";
+import CopyPost from "./CopyPost";
 
 export default function SocialPost({
   uuid,
@@ -148,11 +149,7 @@ export default function SocialPost({
             <button className="btn btn-outline rounded-full">
               <FontAwesomeIcon icon={faPaperPlane} />
             </button>
-            <Link href={`/trips/${tripId}`}>
-              <button className="btn btn-outline rounded-full">
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-            </Link>
+            <CopyPost tripId={tripId} />
           </div>
 
           {/* Separate div for the last button (right-most) */}

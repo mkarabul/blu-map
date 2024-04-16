@@ -44,4 +44,11 @@ router.delete(
   ItineraryController.deleteItinerary
 );
 
+router.post(
+  "/:id/copy",
+  checkJwt,
+  getUserInfoMiddleware,
+  ItineraryController.copyItinerary
+)
+
 module.exports = router;
