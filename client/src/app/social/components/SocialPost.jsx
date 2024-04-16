@@ -28,6 +28,7 @@ export default function SocialPost({
   tripId,
   clickable,
   images,
+  userPhoto,
 }) {
   const { likes, dislikes, addLike, addDislike, userLiked, userDisliked } =
     RepSystem(initialLikes, initialDislikes, uuid);
@@ -54,7 +55,7 @@ export default function SocialPost({
           <Link href={`/profile/${userName}`}>
             <div className="flex items-center space-x-4">
               <img
-                src="/default-pfp.png"
+                src={userPhoto || "/default-pfp.png"}
                 alt="User Profile"
                 className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
               />
