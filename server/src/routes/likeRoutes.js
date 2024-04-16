@@ -8,4 +8,7 @@ router.patch("/post/:postId", LikeController.createLike);
 // get all likes
 router.get("/post/:postId", LikeController.getLikeByPost);
 
+// get likes count for user
+router.get("/likescount/:userId", LikeController.getUserLikesCount);
+
 module.exports = router;

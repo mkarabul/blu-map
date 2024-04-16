@@ -17,4 +17,7 @@ router.delete(
   CommentController.deleteComment
 );
 
+//get comment count for user
+router.get("/commentcount/:userId", CommentController.getUserCommentCount);
+
 module.exports = router;

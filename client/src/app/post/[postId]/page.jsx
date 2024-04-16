@@ -2,7 +2,7 @@ import React from "react";
 import { getSession } from "@auth0/nextjs-auth0";
 
 import SocialPost from "../../social/components/SocialPost";
-import CommentSection from "./components/commentSection";
+import CommentSection from "./components/CommentSection";
 
 const getPost = async (postId) => {
   const user = await getSession();
