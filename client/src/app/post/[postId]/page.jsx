@@ -50,6 +50,7 @@ const Post = async ({ params }) => {
           tripId={post.tripId}
           clickable={false}
           images={post.images}
+          userPhoto={post.userPhoto}
         />
       </div>
       <CommentSection

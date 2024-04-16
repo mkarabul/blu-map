@@ -4,7 +4,6 @@ const {
   checkJwt,
   getUserInfoMiddleware,
 } = require("../middleware/authMiddleware");
-const Friend = require("../models/Friend");
 
 const router = express.Router();
 

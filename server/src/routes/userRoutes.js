@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const UserController = require("../controllers/UserController");
 const {
   checkJwt,
@@ -6,6 +7,9 @@ const {
 } = require("../middleware/authMiddleware");
 
 const router = express.Router();
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 router.get("/", UserController.getAllUsers);
 
@@ -52,5 +56,17 @@ router.put("/mode/:userId", UserController.updateUserModeByUserId);
 router.patch("/:userId/toggle-admin", UserController.toggleUserAdminStatusById);
 
 router.patch("/:userId/toggle-public", UserController.toggleUserPublicById);
+
+router.patch(
+  "/:userId/image",
+  checkJwt,
+  getUserInfoMiddleware,
+  upload.array("image", 1),
+  UserController.updateImage
+);
+
+router.get("/:userId/image", UserController.getImage);
+
+router.get("/:userName/profile-image", UserController.getProfileImage);
 
 module.exports = router;
