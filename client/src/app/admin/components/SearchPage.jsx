@@ -53,16 +53,16 @@ const SearchPage = ({ themeClasses }) => {
           throw new Error("Failed to fetch reports data");
         }
         const reportsData = await reportsResponse.json();
-
+  
         // Count reports for each user
         const reportCounts = reportsData.reduce((acc, report) => {
           acc[report.reportedUserName] =
             (acc[report.reportedUserName] || 0) + 1;
           return acc;
         }, {});
-
+  
         // Add reportNum to usersData
-        const updatedUsersData = usersData.map((user) => ({
+        const updatedUsersData = usersData.map(user => ({
           ...user,
           reportNum: reportCounts[user.userName] || 0,
         }));
@@ -81,12 +81,9 @@ const SearchPage = ({ themeClasses }) => {
 
   const toggleSuspend = async (userId, isSuspended) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/admin/${userId}/toggle-suspend`,
-        {
-          method: "PATCH",
-        }
-      );
+      const response = await fetch(`/api/admin/${userId}/toggle-suspend`, {
+        method: 'PATCH',
+      });
       if (!response.ok) {
         throw new Error("Failed to toggle user suspension");
       }
@@ -110,9 +107,7 @@ const SearchPage = ({ themeClasses }) => {
 
   const viewReports = async (userId) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/reports/all/${userId}`
-      );
+     const response = await fetch(`http://localhost:5000/api/reports/all/${userId}`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch reports");
@@ -137,16 +132,11 @@ const SearchPage = ({ themeClasses }) => {
     };
     const deleteReport = async () => {
       try {
-        await fetch(
-          `http://localhost:5000/api/reports/${currentReport.reportId}`,
-          {
-            method: "DELETE",
-          }
-        );
-
-        const updatedReports = reportsData.filter(
-          (report) => report.reportId !== currentReport.reportId
-        );
+        await fetch(`http://localhost:5000/api/reports/${currentReport.reportId}`, {
+          method: 'DELETE',
+        });
+    
+        const updatedReports = reportsData.filter(report => report.reportId !== currentReport.reportId);
         setReportsData(updatedReports);
 
         setUsersData((users) =>
@@ -211,12 +201,9 @@ const SearchPage = ({ themeClasses }) => {
 
   const forceDelete = async (userId) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/admin/${userId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`http://localhost:5000/api/admin/${userId}`, {
+        method: 'DELETE',
+      });
       if (!response.ok) {
         throw new Error("Failed to delete user");
       }
@@ -303,23 +290,21 @@ const SearchPage = ({ themeClasses }) => {
           </div>
         </div>
         <div className="mt-4">
-          {paginatedUsers.length > 0 ? (
-            paginatedUsers.map((user, index) => (
-              <div
-                key={index}
-                className={`userName-class mb-4 p-4 rounded shadow-lg ${cardBgColor} ${textColor} space-y-2`}
-              >
-                <h2 className="userName-name text-2xl font-bold">
-                  {user.userName}
-                </h2>
-                <p>User ID: {user.userId}</p>
-                <p>Email: {user.email}</p>
-                <p>Age: {user.age}</p>
-                <p>Gender: {user.gender}</p>
-                <p>Status: {user.isSuspended ? "Suspended" : "Active"}</p>
-                <p>Admin: {user.isAdmin ? "True" : "False"}</p>
-                <p>Public Mode: {user.isPublic ? "True" : "False"}</p>
-                <p>Number of Reports: {user.reportNum}</p>
+  {paginatedUsers.length > 0 ? (
+    paginatedUsers.map((user, index) => (
+      <div
+        key={index}
+        className={`userName-class mb-4 p-4 rounded shadow-lg ${cardBgColor} ${textColor} space-y-2`}
+      >
+        <h2 className="userName-name text-2xl font-bold">{user.userName}</h2>
+        <p>User ID: {user.userId}</p>
+        <p>Email: {user.email}</p>
+        <p>Age: {user.age}</p>
+        <p>Gender: {user.gender}</p>
+        <p>Status: {user.isSuspended ? 'Suspended' : 'Active'}</p>
+        <p>Admin: {user.isAdmin ? 'True' : 'False'}</p>
+        <p>Public Mode: {user.isPublic ? 'True' : 'False'}</p>
+        <p>Number of Reports: {user.reportNum}</p>
 
                 {userID !== user.userId && (
                   <>

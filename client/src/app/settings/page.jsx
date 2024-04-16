@@ -1,12 +1,14 @@
 "use client";
+import React from 'react';
 import { useState } from "react";
-import React from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import usePublicPrivateMode from "./components/PublicPrivateMode";
 import Profile from "./components/SettingsProfile";
 import Option from "./components/Option";
 import NotificationButton from "./components/NotificationButton";
 import ThemeChanger from "./components/ThemeChanger";
+import EmailVerificationButton from './components/EmailVerificationButton';
+
 import {
   faUser,
   faBell,
@@ -16,6 +18,7 @@ import {
   faRightToBracket,
   faEye,
   faEyeSlash,
+  faEnvelope
 } from "@fortawesome/free-solid-svg-icons";
 import ProfilePhotoUpload from "./components/ProfilePhotoUpload";
 
@@ -59,6 +62,12 @@ export default function Page() {
           context="Message & Trip Notifications"
           link="/settings/notifications"
         />
+        <EmailVerificationButton
+          icon={faEnvelope} // Changed to faEnvelope to indicate email
+          header="Verify Email"
+          context="Confirm your email address to ensure account security "
+          link="/settings/verify-email"
+        />
         <Option
           icon={faServer}
           header="Data & Preferences"
@@ -69,7 +78,7 @@ export default function Page() {
           icon={faGlobe}
           header="Region and Language"
           context="Region & Language"
-          link="/settings/region"
+          link="/settings/region" 
         />
         <Option
           icon={faHeadphones}

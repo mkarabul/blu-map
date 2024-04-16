@@ -123,6 +123,7 @@ const ProfileTripsController = {
           "tripDate",
           "tripId",
           "images",
+          "createdAt"
         ],
       });
       for (let i = 0; i < profileTrips.length; i++) {
@@ -228,6 +229,7 @@ const ProfileTripsController = {
           "tripId",
           "isPublic",
           "images",
+          "createdAt",
         ],
       });
       for (let i = 0; i < profileTrips.length; i++) {
