@@ -6,7 +6,7 @@ import Profile from "./components/SettingsProfile";
 import Option from "./components/Option";
 import NotificationButton from "./components/NotificationButton";
 import ThemeChanger from "./components/ThemeChanger";
-import EmailVerificationButton from './components/EmailVerificationButton'; // Renamed for clarity
+import EmailVerificationButton from './components/EmailVerificationButton';
 import { 
   faUser, faBell, faServer, faGlobe, faHeadphones, 
   faRightToBracket, faEye, faEyeSlash, faEnvelope 

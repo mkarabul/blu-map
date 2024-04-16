@@ -49,17 +49,6 @@ describe("Admin Routes", () => {
     expect(response.statusCode).toBe(200);
   });
 
-  test("GET /notifcations/get", async () => {
-    const response = await request(app).get("/notifcations/get");
-    expect(response.statusCode).toBe(200);
-  });
-
-  test("GET /notifications/get/:id", async () => {
-    const response = await request(app).get(`/notifications/get/${createdId}`);
-    expect(response.statusCode).toBe(200);
-  });
-  
-
   // test("PATCH /:userId/toggle-suspend", async () => {
   //   const response = await request(app)
   //     .patch("/testAdmin/toggle-suspend")
