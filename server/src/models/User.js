@@ -70,7 +70,11 @@ const User = sequelize.define("User", {
     type: DataTypes.BOOLEAN,
     allowNULL: false,
     defaultValue: false,
-  }
+  },
+  image: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: true,
+  },
 });
 
 User.sync({ alter: true });

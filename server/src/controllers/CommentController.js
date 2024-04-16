@@ -57,6 +57,18 @@ const CommentController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  async getUserCommentCount(req, res) {
+    try {
+      const { userId } = req.params;
+      const comments = await Comment.findAll({
+        where: { userId },
+      });
+      res.json({ totalComments: comments.length });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 };
 
 module.exports = CommentController;
