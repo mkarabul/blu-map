@@ -10,7 +10,7 @@ const VideoComponent = () => {
           marginBottom: "5rem",
         }}
       >
-        <h2 className="text-xl mb-5">
+        {/* <h2 className="text-xl mb-5">
           Navigate your way through BluMap by using the tutorial below
         </h2>
         <div className="video-container">
@@ -31,13 +31,13 @@ const VideoComponent = () => {
           textAlign: "center",
           marginBottom: "5rem",
         }}
-      >
+      > */}
         <h2 className="text-xl mb-5">How to make your own personalized trip</h2>
         <div className="video-container">
           <iframe
             width="850"
             height="500"
-            src="https://www.youtube.com/embed/2Gg6Seob5Mg"
+            src="https://www.youtube.com/embed/EHy3rkIO7fs"
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -57,7 +57,7 @@ const VideoComponent = () => {
           <iframe
             width="850"
             height="500"
-            src="https://www.youtube.com/embed/A7ZkZazfvao"
+            src="https://www.youtube.com/embed/_XImtSy52jc"
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
