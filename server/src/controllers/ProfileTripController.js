@@ -24,8 +24,16 @@ const s3Client = new S3Client({
 const ProfileTripsController = {
   async createProfileTrip(req, res) {
     try {
-      const { userId, userName, description, header, tripDate, tripId } =
-        req.body;
+      const {
+        userId,
+        userName,
+        description,
+        header,
+        tripDate,
+        tripId,
+        city,
+        country,
+      } = req.body;
       const newProfileTrip = await ProfileTrip.create({
         userId,
         userName,
@@ -33,6 +41,8 @@ const ProfileTripsController = {
         header,
         tripDate,
         tripId,
+        city,
+        country,
       });
       res.status(201).json(newProfileTrip);
     } catch (error) {
@@ -72,6 +82,8 @@ const ProfileTripsController = {
           "isSocial",
           "tripId",
           "images",
+          "city",
+          "country",
         ],
       });
       for (let i = 0; i < profileTrips.length; i++) {
@@ -123,6 +135,8 @@ const ProfileTripsController = {
           "tripDate",
           "tripId",
           "images",
+          "city",
+          "country",
         ],
       });
       for (let i = 0; i < profileTrips.length; i++) {
@@ -180,6 +194,8 @@ const ProfileTripsController = {
           "dislikes",
           "comments",
           "images",
+          "city",
+          "country",
         ],
       });
       const imageUrls = [];
@@ -228,6 +244,8 @@ const ProfileTripsController = {
           "tripId",
           "isPublic",
           "images",
+          "city",
+          "country",
         ],
       });
       for (let i = 0; i < profileTrips.length; i++) {
@@ -427,6 +445,8 @@ const ProfileTripsController = {
           "tripId",
           "isPublic",
           "images",
+          "city",
+          "country",
         ],
       });
       const profileTrips = profileTripsData.filter((trip) => trip.isPublic);

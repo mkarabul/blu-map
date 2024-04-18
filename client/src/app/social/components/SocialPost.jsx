@@ -11,6 +11,8 @@ import {
   faCommentDots,
   faArrowRight,
   faArrowLeft,
+  faMapMarkerAlt,
+  faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import ShareButton from "../../profile/components/ShareButton";
 import Link from "next/link";
@@ -20,6 +22,8 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 export default function SocialPost({
   uuid,
   header,
+  city,
+  country,
   description,
   tripDate,
   userName,
@@ -114,8 +118,20 @@ export default function SocialPost({
               {header}
             </div>
             <div className="text-xl text-gray-700 my-2">{description}</div>
-            <div className="text-lg font-medium text-gray-600 my-2">
-              Date: {tripDate}
+            {city &&
+            city !== "" &&
+            city !== "Unknown" &&
+            country &&
+            country !== "" &&
+            country !== "Unknown" ? (
+              <div className="flex items-center my-2">
+                <FontAwesomeIcon icon={faMapMarkerAlt} />
+                <span className="ml-2 text-lg text-gray-600">{`${city}, ${country}`}</span>
+              </div>
+            ) : null}
+            <div className="flex items-center my-2">
+              <FontAwesomeIcon icon={faCalendarAlt} />
+              <span className="ml-2 text-lg text-gray-600">{tripDate}</span>
             </div>
           </Link>
         ) : (
@@ -124,8 +140,20 @@ export default function SocialPost({
               {header}
             </div>
             <div className="text-xl text-gray-700 my-2">{description}</div>
-            <div className="text-lg font-medium text-gray-600 my-2">
-              Date: {tripDate}
+            {city &&
+            city !== "" &&
+            city !== "Unknown" &&
+            country &&
+            country !== "" &&
+            country !== "Unknown" ? (
+              <div className="flex items-center my-2">
+                <FontAwesomeIcon icon={faMapMarkerAlt} />
+                <span className="ml-2 text-lg text-gray-600">{`${city}, ${country}`}</span>
+              </div>
+            ) : null}
+            <div className="flex items-center my-2">
+              <FontAwesomeIcon icon={faCalendarAlt} />
+              <span className="ml-2 text-lg text-gray-600">{tripDate}</span>
             </div>
           </>
         )}

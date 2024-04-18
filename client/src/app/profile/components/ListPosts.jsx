@@ -101,6 +101,8 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
                 tripId={post.tripId}
                 images={post.images}
                 userPhoto={post.userPhoto}
+                city={post.city}
+                country={post.country}
               />
             ) : (
               <SocialPost
@@ -119,6 +121,8 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
                 images={post.images}
                 userPhoto={post.userPhoto}
                 isSocialPage={false}
+                city={post.city}
+                country={post.country}
               />
             )
           )}

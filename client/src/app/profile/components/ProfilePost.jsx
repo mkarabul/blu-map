@@ -16,6 +16,8 @@ import {
   faCommentDots,
   faArrowRight,
   faArrowLeft,
+  faMapMarkerAlt,
+  faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import SocialTabShare from "./SocialTabShare";
 
@@ -30,6 +32,8 @@ export default function ProfilePost({
   tripId,
   images,
   userPhoto,
+  city,
+  country,
 }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -105,8 +109,20 @@ export default function ProfilePost({
         <Link href={`/post/${uuid}`}>
           <div className="text-3xl font-bold text-gray-700 my-2">{header}</div>
           <div className="text-xl text-gray-700 my-2">{description}</div>
-          <div className="text-lg font-medium text-gray-600 my-2">
-            Date: {tripDate}
+          {city &&
+          city !== "" &&
+          city !== "Unknown" &&
+          country &&
+          country !== "" &&
+          country !== "Unknown" ? (
+            <div className="flex items-center my-2">
+              <FontAwesomeIcon icon={faMapMarkerAlt} />
+              <span className="ml-2 text-lg text-gray-600">{`${city}, ${country}`}</span>
+            </div>
+          ) : null}
+          <div className="flex items-center my-2">
+            <FontAwesomeIcon icon={faCalendarAlt} />
+            <span className="ml-2 text-lg text-gray-600">{tripDate}</span>
           </div>
         </Link>
         {/* Buttons on the bottom of a post */}

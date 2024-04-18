@@ -28,6 +28,8 @@ export default function ListPosts() {
           uuid={post.uuid}
           header={post.header}
           description={post.description}
+          city={post.city}
+          country={post.country}
           tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
