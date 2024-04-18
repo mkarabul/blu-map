@@ -2,7 +2,7 @@ const request = require("supertest");
 const express = require("express");
 const commentRoutes = require("../commentRoutes");
 
-// jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+//jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
 
 jest.mock("../../middleware/authMiddleware", () => ({
   checkJwt: jest.fn((req, res, next) => {

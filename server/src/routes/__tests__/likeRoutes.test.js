@@ -59,21 +59,4 @@ describe("Like Controller Tests", () => {
       .send({ postId, userId: "testUserId" });
     expect([204, 201]).toContain(response.status);
   });
-
-  /*
-  async getUserLikesCount(req, res) {
-    try {
-      const { userId } = req.params;
-      const likes = await Like.findAll({
-        where: { userId },
-      });
-      res.json({ totalLikes: likes.length });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  },
-  test case is below
-  */
-  //get total likes for the userId
 });
