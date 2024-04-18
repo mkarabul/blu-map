@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import CalendarEditView from "./CalendarEditView";
 import useFormState from "./useFormState";
@@ -17,9 +17,12 @@ const Form = ({ itinerary }) => {
     updateActivity,
     addActivity,
     deleteActivity,
-  } = useFormState({ itinerary });
 
-  const [loc, setLoc] = useState("");
+    city,
+    loc,
+    setCityString,
+
+  } = useFormState({ itinerary });
 
   const router = useRouter();
 
@@ -48,7 +51,7 @@ const Form = ({ itinerary }) => {
 
   return (
     <form onSubmit={onSubmit}>
-      <div className="mb-4 flex flex-row">
+      <div className="mb-4 flex flex-row gap-4">
         <h1 className="text-4xl">
           <input
             type="text"
@@ -58,7 +61,7 @@ const Form = ({ itinerary }) => {
             onChange={(event) => setTitle(event.target.value)}
           />
         </h1>
-        <LocationSearch loc={loc} setLoc={setLoc} />
+        <LocationSearch default={city} setCity={setCityString} />
       </div>
       <div className="grid md:grid-cols-3 gap-4">
         <div className="overflow-y-scroll max-h-full mb-4 col-span-2">
