@@ -30,6 +30,10 @@ const Preference = sequelize.define("Preference", {
     type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: true,
   },
+  plannedTripAttractions: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: true,
+  },
 });
 
 Preference.sync({ alter: true });

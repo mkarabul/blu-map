@@ -118,6 +118,7 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
                 clickable={true}
                 images={post.images}
                 userPhoto={post.userPhoto}
+                isSocialPage={false}
               />
             )
           )}

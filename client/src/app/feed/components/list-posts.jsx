@@ -52,6 +52,7 @@ export default function ListPosts() {
           clickable={true}
           images={post.images}
           userPhoto={post.userPhoto}
+          isSocialPage={false}
         />
       ))}
     </div>

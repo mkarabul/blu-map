@@ -51,6 +51,7 @@ const Post = async ({ params }) => {
           clickable={false}
           images={post.images}
           userPhoto={post.userPhoto}
+          isSocialPage={false}
         />
       </div>
       <CommentSection

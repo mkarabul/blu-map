@@ -28,6 +28,7 @@ export default function SocialPost({
   clickable,
   images,
   userPhoto,
+  isSocialPage,
 }) {
   const { likes, dislikes, addLike, addDislike, userLiked, userDisliked } =
     RepSystem(initialLikes, initialDislikes, uuid);
@@ -47,7 +48,13 @@ export default function SocialPost({
   };
 
   return (
-    <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
+    <div
+      className={
+        isSocialPage
+          ? "card w-full sm:w-11/12 md:w-3/4 bg-white border mx-auto mt-5 mb-5"
+          : "card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5"
+      }
+    >
       <div className="card-body p-5">
         {/* user profile icon */}
         <div className="flex justify-between mb-4">
