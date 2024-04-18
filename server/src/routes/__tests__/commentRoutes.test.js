@@ -53,3 +53,12 @@ describe("Comment Routes", () => {
     expect(response.status).toBe(200);
   });
 });
+
+//comment badge
+describe("Comment Badge", () => {
+  it("should get all comments for a post", async () => {
+    const postId = "post123";
+    const response = await request(app).get(`/api/comments/post/${postId}`);
+    expect(response.status).toBe(200);
+  });
+});
