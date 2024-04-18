@@ -15,6 +15,7 @@ import {
 import ShareButton from "../../profile/components/ShareButton";
 import Link from "next/link";
 import { RepSystem } from "./RepSystem";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function SocialPost({
   uuid,
@@ -30,6 +31,7 @@ export default function SocialPost({
   userPhoto,
   isSocialPage,
 }) {
+  const { user } = useUser();
   const { likes, dislikes, addLike, addDislike, userLiked, userDisliked } =
     RepSystem(initialLikes, initialDislikes, uuid);
 
@@ -50,7 +52,7 @@ export default function SocialPost({
   return (
     <div
       className={
-        isSocialPage
+        isSocialPage && user
           ? "card w-full sm:w-11/12 md:w-3/4 bg-white border mx-auto mt-5 mb-5"
           : "card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5"
       }
