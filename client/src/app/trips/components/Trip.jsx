@@ -11,12 +11,14 @@ const Trip = ({ trip, deleteTrip, openModal, setTripData }) => {
         <h2 className="card-title">{title}</h2>
         <div className="flex flex-row justify-between">
           <div className="flex items-center gap-2">
-            <button
-              className="btn btn-circle btn-sm btn-secondary"
-              onClick={() => openModal(uuid)}
-            >
-              <FontAwesomeIcon icon={faPlus} />
-            </button>
+            <div className="tooltip" data-tip="Create Post">
+              <button
+                className="btn btn-circle btn-sm btn-secondary"
+                onClick={() => openModal(uuid)}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </button>
+            </div>
             <button
               className="btn btn-error btn-sm btn-square"
               onClick={() => deleteTrip(uuid)}
