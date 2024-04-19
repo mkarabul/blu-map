@@ -9,7 +9,7 @@ export default async function Navbar() {
   const user = session?.user;
 
   return (
-    <header className="navbar bg-base-200 w-100vw">
+    <header className="navbar bg-base-200 w-100vw z-50 relative">
       {/* Left Section */}
       <div className="left-section flex-1">
         <Link className="btn btn-ghost text-xl" href="/">
@@ -20,12 +20,12 @@ export default async function Navbar() {
           />
           Blu-Map
         </Link>
-        <input
+        {/* <input
           type="text"
           placeholder="Search"
           style={{ width: "25rem" }}
           className="input input-bordered w-full md:w-auto"
-        />
+        /> */}
       </div>
 
       {/* Right Section */}

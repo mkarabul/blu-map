@@ -59,7 +59,7 @@ describe("Fail Cases Recommendation Routes", () => {
 
     const response = await request(app).post(`/${userId}/${activity}`);
     expect(response.status).toBe(400);
-    
+
     await request(app).delete(`/${userId}/${activity}`);
   });
 });

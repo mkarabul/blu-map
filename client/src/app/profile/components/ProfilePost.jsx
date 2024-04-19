@@ -3,7 +3,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ShareButton from "../../profile/components/ShareButton";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   faThumbsUp,
@@ -16,6 +16,9 @@ import {
   faCommentDots,
   faArrowRight,
   faArrowLeft,
+  faMapMarkerAlt,
+  faCalendarAlt,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import SocialTabShare from "./SocialTabShare";
 
@@ -30,8 +33,17 @@ export default function ProfilePost({
   tripId,
   images,
   userPhoto,
+  city,
+  country,
 }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isPostDeleted, setPostDeleted] = useState(false);
+
+  useEffect(() => {
+    if (isPostDeleted) {
+      window.location.reload();
+    }
+  }, [isPostDeleted]);
 
   const handleNextImage = () => {
     if (currentImageIndex < images.length - 1) {
@@ -44,6 +56,24 @@ export default function ProfilePost({
       setCurrentImageIndex((prevIndex) => prevIndex - 1);
     }
   };
+
+  //handleDeletePost function
+  const handleDeletePost = async () => {
+    try {
+      const response = await fetch(`/api/profile-trip/${uuid}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        console.log("Post deleted successfully");
+        setPostDeleted(true);
+      } else {
+        console.log("Failed to delete post");
+      }
+    } catch (error) {
+      console.error("Failed to delete post", error);
+    }
+  };
+
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
       <div className="card-body p-5">
@@ -105,35 +135,61 @@ export default function ProfilePost({
         <Link href={`/post/${uuid}`}>
           <div className="text-3xl font-bold text-gray-700 my-2">{header}</div>
           <div className="text-xl text-gray-700 my-2">{description}</div>
-          <div className="text-lg font-medium text-gray-600 my-2">
-            Date: {tripDate}
+          {city &&
+          city !== "" &&
+          city !== "Unknown" &&
+          country &&
+          country !== "" &&
+          country !== "Unknown" ? (
+            <div className="flex items-center my-2">
+              <FontAwesomeIcon icon={faMapMarkerAlt} />
+              <span className="ml-2 text-lg text-gray-600">{`${city}, ${country}`}</span>
+            </div>
+          ) : null}
+          <div className="flex items-center my-2">
+            <FontAwesomeIcon icon={faCalendarAlt} />
+            <span className="ml-2 text-lg text-gray-600">{tripDate}</span>
           </div>
         </Link>
         {/* Buttons on the bottom of a post */}
         <div className="flex flex-col md:flex-row justify-start items-center mt-4">
           <div className="flex flex-grow space-x-2 mb-2 md:mb-0">
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faThumbsUp} />
-            </button>
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faThumbsDown} />
-            </button>
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faMapMarkedAlt} />
-            </button>
+            <div className="tooltip" data-tip="Like">
+              <button className="btn btn-outline rounded-full">
+                <FontAwesomeIcon icon={faThumbsUp} />
+              </button>
+            </div>
+            <div className="tooltip" data-tip="Dislike">
+              <button className="btn btn-outline rounded-full">
+                <FontAwesomeIcon icon={faThumbsDown} />
+              </button>
+            </div>
+
             <SocialTabShare isSocial={isSocial} uuid={uuid} />
             <Link href={`/trips/${tripId}`}>
-              <button className="btn btn-outline rounded-full">
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
+              <div className="tooltip" data-tip="View Itinerary">
+                <button className="btn btn-outline rounded-full">
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
+              </div>
             </Link>
           </div>
           {/* Separate div for the last button (right-most) */}
+          <div className="tooltip" data-tip="Delete Post">
+            <button
+              className="btn btn-outline rounded-full mr-2"
+              onClick={handleDeletePost}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </button>
+          </div>
           <Link href={`/post/${uuid}`}>
             <div className="flex justify-end flex-grow">
-              <button className="btn btn-outline rounded-full">
-                <FontAwesomeIcon icon={faCommentDots} />
-              </button>
+              <div className="tooltip" data-tip="Comments">
+                <button className="btn btn-outline rounded-full">
+                  <FontAwesomeIcon icon={faCommentDots} />
+                </button>
+              </div>
             </div>
           </Link>
         </div>

@@ -70,7 +70,8 @@ describe("Admin Routes", () => {
     const notificationBody = {
       userId: "auth0|65dcfb3961353d011b2a43e5",
       header: "yo whats good",
-      description: "nahsdfadsfd This is a detailasdfaah of the violation orasdhgasdfasdf issue being reported."
+      description:
+        "nahsdfadsfd This is a detailasdfaah of the violation orasdhgasdfasdf issue being reported.",
     };
 
     const response = await request(app)
@@ -82,6 +83,7 @@ describe("Admin Routes", () => {
     createdIdNotification = response.body.notification.Id;
     expect(response.statusCode).toBe(201);
   });
+<<<<<<< HEAD
 
   test("GET /notifications/get", async () => {
     const response = await request(app).get("/notifications/get");
@@ -102,6 +104,8 @@ describe("Admin Routes", () => {
 
 
 
+=======
+>>>>>>> 3d547a31ba6f9b608da082290cb7e46fa7ddfcae
 });
 
 describe("Fail Cases Admin Routes", () => {
@@ -134,6 +138,4 @@ describe("Fail Cases Admin Routes", () => {
       .send();
     expect(response.statusCode).toBe(400);
   });
-
-
 });

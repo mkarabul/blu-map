@@ -4,6 +4,8 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import NotificationsPage from "../NotificationPage";
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
 
 // Mocking necessary parts
 jest.mock("@auth0/nextjs-auth0/client", () => ({

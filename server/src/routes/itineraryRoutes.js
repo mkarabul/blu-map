@@ -49,6 +49,13 @@ router.post(
   checkJwt,
   getUserInfoMiddleware,
   ItineraryController.copyItinerary
-)
+);
+
+router.get(
+  "/:userId/last-itinerary-details",
+  checkJwt,
+  getUserInfoMiddleware,
+  ItineraryController.getLastItineraryDetails
+);
 
 module.exports = router;

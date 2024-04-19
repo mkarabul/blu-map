@@ -17,6 +17,6 @@ const Recommendation = sequelize.define("Recommendation", {
   },
 });
 
-Recommendation.sync({ alter: true });
+Recommendation.sync();
 
 module.exports = Recommendation;

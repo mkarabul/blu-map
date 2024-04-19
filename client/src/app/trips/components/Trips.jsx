@@ -12,6 +12,8 @@ const Trips = () => {
 
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
   const [tripDate, setTripDate] = useState("");
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
@@ -37,8 +39,10 @@ const Trips = () => {
     }
   };
 
-  const openModal = (uuid) => {
+  const openModal = (uuid, city, country) => {
     setTripId(uuid);
+    setCountry(country);
+    setCity(city);
     document.getElementById("my_modal_4").showModal();
   };
 
@@ -59,6 +63,8 @@ const Trips = () => {
     }
     const body = {
       header: title,
+      city: city,
+      country: country,
       description,
       tripDate,
       tripId: tripId,
@@ -136,6 +142,28 @@ const Trips = () => {
                 className="w-full px-3 py-2 border rounded mt-1"
               />
             </label>
+            {/* <label className="block mb-2">
+              City:
+              <input
+                type="text"
+                onChange={(e) => {
+                  setCity(e.target.value);
+                  setEmptyFieldError("");
+                }}
+                className="w-full px-3 py-2 border rounded mt-1"
+              />
+            </label>
+            <label className="block mb-2">
+              Country:
+              <input
+                type="text"
+                onChange={(e) => {
+                  setCountry(e.target.value);
+                  setEmptyFieldError("");
+                }}
+                className="w-full px-3 py-2 border rounded mt-1"
+              />
+            </label> */}
             <label className="block mb-2">
               Description:
               <textarea
