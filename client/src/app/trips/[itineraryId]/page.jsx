@@ -22,18 +22,29 @@ const getItinerary = async (itineraryId) => {
     }
   );
 
-  return response.json();
+  if (!response.ok) {
+    return null;
+  }
+
+  const json = await response.json();
+
+  json.activities = json.activities.map((activity) => ({
+    ...activity,
+    start: new Date(activity.start),
+    end: new Date(activity.end),
+  }));
+
+  return json;
 };
 
 const Itinerary = async ({ params }) => {
   const { itineraryId } = params;
 
   const itinerary = await getItinerary(itineraryId);
-  itinerary.activities = itinerary.activities.map((activity) => ({
-    ...activity,
-    start: new Date(activity.start),
-    end: new Date(activity.end),
-  }));
+
+  if (!itinerary) {
+    return <h1 className="text-center p-4">No itinerary found</h1>;
+  }
 
   return (
     <>
