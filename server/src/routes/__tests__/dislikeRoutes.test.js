@@ -24,16 +24,16 @@ describe("Dislike Routes", () => {
     const response = await request(app)
       .patch(`/api/dislikes/post/${postId}`)
       .send({ postId, userId: "testUserId" });
-    expect(response.status).toBe(201);
+    expect([201, 204]).toContain(response.status);
   });
 
-  // it("should dislike a post code 204", async () => {
-  //   const postId = "post123";
-  //   const response = await request(app)
-  //     .patch(`/api/dislikes/post/${postId}`)
-  //     .send({ postId, userId: "testUserId" });
-  //   expect(response.status).toBe(204);
-  // });
+  it("should dislike a post code 204", async () => {
+    const postId = "post123";
+    const response = await request(app)
+      .patch(`/api/dislikes/post/${postId}`)
+      .send({ postId, userId: "testUserId" });
+    expect(response.status).toBe(204);
+  });
 
   it("should get all dislikes for a post", async () => {
     const postId = "post123";

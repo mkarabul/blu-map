@@ -29,6 +29,8 @@ describe("Profile Trip Routes", () => {
       userName: "mockUserName",
       description: "A mock trip description",
       header: "A mock trip header",
+      city: "A mock city",
+      country: "A mock country",
       tripDate: "2023-01-01T00:00:00.000Z",
       tripId: uuidv4(),
     };

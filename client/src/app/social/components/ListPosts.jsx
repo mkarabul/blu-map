@@ -5,21 +5,7 @@ import SocialPost from "./SocialPost";
 
 import { useUser } from "@auth0/nextjs-auth0/client";
 
-export default function ListPosts() {
-  const [posts, setPosts] = useState([]);
-
-  const { user } = useUser();
-
-  const getPosts = async () => {
-    const response = await fetch(`/api/profile-trip/`);
-    const data = await response.json();
-    setPosts(data);
-  };
-
-  useEffect(() => {
-    getPosts();
-  }, []);
-
+export default function ListPosts({ posts }) {
   return posts && posts.length ? (
     <>
       {posts.map((post) => (
@@ -28,6 +14,8 @@ export default function ListPosts() {
           uuid={post.uuid}
           header={post.header}
           description={post.description}
+          city={post.city}
+          country={post.country}
           tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
@@ -38,6 +26,7 @@ export default function ListPosts() {
           clickable={true}
           images={post.images}
           userPhoto={post.userPhoto}
+          isSocialPage={true}
         />
       ))}
     </>

@@ -5,13 +5,15 @@ const cache = require("../config/cache");
 const PlacesController = {
   getPlaces: async (req, res) => {
     try {
-      const { location } = req.query;
+      const { location, narrow } = req.query;
 
       if (!location) {
         return res.status(400).json({ error: "Location is required" });
       }
 
-      let response = await cache.get(`place:${location}`);
+      const type = narrow === "" ? "tourist_attraction" : narrow;
+
+      let response = await cache.get(`place:${location}:${type}`);
       if (response) {
         return res.status(200).json(JSON.parse(response));
       }
@@ -19,7 +21,7 @@ const PlacesController = {
       const request = {
         params: {
           location,
-          type: "tourist_attraction",
+          type,
           radius: 5000,
           rankby: "prominence",
           key: process.env.GOOGLE_MAPS_API_KEY,
@@ -28,8 +30,14 @@ const PlacesController = {
 
       response = await client.placesNearby(request);
 
+      console.log(
+        location,
+        narrow,
+        response.data.results.map((r) => r.name)
+      );
+
       await cache.set(
-        `place:${location}`,
+        `place:${location}:${type}`,
         JSON.stringify(response.data.results)
       );
 

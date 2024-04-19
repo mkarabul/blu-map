@@ -16,6 +16,8 @@ import {
   faCommentDots,
   faArrowRight,
   faArrowLeft,
+  faMapMarkerAlt,
+  faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import SocialTabShare from "./SocialTabShare";
 
@@ -30,6 +32,8 @@ export default function ProfilePost({
   tripId,
   images,
   userPhoto,
+  city,
+  country,
 }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -105,35 +109,53 @@ export default function ProfilePost({
         <Link href={`/post/${uuid}`}>
           <div className="text-3xl font-bold text-gray-700 my-2">{header}</div>
           <div className="text-xl text-gray-700 my-2">{description}</div>
-          <div className="text-lg font-medium text-gray-600 my-2">
-            Date: {tripDate}
+          {city &&
+          city !== "" &&
+          city !== "Unknown" &&
+          country &&
+          country !== "" &&
+          country !== "Unknown" ? (
+            <div className="flex items-center my-2">
+              <FontAwesomeIcon icon={faMapMarkerAlt} />
+              <span className="ml-2 text-lg text-gray-600">{`${city}, ${country}`}</span>
+            </div>
+          ) : null}
+          <div className="flex items-center my-2">
+            <FontAwesomeIcon icon={faCalendarAlt} />
+            <span className="ml-2 text-lg text-gray-600">{tripDate}</span>
           </div>
         </Link>
         {/* Buttons on the bottom of a post */}
         <div className="flex flex-col md:flex-row justify-start items-center mt-4">
           <div className="flex flex-grow space-x-2 mb-2 md:mb-0">
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faThumbsUp} />
-            </button>
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faThumbsDown} />
-            </button>
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faMapMarkedAlt} />
-            </button>
+            <div className="tooltip" data-tip="Like">
+              <button className="btn btn-outline rounded-full">
+                <FontAwesomeIcon icon={faThumbsUp} />
+              </button>
+            </div>
+            <div className="tooltip" data-tip="Dislike">
+              <button className="btn btn-outline rounded-full">
+                <FontAwesomeIcon icon={faThumbsDown} />
+              </button>
+            </div>
+
             <SocialTabShare isSocial={isSocial} uuid={uuid} />
             <Link href={`/trips/${tripId}`}>
-              <button className="btn btn-outline rounded-full">
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
+              <div className="tooltip" data-tip="View Itinerary">
+                <button className="btn btn-outline rounded-full">
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
+              </div>
             </Link>
           </div>
           {/* Separate div for the last button (right-most) */}
           <Link href={`/post/${uuid}`}>
             <div className="flex justify-end flex-grow">
-              <button className="btn btn-outline rounded-full">
-                <FontAwesomeIcon icon={faCommentDots} />
-              </button>
+              <div className="tooltip" data-tip="Comments">
+                <button className="btn btn-outline rounded-full">
+                  <FontAwesomeIcon icon={faCommentDots} />
+                </button>
+              </div>
             </div>
           </Link>
         </div>

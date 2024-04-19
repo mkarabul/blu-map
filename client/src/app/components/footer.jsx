@@ -33,33 +33,12 @@ function Footer() {
           </Link>
         </nav>
         <nav>
-          <h6 className="footer-title">Popular Activities</h6>
-          <Link href="/Cruising & Sailing" className="link link-hover">
-            Cruising & Sailing
-          </Link>
-          <Link href="/Hiking & Trekking" className="link link-hover">
-            Hiking & Trekking
-          </Link>
-          <Link href="/Museum & Galleries" className="link link-hover">
-            Museum & Galleries
-          </Link>
-          <Link href="/Restaurants" className="link link-hover">
-            Restaurants
-          </Link>
-        </nav>
-        <nav>
           <h6 className="footer-title">Contact Support</h6>
           <Link href="/Contact Us" className="link link-hover">
             Contact Us
           </Link>
-          <Link href="/About Us" className="link link-hover">
-            About Us
-          </Link>
-          <Link href="/FAQs" className="link link-hover">
+          <Link href="/tutorial" className="link link-hover">
             FAQs
-          </Link>
-          <Link href="/Terms of Service" className="link link-hover">
-            Terms of Service
           </Link>
         </nav>
       </footer>
