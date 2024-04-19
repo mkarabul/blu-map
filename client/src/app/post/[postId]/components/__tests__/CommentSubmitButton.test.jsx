@@ -3,13 +3,21 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
+global.fetch = jest
+  .fn()
+  .mockResolvedValue({ ok: true, json: jest.fn().mockResolvedValue({}) });
 
 import CommentSection from "../CommentSection";
 
 describe("CommentSection", () => {
   it("renders without errors", () => {
     act(() => {
-      render(<CommentSection postId="postId" />);
+      render(
+        <UserProvider>
+          <CommentSection postId="postId" />
+        </UserProvider>
+      );
     });
     expect(screen.getByRole("button", { name: /submit/i })).toBeInTheDocument();
   });
@@ -29,7 +37,11 @@ describe("CommentSection", () => {
     });
 
     act(() => {
-      render(<CommentSection postId={postId} />);
+      render(
+        <UserProvider>
+          <CommentSection postId={postId} />
+        </UserProvider>
+      );
     });
 
     const submitButton = screen.getByRole("button", { name: /submit/i });

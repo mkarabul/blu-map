@@ -4,6 +4,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import SocialPost from "../SocialPost";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 describe("SocialPost", () => {
   it("increments dislike count when dislike button is clicked", async () => {
@@ -13,18 +14,20 @@ describe("SocialPost", () => {
 
     // Render the SocialPost component
     render(
-      <SocialPost
-        uuid={postId}
-        header="Test Header"
-        description="Test Description"
-        tripDate="2024-03-29"
-        userName="TestUser"
-        likes={0}
-        dislikes={initialDislikes}
-        tripId="tripId"
-        clickable={true}
-        images={[]}
-      />
+      <UserProvider>
+        <SocialPost
+          uuid={postId}
+          header="Test Header"
+          description="Test Description"
+          tripDate="2024-03-29"
+          userName="TestUser"
+          likes={0}
+          dislikes={initialDislikes}
+          tripId="tripId"
+          clickable={true}
+          images={[]}
+        />
+      </UserProvider>
     );
 
     // Find and click the dislike button
