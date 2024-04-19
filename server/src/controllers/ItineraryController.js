@@ -125,9 +125,9 @@ const ItineraryController = {
       }
 
       const newItineraryObject = {
-        userId: req.user.sub,
         ...itinerary.dataValues,
       };
+      newItineraryObject.userId = req.user.sub;
 
       delete newItineraryObject.uuid;
       delete newItineraryObject.id;
