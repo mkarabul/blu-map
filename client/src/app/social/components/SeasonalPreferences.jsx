@@ -26,8 +26,9 @@ function SeasonalPreferences({ posts, setSeasonFilter }) {
         <div key={season} className="mt-4">
           <h3 className="font-semibold text-lg mb-2">{season}</h3>
 
-          {seasons[season].map((month) => (
+          {seasons[season].map((month, index) => (
             <button
+              key={month + index}
               className="btn btn-outline w-full rounded-full flex justify-between items-center mt-2"
               onClick={() => {
                 if (checkedSeasons.includes(month)) {
