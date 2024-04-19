@@ -7,8 +7,6 @@ import { act } from "react-dom/test-utils";
 import SocialPost from "../SocialPost";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 
-import { UserProvider } from "@auth0/nextjs-auth0/client";
-
 jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
 
 jest.mock("next/navigation", () => ({
@@ -31,28 +29,6 @@ describe("SocialPost", () => {
     const postId = "postId";
 
     // Render the SocialPost component
-<<<<<<< HEAD
-    render(
-      <UserProvider>
-        <SocialPost
-          uuid={postId}
-          header="Test Header"
-          description="Test Description"
-          tripDate="2024-03-29"
-          userName="TestUser"
-          likes={initialLikes}
-          dislikes={0}
-          tripId="tripId"
-          clickable={true}
-          images={[]}
-        />
-      </UserProvider>
-    );
-
-    // Find and click the like button
-    const likeButton = screen.getByRole("button", { name: /thumbs up/i });
-=======
->>>>>>> bafea5a7fefb779c0d6f2ee376b7391aef353fad
     await act(async () => {
       await render(
         <UserProvider>

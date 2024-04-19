@@ -27,9 +27,11 @@ const CopyPost = ({ tripId }) => {
   };
 
   return (
-    <button className="btn btn-outline rounded-full" onClick={copy}>
-      <FontAwesomeIcon icon={faPlus} />
-    </button>
+    <div className="tooltip" data-tip="View Itinerary">
+      <button className="btn btn-outline rounded-full" onClick={copy}>
+        <FontAwesomeIcon icon={faPlus} />
+      </button>
+    </div>
   );
 };
 
