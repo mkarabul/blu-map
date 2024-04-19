@@ -1,4 +1,4 @@
-import { handleAuth, handleCallback } from "@auth0/nextjs-auth0";
+import { handleAuth, handleCallback, handleLogin } from "@auth0/nextjs-auth0";
 
 const afterCallback = async (req, session, state) => {
   fetch(`${process.env.API_URL}/api/users`, {
@@ -13,5 +13,11 @@ const afterCallback = async (req, session, state) => {
 };
 
 export const GET = handleAuth({
+  login: handleLogin({
+    authorizationParams: {
+      audience: process.env.AUTH0_AUDIENCE,
+      scope: "openid profile email",
+    },
+  }),
   callback: handleCallback({ afterCallback }),
 });

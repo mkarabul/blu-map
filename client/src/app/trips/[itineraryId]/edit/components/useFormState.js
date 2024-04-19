@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
+import useCityJson from "./useCitiesJson";
 
 const useFormState = ({ itinerary }) => {
+  const cityUtils = useCityJson();
+
   const [activities, setActivities] = useState(itinerary.activities);
   const [title, setTitle] = useState(itinerary.title);
+  const [city, setCity] = useState(itinerary.city);
+  const [loc, setLoc] = useState(cityUtils.getLocationFromCity(city));
 
   useEffect(() => {
     setActivities(itinerary.activities);
@@ -36,7 +41,11 @@ const useFormState = ({ itinerary }) => {
   const deleteActivity = (activity) => {
     const updatedActivities = activities.filter((a) => a.id !== activity.id);
     setActivities(updatedActivities);
-    console.log(activities.length);
+  };
+
+  const setCityString = (cityString) => {
+    setCity(cityString);
+    setLoc(cityUtils.getLocationFromCity(cityString));
   };
 
   return {
@@ -46,6 +55,10 @@ const useFormState = ({ itinerary }) => {
     updateActivity,
     addActivity,
     deleteActivity,
+
+    city,
+    loc,
+    setCityString,
   };
 };
 

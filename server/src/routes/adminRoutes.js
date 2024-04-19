@@ -12,7 +12,12 @@ router.patch(
   "/:userId/toggle-suspend",
   UserController.toggleUserSuspensionById
 );
-router.patch('/:userId/toggle-admin', UserController.toggleUserAdminStatusById);
-router.patch('/:userId/toggle-darkmode', UserController.toggleUserDarkModeById);
+router.patch("/:userId/toggle-admin", UserController.toggleUserAdminStatusById);
+
+
+router.post("/notifications/post", UserController.postAdminNotification);
+router.get("/notifications/get", UserController.getAllNotifications); 
+router.get("/notifications/get/:userId", UserController.getNotificationsByUserId);
+router.delete("/notifications/delete/:notificationId", UserController.deleteNotificationById);
 
 module.exports = router;

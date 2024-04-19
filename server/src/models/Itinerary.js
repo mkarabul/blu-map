@@ -40,6 +40,11 @@ const Itinerary = sequelize.define("Itinerary", {
     allowNull: true,
     defaultValue: [],
   },
+
+  city: {
+    type: DataTypes.STRING,
+    defaultValue: "",
+  },
 });
 
 Itinerary.sync();

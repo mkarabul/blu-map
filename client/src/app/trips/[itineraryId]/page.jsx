@@ -40,8 +40,9 @@ const Itinerary = async ({ params }) => {
       {!itinerary && <>No itinerary found</>}
       {itinerary && (
         <>
-          <div className="mb-4 flex gap-4">
+          <div className="mb-4 flex gap-8 items-center">
             <h1 className="text-4xl">{itinerary.title}</h1>
+            <h2 className="text-2xl">{itinerary.city}</h2>
             <Link
               className="btn btn-ghost btn-square"
               href={`/trips/${itineraryId}/edit`}

@@ -4,6 +4,8 @@ const itineraryRoutes = require("../itineraryRoutes");
 const { before } = require("node:test");
 const { get } = require("http");
 
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
 jest.mock("../../middleware/authMiddleware", () => ({
   checkJwt: jest.fn((req, res, next) => {
     next();
@@ -53,6 +55,22 @@ describe("Itinerary Routes", () => {
   test("DELETE /:id", async () => {
     const response = await request(app).delete(`/${createdId}`);
     expect(response.statusCode).toBe(204);
+  });
+
+
+
+  test("POST /:id/copy", async () => {
+    const createItinerary = await request(app)
+      .post("/")
+      .send({ userId: "testUserIdCopy" });
+
+    const createdUuid = createItinerary.body.uuid;
+
+    const response = await request(app).post(`/${createdUuid}/copy`);
+    expect(response.statusCode).toBe(201);
+
+    await request(app).delete(`/${createdUuid}`);
+    await request(app).delete(`/${response.body.uuid}`);
   });
 });
 

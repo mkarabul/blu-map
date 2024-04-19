@@ -6,6 +6,18 @@ const itineraryRoutes = require("./itineraryRoutes");
 const adminRoutes = require("./adminRoutes");
 const socialPostRoutes = require("./socialPostRoutes");
 const notificationRoutes = require("./notificationRoutes");
+const recommendationRoutes = require("./recommendationRoutes");
+const reportRoutes = require("./reportRoutes");
+const followSystemRoutes = require("./followSystemRoutes");
+const followRequestRoutes = require("./followRequestRoutes");
+const likeRoutes = require("./likeRoutes");
+const dislikeRoutes = require("./dislikeRoutes");
+const commentRoutes = require("./commentRoutes");
+const blockRoutes = require("./blockRoutes");
+const friendRoutes = require("./friendRoutes");
+const vertificationRoutes = require("./vertificationRoutes");
+const placesRoutes = require("./placesRoutes");
+
 const router = express.Router();
 
 router.use("/users", userRoutes);
@@ -14,5 +26,17 @@ router.use("/profile-trip", profileTripRoutes);
 router.use("/itineraries", itineraryRoutes);
 router.use("/social-post", socialPostRoutes);
 router.use("/notification", notificationRoutes);
+router.use("/recommendations", recommendationRoutes);
+router.use("/likes", likeRoutes);
+router.use("/dislikes", dislikeRoutes);
+router.use("/comments", commentRoutes);
+router.use("/reports", reportRoutes);
+router.use("/follow", followSystemRoutes);
+router.use("/follow-request", followRequestRoutes);
+router.use("/block", blockRoutes);
+router.use("/friend", friendRoutes);
+router.use("/vertification", vertificationRoutes);
+
+router.use("/places", placesRoutes);
 
 module.exports = router;

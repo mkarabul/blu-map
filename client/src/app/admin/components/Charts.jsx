@@ -1,19 +1,34 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { Bar, Pie, Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement, ArcElement } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement, ArcElement, TimeScale } from 'chart.js';
 import { useUser } from "@auth0/nextjs-auth0/client";
 import chartOptions from './chartOptions';
 import getTheme from './themeOptions';
+import { Line } from 'react-chartjs-2';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement, ArcElement);
+import 'chartjs-adapter-date-fns'; // Import the adapter
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  ArcElement,
+  TimeScale // Register TimeScale
+);
 
 const ChartsPage = ({ themeClasses }) => {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState([]);
   const [theme] = useState(getTheme());
-  const [hasAccess, setAccess] = useState(false);
   const { user } = useUser();
+  const [socialTripData, setSocialTripData] = useState([]);
+
   const userID = user?.sub;
 
   useEffect(() => {    
@@ -23,20 +38,22 @@ const ChartsPage = ({ themeClasses }) => {
         localStorage.setItem('theme', theme);
       }
       try {
-        const response = await fetch('http://localhost:5000/api/admin/');
+        const response = await fetch('/api/admin/');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
         
         const data = await response.json();
         setUserData(data);
-        const currentUserData = data.find(user => user.userId === userID);
-        if (currentUserData && currentUserData.isAdmin) {
-          setAccess(true);
-        } else {
-          setUserData(null);
-          throw new Error("Not Admin");
+
+        const response2 = await fetch('/api/profile-trip/');
+        if (!response2.ok) {
+          throw new Error('Failed to fetch data');
         }
+        
+        const data2 = await response.json();
+        setSocialTripData(data2);
+
       } catch (error) {
         console.error(error);
       } finally {
@@ -47,20 +64,7 @@ const ChartsPage = ({ themeClasses }) => {
   }, [userID]);
 
 
-  if (loading) {
-    return (
-      <div className="p-5 min-h-screen flex justify-center items-center">
-        <h2 className="text-xl font-bold">Checking access permissions...</h2>
-      </div>
-    );
-  }
-  if (!hasAccess) {
-    return (
-      <div className="p-5 min-h-screen flex justify-center items-center">
-        <h2 className="text-xl font-bold">You do not have permission to access this page.</h2>
-      </div>
-    );
-  }
+
 
   const getAgeDemographicsData = () => {
     const ageGroups = {
@@ -98,6 +102,54 @@ const ChartsPage = ({ themeClasses }) => {
       }],
     };
   };
+
+
+ const getTimeSeriesData = () => {
+  const sortedData = [...userData].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  const counts = sortedData.reduce((acc, cur) => {
+    const date = cur.createdAt.split('T')[0]; // Get only the date part
+    if (acc.length > 0 && acc[acc.length - 1].x === date) {
+      acc[acc.length - 1].y += 1;
+    } else {
+      acc.push({ x: date, y: acc.length > 0 ? acc[acc.length - 1].y + 1 : 1 });
+    }
+    return acc;
+  }, []);
+
+  return {
+    labels: counts.map(point => point.x),
+    datasets: [{
+      label: 'Users Created Over Time',
+      data: counts,
+      borderColor: 'rgb(75, 192, 192)',
+      backgroundColor: 'rgba(75, 192, 192, 0.5)',
+    }]
+  };
+};
+
+const getProfileTripTimeSeriesData = () => {
+  const sortedData = [...socialTripData].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  const counts = sortedData.reduce((acc, cur) => {
+    const date = cur.createdAt.split('T')[0]; // Get only the date part
+    if (acc.length > 0 && acc[acc.length - 1].x === date) {
+      acc[acc.length - 1].y += 1;
+    } else {
+      acc.push({ x: date, y: acc.length > 0 ? acc[acc.length - 1].y + 1 : 1 });
+    }
+    return acc;
+  }, []);
+
+  return {
+    labels: counts.map(point => point.x),
+    datasets: [{
+      label: 'Profile Trips Over Time',
+      data: counts,
+      borderColor: 'rgb(255, 99, 132)',
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+    }]
+  };
+};
+
 
   const getSuspendedUsersData = () => {
     const suspendedCount = userData.filter(user => user.isSuspended).length;
@@ -141,39 +193,96 @@ const ChartsPage = ({ themeClasses }) => {
       }],
     };
   };
+  const getVerificationStatusData = () => {
+    const verifiedCount = userData.filter(user => user.isVerified).length;
+    const unverifiedCount = userData.length - verifiedCount;
 
-  const ageDemographicsChartData = getAgeDemographicsData();
-  const suspendedUsersChartData = getSuspendedUsersData();
-  const genderDistributionData = getGenderDistributionData();
+    return {
+      labels: ['Verified', 'Unverified'],
+      datasets: [{
+        label: 'Verification Status',
+        data: [verifiedCount, unverifiedCount],
+        backgroundColor: [
+          'rgba(75, 192, 192, 0.6)', // Color for Verified
+          'rgba(255, 99, 132, 0.6)', // Color for Unverified
+        ],
+      }],
+    };
+  };
 
   const rowOneChartOptions = {
     ...chartOptions,
     aspectRatio: 1,
   };
 
-  if (!loading && hasAccess) {
-    return (
-      <div className={`p-5 min-h-screen ${themeClasses} transition-colors duration-500`}>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4'>
-          <div className='bg-white shadow rounded p-4'>
-            <h3 className='text-xl font-semibold mb-2 text-black'>Age Demographics</h3>
-            <div style={{ height: '400px' }}>
-              <Bar data={ageDemographicsChartData} options={rowOneChartOptions} />
-            </div>
+  const xyChartOptions = {
+    responsive: true,
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          unit: 'day'
+        },
+        title: {
+          display: true,
+          text: 'Date'
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Number of Users'
+        }
+      }
+    }
+  };
+
+  return (
+    <div className={`p-1 min-h-screen ${themeClasses} transition-colors duration-1`}>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4'>
+        <div className='bg-white shadow rounded p-4'>
+          <h3 className='text-xl font-semibold mb-2 text-black'>Age Demographics</h3>
+          <div style={{ height: '300px' }}>
+            <Bar data={getAgeDemographicsData()} options={rowOneChartOptions} />
           </div>
-          <div className='bg-white shadow rounded p-4'>
-            <h3 className='text-xl font-semibold mb-2 text-black'>Gender Demographics</h3>
-            <Pie data={genderDistributionData} options={rowOneChartOptions} />
+        </div>
+        <div className='bg-white shadow rounded p-4'>
+          <h3 className='text-xl font-semibold mb-2 text-black'>Gender Demographics</h3>
+          <div style={{ height: '300px' }}>
+            <Pie data={getGenderDistributionData()} options={rowOneChartOptions} />
           </div>
-          <div className='bg-white shadow rounded p-4'>
-            <h3 className='text-xl font-semibold mb-2 text-black'>User Status</h3>
-            <Doughnut data={suspendedUsersChartData} options={rowOneChartOptions} />
+        </div>
+        <div className='bg-white shadow rounded p-4'>
+          <h3 className='text-xl font-semibold mb-2 text-black'>User Status</h3>
+          <div style={{ height: '300px' }}>
+            <Doughnut data={getSuspendedUsersData()} options={rowOneChartOptions} />
+          </div>
+        </div>
+        <div className='bg-white shadow rounded p-4'>
+          <h3 className='text-xl font-semibold mb-2 text-black'>Verification Status</h3>
+          <div style={{ height: '300px' }}>
+            <Bar data={getVerificationStatusData()} options={rowOneChartOptions} />
           </div>
         </div>
       </div>
-    );
-  }
- 
-};
-
+  
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-4'>
+        <div className='bg-white shadow rounded p-6'>
+          <h3 className='text-xl font-semibold mb-2 text-black'>User Creation Time Series</h3>
+          <div style={{ height: '300px', width: '100%' }}>
+            <Line data={getTimeSeriesData()} options={xyChartOptions} />
+          </div>
+        </div>
+        <div className='bg-white shadow rounded p-6'>
+          <h3 className='text-xl font-semibold mb-2 text-black'>Profile Trip Time Series</h3>
+          <div style={{ height: '300px', width: '100%' }}>
+            <Line data={getProfileTripTimeSeriesData()} options={xyChartOptions} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+  
+  };
 export default ChartsPage;
+

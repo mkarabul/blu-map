@@ -1,7 +1,8 @@
 import React from "react";
 import { getSession } from "@auth0/nextjs-auth0";
 
-import SocialPost from "../../social/components/social-post";
+import SocialPost from "../../social/components/SocialPost";
+import CommentSection from "./components/CommentSection";
 
 const getPost = async (postId) => {
   const user = await getSession();
@@ -18,6 +19,7 @@ const getPost = async (postId) => {
   );
 
   const post = await response.json();
+
   return post;
 };
 
@@ -26,20 +28,35 @@ const Post = async ({ params }) => {
   const post = await getPost(postId);
 
   if (!post) {
-    return;
+    return null;
   }
 
   return (
-    <div className="container mx-auto">
-      <SocialPost
-        header={post.header}
-        description={post.description}
-        tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-        userName={post.userName}
+    <div className="container mx-auto h-screen">
+      <div className="flex-1 flex justify-center items-center">
+        <SocialPost
+          uuid={postId}
+          ket={postId}
+          header={post.header}
+          description={post.description}
+          tripDate={new Date(post.tripDate).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+          userName={post.userName}
+          likes={post.likes}
+          dislikes={post.dislikes}
+          tripId={post.tripId}
+          clickable={false}
+          images={post.images}
+          userPhoto={post.userPhoto}
+        />
+      </div>
+      <CommentSection
+        //userName={userName}
+        //userId={post.?userId}
+        postId={postId}
       />
     </div>
   );

@@ -6,6 +6,7 @@ const ItineraryController = {
       const itineraries = await Itinerary.findAll();
       res.status(200).json(itineraries);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -25,6 +26,7 @@ const ItineraryController = {
 
       res.status(200).json(itinerary);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -42,6 +44,7 @@ const ItineraryController = {
       });
       res.status(200).json(itineraries);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -54,6 +57,7 @@ const ItineraryController = {
       });
       res.status(201).json(itinerary);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -62,7 +66,6 @@ const ItineraryController = {
     try {
       const { id } = req.params;
       const itinerary = await Itinerary.findOne({ where: { uuid: id } });
-      console.log(itinerary);
 
       // Check if the itinerary exists
       if (!itinerary) {
@@ -81,6 +84,7 @@ const ItineraryController = {
       const updatedItinerary = await Itinerary.findOne({ where: { uuid: id } });
       res.status(200).json(updatedItinerary);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
@@ -105,9 +109,37 @@ const ItineraryController = {
         res.status(204).send({ message: "Itinerary deleted" });
       }
     } catch (error) {
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+
+  async copyItinerary(req, res) {
+    try {
+      const { id } = req.params;
+      const itinerary = await Itinerary.findOne({ where: { uuid: id } });
+
+      // Check if the itinerary exists
+      if (!itinerary) {
+        return res.status(404).json({ error: "Itinerary not found" });
+      }
+
+      const newItineraryObject = {
+        userId: req.user.sub,
+        ...itinerary.dataValues,
+      };
+
+      delete newItineraryObject.uuid;
+      delete newItineraryObject.id;
+
+      const newItinerary = await Itinerary.create(newItineraryObject);
+
+      res.status(201).json(newItinerary);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
 };
 
 module.exports = ItineraryController;
