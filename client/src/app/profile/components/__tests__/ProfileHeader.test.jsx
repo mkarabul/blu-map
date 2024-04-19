@@ -4,6 +4,9 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ProfileHeader from "../ProfileHeader";
 
+
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
 jest.mock("@auth0/nextjs-auth0/client", () => ({
   useUser: jest.fn(),
 }));
