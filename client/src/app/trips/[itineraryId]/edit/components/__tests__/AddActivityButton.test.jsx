@@ -7,10 +7,12 @@ import userEvent from "@testing-library/user-event";
 
 global.crypto.randomUUID = jest.fn(() => "1234");
 
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
 describe("AddActivityButton", () => {
-  it("renders without errors", () => {
-    act(() => {
-      render(
+  it("renders without errors", async () => {
+    await act(async () => {
+      await render(
         <AddActivityButton
           addActivity={() => {}}
           defaultStart={0}
@@ -24,8 +26,8 @@ describe("AddActivityButton", () => {
   it("calls addActivity when clicked", async () => {
     const addActivity = jest.fn();
     const user = await userEvent.setup();
-    act(() => {
-      render(
+    await act(async () => {
+      await render(
         <AddActivityButton
           addActivity={addActivity}
           defaultStart={0}

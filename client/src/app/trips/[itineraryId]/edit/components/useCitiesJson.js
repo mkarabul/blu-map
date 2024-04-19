@@ -1,12 +1,22 @@
 import cities from "./cities.json";
 
 const useCitiesJson = () => {
+  const cityToCityString = (city) => {
+    return `${city.name}, ${city.country}`;
+  };
+
   const searchCities = (search) => {
     return cities
-      .filter((city) => city.name.toLowerCase().includes(search.toLowerCase()))
-      .sort((a, b) => a.name.indexOf(search) - b.name.indexOf(search))
+      .filter((city) =>
+        cityToCityString(city).toLowerCase().includes(search.toLowerCase())
+      )
+      .sort(
+        (a, b) =>
+          cityToCityString(a).toLowerCase().indexOf(search.toLowerCase()) -
+          cityToCityString(b).toLowerCase().indexOf(search.toLowerCase())
+      )
       .slice(0, 5)
-      .map((city) => `${city.name}, ${city.country}`);
+      .map((city) => cityToCityString(city));
   };
 
   const getLocationFromCity = (cityString) => {
@@ -21,7 +31,7 @@ const useCitiesJson = () => {
         c.name.toLowerCase() === cityName.toLowerCase() && c.country === country
     );
 
-    if(!foundCity) return "";
+    if (!foundCity) return "";
 
     return `${foundCity.lat}, ${foundCity.lng}`;
   };

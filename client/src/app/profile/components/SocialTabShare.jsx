@@ -22,12 +22,14 @@ export default function SocialTabShare({ isSocial, uuid }) {
   };
 
   return (
-    <button className="btn btn-outline rounded-full" onClick={handleClick}>
-      {social ? (
-        <FontAwesomeIcon icon={faUsersSlash} />
-      ) : (
-        <FontAwesomeIcon icon={faUsers} />
-      )}
-    </button>
+    <div className="tooltip" data-tip="Social Status">
+      <button className="btn btn-outline rounded-full" onClick={handleClick}>
+        {social ? (
+          <FontAwesomeIcon icon={faUsersSlash} />
+        ) : (
+          <FontAwesomeIcon icon={faUsers} />
+        )}
+      </button>
+    </div>
   );
 }

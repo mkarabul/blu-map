@@ -4,6 +4,10 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import usePublicPrivateMode from "../PublicPrivateMode";
+
+
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
 // Mocking necessary parts
 jest.mock("@auth0/nextjs-auth0/client", () => ({
   useUser: jest.fn(),

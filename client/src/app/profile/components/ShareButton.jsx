@@ -125,14 +125,19 @@ export default function ShareButton({ description, header, userName, uuid }) {
 
   return (
     <div>
-      <button id="sharefromsquare-button" className="btn rounded-full" onClick={openExternalShareModal}>
-
-        <FontAwesomeIcon
-          icon={faShareFromSquare}
-          style={{ width: "20px", height: "20px" }}
-          className="text-white" // change this in the future to app theme
-        />
-      </button>
+      <div className="tooltip" data-tip="Share">
+        <button
+          id="sharefromsquare-button"
+          className="btn rounded-full"
+          onClick={openExternalShareModal}
+        >
+          <FontAwesomeIcon
+            icon={faShareFromSquare}
+            style={{ width: "20px", height: "20px" }}
+            className="text-white" // change this in the future to app theme
+          />
+        </button>
+      </div>
       <dialog id="share_external_modal" className="modal">
         <div className="modal-box">
           <form method="dialog">

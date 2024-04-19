@@ -2,7 +2,7 @@ const request = require("supertest");
 const express = require("express");
 const commentRoutes = require("../commentRoutes");
 
-// jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+//jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
 
 jest.mock("../../middleware/authMiddleware", () => ({
   checkJwt: jest.fn((req, res, next) => {
@@ -50,6 +50,15 @@ describe("Comment Routes", () => {
 
   it("should delete a comment", async () => {
     const response = await request(app).delete(`/api/comments/${commentId}`);
+    expect(response.status).toBe(200);
+  });
+});
+
+//comment badge
+describe("Comment Badge", () => {
+  it("should get all comments for a post", async () => {
+    const postId = "post123";
+    const response = await request(app).get(`/api/comments/post/${postId}`);
     expect(response.status).toBe(200);
   });
 });
