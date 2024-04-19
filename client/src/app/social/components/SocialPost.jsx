@@ -57,7 +57,7 @@ export default function SocialPost({
     <div
       className={
         isSocialPage && user
-          ? "card w-full sm:w-11/12 md:w-3/4 bg-white border mx-auto mt-5 mb-5"
+          ? "card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5"
           : "card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5"
       }
     >
