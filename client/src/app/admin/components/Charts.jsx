@@ -127,28 +127,6 @@ const ChartsPage = ({ themeClasses }) => {
   };
 };
 
-const getProfileTripTimeSeriesData = () => {
-  const sortedData = [...socialTripData].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-  const counts = sortedData.reduce((acc, cur) => {
-    const date = cur.createdAt.split('T')[0]; // Get only the date part
-    if (acc.length > 0 && acc[acc.length - 1].x === date) {
-      acc[acc.length - 1].y += 1;
-    } else {
-      acc.push({ x: date, y: acc.length > 0 ? acc[acc.length - 1].y + 1 : 1 });
-    }
-    return acc;
-  }, []);
-
-  return {
-    labels: counts.map(point => point.x),
-    datasets: [{
-      label: 'Profile Trips Over Time',
-      data: counts,
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    }]
-  };
-};
 
 
   const getSuspendedUsersData = () => {
@@ -270,13 +248,8 @@ const getProfileTripTimeSeriesData = () => {
         <div className='bg-white shadow rounded p-6'>
           <h3 className='text-xl font-semibold mb-2 text-black'>User Creation Time Series</h3>
           <div style={{ height: '300px', width: '100%' }}>
+            
             <Line data={getTimeSeriesData()} options={xyChartOptions} />
-          </div>
-        </div>
-        <div className='bg-white shadow rounded p-6'>
-          <h3 className='text-xl font-semibold mb-2 text-black'>Profile Trip Time Series</h3>
-          <div style={{ height: '300px', width: '100%' }}>
-            <Line data={getProfileTripTimeSeriesData()} options={xyChartOptions} />
           </div>
         </div>
       </div>

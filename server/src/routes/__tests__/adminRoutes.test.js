@@ -20,6 +20,7 @@ app.use("/", adminRoutes);
 
 describe("Admin Routes", () => {
   let createdId;
+  let createdIdNotification;
 
   test("GET /", async () => {
     const response = await request(app).get("/");
@@ -77,9 +78,33 @@ describe("Admin Routes", () => {
       .post("/notifications/post")
       .set("Content-Type", "application/json")
       .send(notificationBody);
+    console.log(response.body);
 
+    createdIdNotification = response.body.notification.Id;
     expect(response.statusCode).toBe(201);
   });
+
+  test("GET /notifications/get", async () => {
+    const response = await request(app).get("/notifications/get");
+    expect(response.statusCode).toBe(200);
+  });
+
+  test("GET /notifications/get/userID", async () => {
+    const response = await request(app).get(
+      "/notifications/get/auth0|65dcfb3961353d011b2a43e5"
+    );
+    expect(response.statusCode).toBe(200);
+  });
+
+  test("DELETE /notifications/delete/:notificationId", async () => {
+    console.log(createdIdNotification);
+    const response = await request(app).delete(
+      `/notifications/delete/${createdIdNotification}`
+    );
+    expect(response.statusCode).toBe(200);
+  });
+  
+
 });
 
 describe("Fail Cases Admin Routes", () => {
