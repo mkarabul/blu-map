@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import AddActivityButton from "./AddActivityButton";
 import ActivityRecommendation from "./ActivityRecommendation";
 import LocationSearch from "./LocationSearch";
+import LocationRecommendation from "./LocationRecommendation";
 
 const Form = ({ itinerary }) => {
   const {
@@ -21,8 +22,9 @@ const Form = ({ itinerary }) => {
     city,
     loc,
     setCityString,
-
   } = useFormState({ itinerary });
+
+  const [isApi, setIsApi] = useState(false);
 
   const router = useRouter();
 
@@ -39,6 +41,7 @@ const Form = ({ itinerary }) => {
           start: activity.start.toISOString(),
           end: activity.end.toISOString(),
         })),
+        city: city,
       }),
     });
 
@@ -61,7 +64,7 @@ const Form = ({ itinerary }) => {
             onChange={(event) => setTitle(event.target.value)}
           />
         </h1>
-        <LocationSearch default={city} setCity={setCityString} />
+        <LocationSearch def={city} setCity={setCityString} />
       </div>
       <div className="grid md:grid-cols-3 gap-4">
         <div className="overflow-y-scroll max-h-full mb-4 col-span-2">
@@ -72,21 +75,60 @@ const Form = ({ itinerary }) => {
         </div>
         <div className="">
           <h3 className="text-2xl mb-4 text-center">Recommendations</h3>
-          <ActivityRecommendation
-            addActivity={addActivity}
-            defaultStart={
-              activities.length > 0
-                ? activities[activities.length - 1].end
-                : new Date()
-            }
-            defaultEnd={
-              activities.length > 0
-                ? new Date(
-                    activities[activities.length - 1].end.getTime() + 3600000
-                  )
-                : new Date(Date.now() + 3600000)
-            }
-          />
+          <div className="join w-full justify-center mb-4">
+            <input
+              className="join-item btn"
+              type="radio"
+              name="options"
+              aria-label="Default"
+              defaultChecked={true}
+              onClick={() => setIsApi(false)}
+            />
+            <input
+              className="join-item btn"
+              type="radio"
+              name="options"
+              aria-label="Google"
+              defaultChecked={false}
+              disabled={!loc}
+              onClick={() => setIsApi(true)}
+            />
+          </div>
+          <div className={`${isApi && "hidden"}`}>
+            <ActivityRecommendation
+              addActivity={addActivity}
+              defaultStart={
+                activities.length > 0
+                  ? activities[activities.length - 1].end
+                  : new Date()
+              }
+              defaultEnd={
+                activities.length > 0
+                  ? new Date(
+                      activities[activities.length - 1].end.getTime() + 3600000
+                    )
+                  : new Date(Date.now() + 3600000)
+              }
+            />
+          </div>
+          <div className={`${!isApi && "hidden"}`}>
+            <LocationRecommendation
+              loc={loc}
+              addActivity={addActivity}
+              defaultStart={
+                activities.length > 0
+                  ? activities[activities.length - 1].end
+                  : new Date()
+              }
+              defaultEnd={
+                activities.length > 0
+                  ? new Date(
+                      activities[activities.length - 1].end.getTime() + 3600000
+                    )
+                  : new Date(Date.now() + 3600000)
+              }
+            />
+          </div>
           <AddActivityButton
             addActivity={addActivity}
             defaultStart={
