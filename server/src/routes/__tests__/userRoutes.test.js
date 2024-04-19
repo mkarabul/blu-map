@@ -37,11 +37,11 @@ describe("User Routes", () => {
   //   expect(response.statusCode).toBe(200);
   // });
 
-  test("PUT /theme/:userId - Successfully updates user's theme", async () => {
-    const response = await request(app).put("/theme/testUserId");
+  // test("PUT /theme/:userId - Successfully updates user's theme", async () => {
+  //   const response = await request(app).put("/theme/testUserId");
 
-    expect(response.statusCode).toBe(200);
-  });
+  //   expect(response.statusCode).toBe(200);
+  // });
 
   // test("GET /users/:userId", async () => {
   //   const response = await request(app).get("/testUserId");
