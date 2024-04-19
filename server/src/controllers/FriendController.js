@@ -1,5 +1,15 @@
 const Friend = require("../models/Friend");
 const User = require("../models/User");
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+
+const s3Client = new S3Client({
+  region: process.env.BUCKET_REGION,
+  credentials: {
+    accessKeyId: process.env.ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  },
+});
 
 const FriendController = {
   async getUserFriends(req, res) {
@@ -19,6 +29,24 @@ const FriendController = {
       });
 
       friends = friends.concat(friends2);
+      for (let i = 0; i < friends.length; i++) {
+        const user = await User.findOne({
+          where: { userName: friends[i].userName },
+          attributes: ["userId", "image"],
+        });
+        if (user.image === null) {
+          friends[i].dataValues.userPhoto = null;
+        } else {
+          const command2 = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `${user.userId}/${user.image}`,
+          });
+          const url2 = await getSignedUrl(s3Client, command2, {
+            expiresIn: 3600,
+          });
+          friends[i].dataValues.userPhoto = url2;
+        }
+      }
       res.status(200).json(friends);
     } catch (error) {
       console.error(error);
@@ -116,6 +144,24 @@ const FriendController = {
         where: { friendId: userId, isPending: true },
         attributes: ["userName"],
       });
+      for (let i = 0; i < friends.length; i++) {
+        const user = await User.findOne({
+          where: { userName: friends[i].userName },
+          attributes: ["userId", "image"],
+        });
+        if (user.image === null) {
+          friends[i].dataValues.userPhoto = null;
+        } else {
+          const command2 = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `${user.userId}/${user.image}`,
+          });
+          const url2 = await getSignedUrl(s3Client, command2, {
+            expiresIn: 3600,
+          });
+          friends[i].dataValues.userPhoto = url2;
+        }
+      }
       res.status(200).json(friends);
     } catch (error) {
       console.error(error);

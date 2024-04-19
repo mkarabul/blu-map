@@ -65,6 +65,22 @@ describe("Admin Routes", () => {
     const response = await request(app).delete("/testAdmin");
     expect(response.statusCode).toBe(200);
   });
+  test("POST /notifications/post", async () => {
+    const notificationBody = {
+      userId: "auth0|65dcfb3961353d011b2a43e5",
+      header: "yo whats good",
+      description: "nahsdfadsfd This is a detailasdfaah of the violation orasdhgasdfasdf issue being reported."
+    };
+
+    const response = await request(app)
+      .post("/notifications/post")
+      .set("Content-Type", "application/json")
+      .send(notificationBody);
+
+    expect(response.statusCode).toBe(201);
+  });
+
+
 });
 
 describe("Fail Cases Admin Routes", () => {
@@ -97,4 +113,6 @@ describe("Fail Cases Admin Routes", () => {
       .send();
     expect(response.statusCode).toBe(400);
   });
+
+
 });

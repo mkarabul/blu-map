@@ -1,5 +1,6 @@
 const ProfileTrip = require("../models/ProfileTrip");
 const Following = require("../models/followSystem");
+const User = require("../models/User");
 const Like = require("../models/Like");
 const Dislike = require("../models/Dislike");
 const Comment = require("../models/Comment");
@@ -86,6 +87,22 @@ const ProfileTripsController = {
           imageUrls.push(url);
         }
         profileTrips[i].images = imageUrls;
+        const user = await User.findOne({
+          where: { userName: profileTrips[i].userName },
+          attributes: ["image", "userId"],
+        });
+        if (user.image === null) {
+          profileTrips[i].dataValues.userPhoto = null;
+        } else {
+          const command2 = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `${user.userId}/${user.image}`,
+          });
+          const url2 = await getSignedUrl(s3Client, command2, {
+            expiresIn: 3600,
+          });
+          profileTrips[i].dataValues.userPhoto = url2;
+        }
       }
       res.status(200).json(profileTrips);
     } catch (error) {
@@ -106,6 +123,7 @@ const ProfileTripsController = {
           "tripDate",
           "tripId",
           "images",
+          "createdAt"
         ],
       });
       for (let i = 0; i < profileTrips.length; i++) {
@@ -121,6 +139,22 @@ const ProfileTripsController = {
           imageUrls.push(url);
         }
         profileTrips[i].images = imageUrls;
+        const user = await User.findOne({
+          where: { userName: profileTrips[i].userName },
+          attributes: ["image", "userId"],
+        });
+        if (user.image === null) {
+          profileTrips[i].dataValues.userPhoto = null;
+        } else {
+          const command2 = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `${user.userId}/${user.image}`,
+          });
+          const url2 = await getSignedUrl(s3Client, command2, {
+            expiresIn: 3600,
+          });
+          profileTrips[i].dataValues.userPhoto = url2;
+        }
       }
       res.status(200).json(profileTrips);
     } catch (error) {
@@ -159,6 +193,22 @@ const ProfileTripsController = {
         imageUrls.push(url);
       }
       profileTrip.images = imageUrls;
+      const user = await User.findOne({
+        where: { userName: profileTrip.userName },
+        attributes: ["image", "userId"],
+      });
+      if (user.image === null) {
+        profileTrip.dataValues.userPhoto = null;
+      } else {
+        const command2 = new GetObjectCommand({
+          Bucket: process.env.BUCKET_NAME,
+          Key: `${user.userId}/${user.image}`,
+        });
+        const url2 = await getSignedUrl(s3Client, command2, {
+          expiresIn: 3600,
+        });
+        profileTrip.dataValues.userPhoto = url2;
+      }
       res.status(200).json(profileTrip);
     } catch (error) {
       console.error(error);
@@ -179,6 +229,7 @@ const ProfileTripsController = {
           "tripId",
           "isPublic",
           "images",
+          "createdAt",
         ],
       });
       for (let i = 0; i < profileTrips.length; i++) {
@@ -194,6 +245,22 @@ const ProfileTripsController = {
           imageUrls.push(url);
         }
         profileTrips[i].images = imageUrls;
+        const user = await User.findOne({
+          where: { userName: profileTrips[i].userName },
+          attributes: ["image", "userId"],
+        });
+        if (user.image === null) {
+          profileTrips[i].dataValues.userPhoto = null;
+        } else {
+          const command2 = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME,
+            Key: `${user.userId}/${user.image}`,
+          });
+          const url2 = await getSignedUrl(s3Client, command2, {
+            expiresIn: 3600,
+          });
+          profileTrips[i].dataValues.userPhoto = url2;
+        }
       }
       res.status(200).json(profileTrips);
     } catch (error) {

@@ -9,6 +9,7 @@ const CommentController = require("../controllers/CommentController");
 router.post("/post/:postId", CommentController.createComment);
 
 router.get("/post/:postId", CommentController.getCommentsByPost);
+router.get("/", CommentController.getAllComments);
 
 router.delete(
   "/:uuid",
@@ -16,5 +17,8 @@ router.delete(
   getUserInfoMiddleware,
   CommentController.deleteComment
 );
+
+//get comment count for user
+router.get("/commentcount/:userId", CommentController.getUserCommentCount);
 
 module.exports = router;

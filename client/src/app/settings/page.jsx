@@ -1,20 +1,31 @@
 "use client";
-
 import React from 'react';
+import { useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import usePublicPrivateMode from './components/PublicPrivateMode';
+import usePublicPrivateMode from "./components/PublicPrivateMode";
 import Profile from "./components/SettingsProfile";
 import Option from "./components/Option";
 import NotificationButton from "./components/NotificationButton";
 import ThemeChanger from "./components/ThemeChanger";
-import { 
-  faUser, faBell, faServer, faGlobe, faHeadphones, 
-  faRightToBracket, faEye, faEyeSlash 
+import EmailVerificationButton from './components/EmailVerificationButton';
+
+import {
+  faUser,
+  faBell,
+  faServer,
+  faGlobe,
+  faHeadphones,
+  faRightToBracket,
+  faEye,
+  faEyeSlash,
+  faEnvelope
 } from "@fortawesome/free-solid-svg-icons";
+import ProfilePhotoUpload from "./components/ProfilePhotoUpload";
 
 export default function Page() {
   const { user } = useUser();
   const { mode, loading, error, toggleMode } = usePublicPrivateMode(user?.sub);
+  const [refresh, setRefresh] = useState(0);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -26,7 +37,8 @@ export default function Page() {
 
   return (
     <div className="container mx-auto p-4">
-      <Profile />
+      <Profile refresh={refresh} />
+      <ProfilePhotoUpload refresh={refresh} setRefresh={setRefresh} />
       <h1 className="text-2xl font-semibold mb-6">Settings</h1>
       <div className="space-y-4">
         <Option
@@ -50,6 +62,12 @@ export default function Page() {
           context="Message & Trip Notifications"
           link="/settings/notifications"
         />
+        <EmailVerificationButton
+          icon={faEnvelope} // Changed to faEnvelope to indicate email
+          header="Verify Email"
+          context="Confirm your email address to ensure account security "
+          link="/settings/verify-email"
+        />
         <Option
           icon={faServer}
           header="Data & Preferences"
@@ -60,7 +78,7 @@ export default function Page() {
           icon={faGlobe}
           header="Region and Language"
           context="Region & Language"
-          link="/settings/region"
+          link="/settings/region" 
         />
         <Option
           icon={faHeadphones}

@@ -15,6 +15,7 @@ import {
 import ShareButton from "../../profile/components/ShareButton";
 import Link from "next/link";
 import { RepSystem } from "./RepSystem";
+import CopyPost from "./CopyPost";
 
 export default function SocialPost({
   uuid,
@@ -27,6 +28,7 @@ export default function SocialPost({
   tripId,
   clickable,
   images,
+  userPhoto,
 }) {
   const { likes, dislikes, addLike, addDislike, userLiked, userDisliked } =
     RepSystem(initialLikes, initialDislikes, uuid);
@@ -53,7 +55,7 @@ export default function SocialPost({
           <Link href={`/profile/${userName}`}>
             <div className="flex items-center space-x-4">
               <img
-                src="/default-pfp.png"
+                src={userPhoto || "/default-pfp.png"}
                 alt="User Profile"
                 className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
               />
@@ -147,11 +149,7 @@ export default function SocialPost({
             <button className="btn btn-outline rounded-full">
               <FontAwesomeIcon icon={faPaperPlane} />
             </button>
-            <Link href={`/trips/${tripId}`}>
-              <button className="btn btn-outline rounded-full">
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-            </Link>
+            <CopyPost tripId={tripId} />
           </div>
 
           {/* Separate div for the last button (right-most) */}
