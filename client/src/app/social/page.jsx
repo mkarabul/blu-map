@@ -7,12 +7,14 @@ import PreferencesModal from "./components/PreferencesModal";
 import TripDetailsModal from "./components/TripDetailsModal";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import LocationInterests from "./components/LocationInterests";
+import SeasonalPreferences from "./components/SeasonalPreferences";
 
 function SocialPage() {
   const { user } = useUser();
   const [theme, setTheme] = useState("dark");
   const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false);
   const [isTripDetailsModalOpen, setIsTripDetailsModalOpen] = useState(false);
+  const [lastChangerLocation, setLastChangerLocation] = useState(true);
 
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
@@ -107,51 +109,10 @@ function SocialPage() {
           <ListPosts posts={filteredPosts} />
         </div>
 
-        {/* Right Column: Interests */}
-        <div className="md:fixed md:right-4 lg:right-8 md:top-4 md:w-1/5 p-4 md:h-screen overflow-auto hidden md:block mt-14 shadow-2xl">
-          <h2 className="font-bold text-xl mb-4">Interests</h2>
-          {/* Attractions Section */}
-          <h3 className="font-semibold text-lg mb-2">Attractions</h3>
-          <div className="w-full mb-2">
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Campuses
-            </button>
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Landscapes
-            </button>
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Buildings
-            </button>
-          </div>
-          <hr className="border-t mx-auto w-full my-2" />
-
-          {/* Sports Section */}
-          <h3 className="font-semibold text-lg mb-2">Sports</h3>
-          <div className="w-full mb-2">
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Hiking
-            </button>
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Sailing
-            </button>
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Swimming
-            </button>
-          </div>
-          <hr className="border-t mx-auto w-full my-2" />
-
-          {/* Culture Section */}
-          <h3 className="font-semibold text-lg mb-2">Culture</h3>
-          <div className="w-full">
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Museums
-            </button>
-            <button className="btn btn-outline w-full mb-2 rounded-full">
-              Restaurants
-            </button>
-          </div>
-          <hr className="border-t mx-auto w-full my-2" />
-        </div>
+        <SeasonalPreferences
+          posts={posts}
+          setFilteredPosts={setFilteredPosts}
+        />
       </div>
     </div>
   );

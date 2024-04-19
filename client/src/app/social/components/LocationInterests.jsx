@@ -53,12 +53,12 @@ function LocationInterests({ posts, setFilteredPosts }) {
 
   return (
     <div className="md:fixed md:left-4 lg:left-8 md:top-4 md:w-1/5 p-4 md:h-screen overflow-auto hidden md:block mt-14 shadow-2xl">
-      <h2 className="font-bold text-xl mb-4">Location Interests</h2>
+      <h2 className="font-bold text-xl mb-4">Location Preferences</h2>
 
       {Object.keys(locationInterests).map((country) => (
-        <div key={country}>
+        <div key={country} className="mt-4">
           <h3 className="font-semibold text-lg mb-2">{country}</h3>
-          <div className="w-full mb-2">
+          <div className="w-full">
             {locationInterests[country].map((city) => (
               <div
                 className="flex justify-between items-center mb-2"
@@ -84,7 +84,7 @@ function LocationInterests({ posts, setFilteredPosts }) {
               </div>
             ))}
           </div>
-          <hr className="border-t mx-auto w-full my-2" />
+          {/* <hr className="border-t mx-auto w-full my-2" /> */}
         </div>
       ))}
     </div>
