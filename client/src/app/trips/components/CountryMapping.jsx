@@ -1,4 +1,4 @@
-export const countryMapping = {
+export const mapping = {
   US: "United States",
   GB: "United Kingdom",
   FR: "France",

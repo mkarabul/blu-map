@@ -2,9 +2,7 @@ import React, { useState } from "react";
 
 function LocationFinder({
   locationInterests,
-  checkedCities,
   setCheckedCities,
-  locationFilter,
   setLocationFilter,
 }) {
   const [status, setStatus] = useState("");
@@ -58,8 +56,8 @@ function LocationFinder({
         setCities(data.cities);
         setFetchMade(true);
 
-        const newCheckedCities = [...checkedCities];
-        const newLocationFilter = { ...locationFilter };
+        const newCheckedCities = [];
+        const newLocationFilter = {};
 
         data.cities.forEach((city) => {
           Object.values(locationInterests).forEach((cities) => {

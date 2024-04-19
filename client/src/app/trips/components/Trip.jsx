@@ -2,13 +2,13 @@ import React from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { countryMapping } from "./countryMapping";
+import { mapping } from "./CountryMapping";
 
 const Trip = ({ trip, deleteTrip, openModal, setTripData }) => {
   const { uuid, title, city: location } = trip;
   const city = location.split(",")[0];
   const countryCode = location.split(",")[1];
-  const country = countryCode ? countryMapping[countryCode.trim()] : "Unknown";
+  const country = countryCode ? mapping[countryCode.trim()] : "Unknown";
   return (
     <div className="card bg-base-100 shadow-xl">
       <div className="card-body flex flex-col justify-between">

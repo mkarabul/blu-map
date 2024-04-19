@@ -139,7 +139,26 @@ const ItineraryController = {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
-  }
+  },
+  async getLastItineraryDetails(req, res) {
+    try {
+      const { userId } = req.params;
+
+      if (req.user.sub !== userId) {
+        return res.status(403).json({ error: "User not authorized" });
+      }
+
+      const itinerary = await Itinerary.findOne({
+        where: { userId: userId },
+        order: [["createdAt", "DESC"]],
+      });
+
+      res.status(200).json(itinerary);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 };
 
 module.exports = ItineraryController;

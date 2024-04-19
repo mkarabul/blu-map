@@ -4,14 +4,19 @@ import ListPosts from "./components/ListPosts";
 import LocationInterests from "./components/LocationInterests";
 import SeasonalPreferences from "./components/SeasonalPreferences";
 import LocationFinder from "./components/LocationFinder";
+import PlannedTripDetails from "./components/PlannedTripDetails";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 function SocialPage() {
+  const { user } = useUser();
   const [theme, setTheme] = useState("dark");
   const [locationFilter, setLocationFilter] = useState({});
   const [seasonFilter, setSeasonFilter] = useState({});
 
   const [locationInterests, setLocationInterests] = useState({});
   const [checkedCities, setCheckedCities] = useState([]);
+
+  const [checkedSeasons, setCheckedSeasons] = useState([]);
 
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
@@ -79,15 +84,28 @@ function SocialPage() {
         <div className="flex-1 justify-center mt-0">
           <LocationFinder
             locationInterests={locationInterests}
-            checkedCities={checkedCities}
             setCheckedCities={setCheckedCities}
-            locationFilter={locationFilter}
             setLocationFilter={setLocationFilter}
           />
+          {user ? (
+            <PlannedTripDetails
+              locationInterests={locationInterests}
+              setCheckedCities={setCheckedCities}
+              setLocationFilter={setLocationFilter}
+              setCheckedSeasons={setCheckedSeasons}
+              checkedSeasons={checkedSeasons}
+              setSeasonFilter={setSeasonFilter}
+            />
+          ) : null}
           <ListPosts posts={filteredPosts} />
         </div>
 
-        <SeasonalPreferences posts={posts} setSeasonFilter={setSeasonFilter} />
+        <SeasonalPreferences
+          posts={posts}
+          setSeasonFilter={setSeasonFilter}
+          checkedSeasons={checkedSeasons}
+          setCheckedSeasons={setCheckedSeasons}
+        />
       </div>
     </div>
   );
