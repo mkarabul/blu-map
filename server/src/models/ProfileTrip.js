@@ -39,6 +39,16 @@ const ProfileTrip = sequelize.define("ProfileTrip", {
     allowNull: false,
     defaultValue: DataTypes.NOW,
   },
+  city: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "Unknown",
+  },
+  country: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "Unknown",
+  },
   isPublic: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
