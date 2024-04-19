@@ -3,7 +3,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ShareButton from "../../profile/components/ShareButton";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   faThumbsUp,
@@ -18,6 +18,7 @@ import {
   faArrowLeft,
   faMapMarkerAlt,
   faCalendarAlt,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import SocialTabShare from "./SocialTabShare";
 
@@ -36,6 +37,13 @@ export default function ProfilePost({
   country,
 }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isPostDeleted, setPostDeleted] = useState(false);
+
+  useEffect(() => {
+    if (isPostDeleted) {
+      window.location.reload();
+    }
+  }, [isPostDeleted]);
 
   const handleNextImage = () => {
     if (currentImageIndex < images.length - 1) {
@@ -48,6 +56,24 @@ export default function ProfilePost({
       setCurrentImageIndex((prevIndex) => prevIndex - 1);
     }
   };
+
+  //handleDeletePost function
+  const handleDeletePost = async () => {
+    try {
+      const response = await fetch(`/api/profile-trip/${uuid}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        console.log("Post deleted successfully");
+        setPostDeleted(true);
+      } else {
+        console.log("Failed to delete post");
+      }
+    } catch (error) {
+      console.error("Failed to delete post", error);
+    }
+  };
+
   return (
     <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
       <div className="card-body p-5">
@@ -149,6 +175,14 @@ export default function ProfilePost({
             </Link>
           </div>
           {/* Separate div for the last button (right-most) */}
+          <div className="tooltip" data-tip="Delete Post">
+            <button
+              className="btn btn-outline rounded-full mr-2"
+              onClick={handleDeletePost}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </button>
+          </div>
           <Link href={`/post/${uuid}`}>
             <div className="flex justify-end flex-grow">
               <div className="tooltip" data-tip="Comments">

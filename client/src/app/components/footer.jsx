@@ -18,19 +18,13 @@ function Footer() {
           </p>
         </aside>
         <nav>
-          <h6 className="footer-title">Popular Locations</h6>
-          <Link href="/West Lafayette" className="link link-hover">
-            West Lafayette
-          </Link>
-          <Link href="/Paris" className="link link-hover">
-            Paris
-          </Link>
-          <Link href="/Tokyo" className="link link-hover">
-            Tokyo
-          </Link>
-          <Link href="/London" className="link link-hover">
-            London
-          </Link>
+          <h6 className="footer-title">Socials & Links</h6>
+          <a
+            href="https://github.com/mkarabul/blu-map"
+            className="link link-hover"
+          >
+            GitHub
+          </a>
         </nav>
         <nav>
           <h6 className="footer-title">Contact Support</h6>
@@ -40,6 +34,38 @@ function Footer() {
           <Link href="/tutorial" className="link link-hover">
             FAQs
           </Link>
+        </nav>
+        <nav>
+          <h6 className="footer-title">Feedback</h6>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLScy6-foxsYnpPIg0_ibmvxCLZzvAG74Ysuov229H_xgjiF-Gg/viewform?usp=sf_link"
+            className="link link-hover"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Recommendations
+          </a>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfJVhfK8FKvMEm27yuxXlRQahrCmeDpQYqHxW3bx5F3ft_YYw/viewform?usp=sf_link"
+            className="link link-hover"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Posts
+          </a>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfrG0imeuf0rKzIDaC11tiKErnlwO02zc8PhPDbxtltUBrxow/viewform?usp=sf_link"
+            className="link link-hover"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Trips
+          </a>
+        </nav>
+        <nav>
+          <div>© Copyright 2024</div>
+          <div>All Right Reserved.</div>
+          <div>Powered by the Blu-Map Team.</div>
         </nav>
       </footer>
     </footer>
