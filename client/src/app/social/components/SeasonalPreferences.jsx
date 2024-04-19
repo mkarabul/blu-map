@@ -7,9 +7,12 @@ const seasons = {
   Winter: ["December", "January", "February"],
 };
 
-function SeasonalPreferences({ posts, setSeasonFilter }) {
-  const [checkedSeasons, setCheckedSeasons] = useState([]);
-
+function SeasonalPreferences({
+  posts,
+  setSeasonFilter,
+  checkedSeasons,
+  setCheckedSeasons,
+}) {
   useEffect(() => {
     const seasonFilter = checkedSeasons.reduce((acc, season) => {
       acc[season] = true;

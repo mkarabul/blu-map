@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import SocialPost from "../../social/components/SocialPost";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
-export default function ListPosts() {
+export default function ListPosts({ allPosts }) {
   const [posts, setPosts] = useState([]);
   const { user } = useUser();
 
@@ -21,9 +21,6 @@ export default function ListPosts() {
         (following) => following.followingUserName
       );
 
-      const postsResponse = await fetch("/api/profile-trip/");
-      const allPosts = await postsResponse.json();
-
       const filteredPosts = allPosts.filter((post) =>
         followingUserNames.includes(post.userName)
       );
@@ -32,7 +29,7 @@ export default function ListPosts() {
     }
 
     fetchPostsAndFollowings();
-  }, [user?.sub]);
+  }, [user?.sub, allPosts]);
 
   return posts.length > 0 ? (
     <div>

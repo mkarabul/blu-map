@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-function LocationInterests({ posts, setLocationFilter }) {
+function LocationInterests({
+  posts,
+  setLocationFilter,
+  locationInterests,
+  setLocationInterests,
+  checkedCities,
+  setCheckedCities,
+}) {
   const [isOpen, setIsOpen] = useState(false);
-  const [locationInterests, setLocationInterests] = useState({});
 
   const toggleOpen = () => setIsOpen(!isOpen);
-
-  const [checkedCities, setCheckedCities] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
