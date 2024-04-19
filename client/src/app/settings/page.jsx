@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React from "react";
 import { useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import usePublicPrivateMode from "./components/PublicPrivateMode";
@@ -7,7 +7,7 @@ import Profile from "./components/SettingsProfile";
 import Option from "./components/Option";
 import NotificationButton from "./components/NotificationButton";
 import ThemeChanger from "./components/ThemeChanger";
-import EmailVerificationButton from './components/EmailVerificationButton';
+import EmailVerificationButton from "./components/EmailVerificationButton";
 
 import {
   faUser,
@@ -18,7 +18,7 @@ import {
   faRightToBracket,
   faEye,
   faEyeSlash,
-  faEnvelope
+  faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import ProfilePhotoUpload from "./components/ProfilePhotoUpload";
 
@@ -26,6 +26,10 @@ export default function Page() {
   const { user } = useUser();
   const { mode, loading, error, toggleMode } = usePublicPrivateMode(user?.sub);
   const [refresh, setRefresh] = useState(0);
+
+  const handleContactUsClick = () => {
+    window.open("mailto:blumap9@gmail.com", "_blank");
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -40,13 +44,7 @@ export default function Page() {
       <Profile refresh={refresh} />
       <ProfilePhotoUpload refresh={refresh} setRefresh={setRefresh} />
       <h1 className="text-2xl font-semibold mb-6">Settings</h1>
-      <div className="space-y-4">
-        <Option
-          icon={faUser}
-          header="Account"
-          context="Privacy, security, change email or number"
-          link="/settings/account"
-        />
+      <div className="space-y-5">
         <Option
           icon={mode === "public" ? faEye : faEyeSlash}
           header="Public/Private Mode"
@@ -69,28 +67,17 @@ export default function Page() {
           link="/settings/verify-email"
         />
         <Option
-          icon={faServer}
-          header="Data & Preferences"
-          context="User Data, Preferences, Downloaded Trips"
-          link="/settings/data"
-        />
-        <Option
-          icon={faGlobe}
-          header="Region and Language"
-          context="Region & Language"
-          link="/settings/region" 
-        />
-        <Option
           icon={faHeadphones}
           header="Customer Support"
-          context="Contact Us, About Us, FAQs"
+          context="Contact Us, Ask Us Anything"
           link="/settings/support"
+          onClick={handleContactUsClick}
         />
         <Option
           icon={faRightToBracket}
           header="Log Out"
           context="Log Out of Account"
-          link="/settings/logout"
+          link="/api/auth/logout"
         />
       </div>
     </div>

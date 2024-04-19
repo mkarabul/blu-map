@@ -5,7 +5,6 @@ import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 
 import SocialPost from "../SocialPost";
-
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());

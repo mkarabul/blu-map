@@ -162,32 +162,31 @@ export default function SocialPost({
         {/* Buttons on the bottom of a post */}
         <div className="flex flex-col md:flex-row justify-start items-center mt-4">
           <div className="flex flex-grow space-x-2 mb-2 md:mb-0">
-            <button
-              className={`btn btn-outline rounded-full ${
-                userLiked ? "bg-green-500 text-white" : ""
-              }`}
-              onClick={addLike}
-              data-testid="like-button"
-            >
-              <FontAwesomeIcon icon={faThumbsUp} />
-              <p> {likes} </p>
-            </button>
-            <button
-              className={`btn btn-outline rounded-full ${
-                userDisliked ? "bg-red-500 text-white" : ""
-              }`}
-              onClick={addDislike}
-              data-testid="dislike-button"
-            >
-              <FontAwesomeIcon icon={faThumbsDown} />
-              <p> {dislikes} </p>
-            </button>
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faMapMarkedAlt} />
-            </button>
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faPaperPlane} />
-            </button>
+            <div className="tooltip" data-tip="Like">
+              <button
+                className={`btn btn-outline rounded-full ${
+                  userLiked ? "bg-green-500 text-white" : ""
+                }`}
+                onClick={addLike}
+                data-testid="like-button"
+              >
+                <FontAwesomeIcon icon={faThumbsUp} />
+                <p> {likes} </p>
+              </button>
+            </div>
+            <div className="tooltip" data-tip="Dislike">
+              <button
+                className={`btn btn-outline rounded-full ${
+                  userDisliked ? "bg-red-500 text-white" : ""
+                }`}
+                onClick={addDislike}
+                data-testid="dislike-button"
+              >
+                <FontAwesomeIcon icon={faThumbsDown} />
+                <p> {dislikes} </p>
+              </button>
+            </div>
+
             <CopyPost tripId={tripId} />
           </div>
 
@@ -195,16 +194,20 @@ export default function SocialPost({
           {clickable ? (
             <Link href={`/post/${uuid}`}>
               <div className="flex justify-end flex-grow">
-                <button className="btn btn-outline rounded-full">
-                  <FontAwesomeIcon icon={faCommentDots} />
-                </button>
+                <div className="tooltip" data-tip="Comments">
+                  <button className="btn btn-outline rounded-full">
+                    <FontAwesomeIcon icon={faCommentDots} />
+                  </button>
+                </div>
               </div>
             </Link>
           ) : (
             <div className="flex justify-end flex-grow">
-              <button className="btn btn-outline rounded-full">
-                <FontAwesomeIcon icon={faCommentDots} />
-              </button>
+              <div className="tooltip" data-tip="Comments">
+                <button className="btn btn-outline rounded-full">
+                  <FontAwesomeIcon icon={faCommentDots} />
+                </button>
+              </div>
             </div>
           )}
         </div>
