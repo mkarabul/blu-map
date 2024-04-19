@@ -80,7 +80,7 @@ function LocationFinder({
         onClick={handleClick}
         className="flex flex-col items-center justify-center px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
       >
-        Get Reccomendations for Current Location
+        Get Recommendations for Current Location
         {isExpanded && (
           <>
             {status && <p className="mt-2 text-green-500">{status}</p>}
