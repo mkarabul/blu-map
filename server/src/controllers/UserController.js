@@ -107,7 +107,7 @@ const UserController = {
       const { userName } = req.params;
       const user = await User.findOne({
         where: { userName },
-        attributes: ["userName", "age", "gender", "profileName"],
+        attributes: ["userId", "userName", "age", "gender", "profileName"],
       });
       if (user) {
         res.status(200).json(user);
@@ -326,6 +326,24 @@ const UserController = {
         })
       );
 
+      res.status(200).json({ message: "User mode updated successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+
+  async updateVertificationByUserID(req, res) {
+    try {
+      const { userId } = req.params;
+      const { isVerified } = req.body;
+
+      const user = await User.findOne({ where: { userId } });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      user.isVerified = isVerified;
+      await user.save();
       res.status(200).json({ message: "User mode updated successfully" });
     } catch (error) {
       console.error(error);

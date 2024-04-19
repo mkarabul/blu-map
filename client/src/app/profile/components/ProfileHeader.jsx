@@ -6,6 +6,7 @@ import { useReportLogic } from "./ReportHook";
 import { useFollow } from "./FollowHook";
 import BlockButton from "./BlockButton";
 import FriendButton from "./FriendButton";
+import BadgeSystem from "./BadgeSystem";
 
 export default function ProfileHeader({
   postCount,
@@ -240,11 +241,12 @@ export default function ProfileHeader({
             onClick={openEditDialog}
             className="btn-edit-profile transition duration-150 ease-in-out"
           >
-            <i className="fas fa-edit mr-2"></i>
+            <i className="fas fa-edit"></i>
             Edit Profile
           </button>
         </div>
       )}
+      <BadgeSystem userName={userName} style={{ marginTop: "30px" }} />
 
       <dialog open={isEditOpen} className="modal">
         <form onSubmit={handleSubmit} className="modal-box">

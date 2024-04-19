@@ -45,6 +45,19 @@ const LikeController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  //get likes count for user
+  async getUserLikesCount(req, res) {
+    try {
+      const { userId } = req.params;
+      const likes = await Like.findAll({
+        where: { userId },
+      });
+      res.json({ totalLikes: likes.length });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 };
 
 module.exports = LikeController;

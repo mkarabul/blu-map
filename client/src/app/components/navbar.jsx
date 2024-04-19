@@ -107,6 +107,11 @@ const UserDropdown = () => {
           </Link>
         </li>
         <li>
+          <Link id="tutorial-link" className="justify-between" href="/tutorial">
+            Tutorial
+          </Link>
+        </li>
+        <li>
           <a href="/api/auth/logout">Logout</a>
         </li>
       </ul>

@@ -66,6 +66,11 @@ const User = sequelize.define("User", {
     allowNULL: false,
     defaultValue: true,
   },
+  isVerified: {
+    type: DataTypes.BOOLEAN,
+    allowNULL: false,
+    defaultValue: false,
+  },
   image: {
     type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: true,

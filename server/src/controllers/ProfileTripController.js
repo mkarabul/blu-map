@@ -137,6 +137,7 @@ const ProfileTripsController = {
           "images",
           "city",
           "country",
+          "createdAt",
         ],
       });
       for (let i = 0; i < profileTrips.length; i++) {
@@ -246,6 +247,7 @@ const ProfileTripsController = {
           "images",
           "city",
           "country",
+          "createdAt",
         ],
       });
       for (let i = 0; i < profileTrips.length; i++) {
