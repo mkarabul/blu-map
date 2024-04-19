@@ -7,6 +7,9 @@ import LocationRecommendation from "../LocationRecommendation";
 
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 
+
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
 global.crypto.randomUUID = jest.fn(() => "1234");
 global.fetch = jest.fn().mockReturnValue({
     json: jest.fn().mockResolvedValue([
@@ -17,9 +20,9 @@ global.fetch = jest.fn().mockReturnValue({
 });
 
 describe("LocationRecommendation", () => {
-  it("renders without errors", () => {
-    act(() => {
-      render(
+  it("renders without errors", async () => {
+    await act(async () => {
+      await render(
         <UserProvider>
           <LocationRecommendation
             loc="New York"

@@ -8,7 +8,31 @@ global.fetch = jest
   .fn()
   .mockResolvedValue({ ok: true, json: jest.fn().mockResolvedValue({}) });
 
-import CommentSection from "../CommentSection";
+import CommentSection from "../NewCommentSection";
+
+import { UserProvider } from "@auth0/nextjs-auth0/client";
+
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
+global.fetch = jest.fn().mockResolvedValueOnce({
+  ok: true,
+  json: async () => ({
+    userId: "userId",
+    comment,
+    postId,
+    userName: "userName",
+  }),
+});
+
+jest.mock("@auth0/nextjs-auth0/client", () => ({
+  useUser: jest.fn(() => ({
+    user: {
+      sub: "123",
+      name: "userName",
+    },
+  })),
+  UserProvider: ({ children }) => <>{children}</>,
+}));
 
 describe("CommentSection", () => {
   it("renders without errors", () => {
@@ -21,6 +45,7 @@ describe("CommentSection", () => {
     });
     expect(screen.getByRole("button", { name: /submit/i })).toBeInTheDocument();
   });
+<<<<<<< HEAD
 
   it("should submit comment when the submit button is clicked", async () => {
     const postId = "postId";
@@ -64,4 +89,6 @@ describe("CommentSection", () => {
 
     expect(screen.getByText(comment)).toBeInTheDocument();
   });
+=======
+>>>>>>> bafea5a7fefb779c0d6f2ee376b7391aef353fad
 });

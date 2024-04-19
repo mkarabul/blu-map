@@ -6,6 +6,9 @@ import userEvent from "@testing-library/user-event";
 
 import CopyPost from "../CopyPost";
 
+
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
 jest.mock("next/navigation", () => ({
   useRouter() {
     return {
@@ -40,9 +43,9 @@ describe("CopyPost", () => {
 //     jest.restoreAllMocks();
 //   });
 
-  it("renders without errors", () => {
-    act(() => {
-      render(<CopyPost tripId="123" />);
+  it("renders without errors", async () => {
+    await act(async () => {
+      await render(<CopyPost tripId="123" />);
     });
     expect(screen.getByRole("button")).toBeInTheDocument();
   });
@@ -51,7 +54,7 @@ describe("CopyPost", () => {
     const tripId = "123";
     const user = await userEvent.setup();
 
-    act(() => {
+    await act(() => {
       render(<CopyPost tripId={tripId} />);
     });
 

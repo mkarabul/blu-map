@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp,
@@ -167,6 +167,7 @@ export default function SocialPost({
                 userLiked ? "bg-green-500 text-white" : ""
               }`}
               onClick={addLike}
+              data-testid="like-button"
             >
               <FontAwesomeIcon icon={faThumbsUp} />
               <p> {likes} </p>
@@ -176,6 +177,7 @@ export default function SocialPost({
                 userDisliked ? "bg-red-500 text-white" : ""
               }`}
               onClick={addDislike}
+              data-testid="dislike-button"
             >
               <FontAwesomeIcon icon={faThumbsDown} />
               <p> {dislikes} </p>
