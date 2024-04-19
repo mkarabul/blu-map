@@ -66,7 +66,7 @@ const PlannedTripDetails = ({
           onClick={handleClick}
           className="flex flex-col items-center justify-center px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
         >
-          Get Trip Reccommendations According to Planned Trip
+          Get Trip Recommendations According to Planned Trip
           {isExpanded && trip ? (
             <>
               <p className="mt-2">Month: {month}</p>
