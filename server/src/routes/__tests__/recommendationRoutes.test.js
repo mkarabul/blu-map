@@ -12,6 +12,9 @@ jest.mock("../../middleware/authMiddleware", () => ({
   }),
 }));
 
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
+
 const app = express();
 app.use(express.json());
 app.use("/", recommendationRoutes);
