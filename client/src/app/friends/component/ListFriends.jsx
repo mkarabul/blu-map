@@ -27,7 +27,7 @@ export default function ListFriends() {
   return (
     <div className="flex flex-col items-center">
       {friends.map((friend) => (
-        <div className="flex items-center space-x-4">
+        <div key={friend.userName} className="flex items-center space-x-4">
           <Link href={`/profile/${friend.userName}`}>
             <div className="flex items-center space-x-4">
               <img
