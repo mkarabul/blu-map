@@ -20,12 +20,12 @@ export default async function Navbar() {
           />
           Blu-Map
         </Link>
-        <input
+        {/* <input
           type="text"
           placeholder="Search"
           style={{ width: "25rem" }}
           className="input input-bordered w-full md:w-auto"
-        />
+        /> */}
       </div>
 
       {/* Right Section */}

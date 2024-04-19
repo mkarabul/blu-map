@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 
-function LocationFinder() {
+function LocationFinder({
+  locationInterests,
+  checkedCities,
+  setCheckedCities,
+  locationFilter,
+  setLocationFilter,
+}) {
   const [status, setStatus] = useState("");
   const [link, setLink] = useState("");
   const [coords, setCoords] = useState({ latitude: null, longitude: null });
@@ -18,7 +24,7 @@ function LocationFinder() {
   const geoFindMe = () => {
     const success = (position) => {
       const { latitude, longitude } = position.coords;
-      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+      //console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
 
       setStatus("Location retrieved");
       setCoords({ latitude, longitude });
@@ -51,6 +57,21 @@ function LocationFinder() {
       .then((data) => {
         setCities(data.cities);
         setFetchMade(true);
+
+        const newCheckedCities = [...checkedCities];
+        const newLocationFilter = { ...locationFilter };
+
+        data.cities.forEach((city) => {
+          Object.values(locationInterests).forEach((cities) => {
+            if (cities.includes(city) && !newCheckedCities.includes(city)) {
+              newCheckedCities.push(city);
+              newLocationFilter[city] = true;
+            }
+          });
+        });
+
+        setCheckedCities(newCheckedCities);
+        setLocationFilter(newLocationFilter);
       })
       .catch((error) => console.error("Error fetching city:", error));
   };
@@ -61,7 +82,7 @@ function LocationFinder() {
         onClick={handleClick}
         className="flex flex-col items-center justify-center px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
       >
-        Find My Location
+        Get Reccomendations for Current Location
         {isExpanded && (
           <>
             {status && <p className="mt-2 text-green-500">{status}</p>}

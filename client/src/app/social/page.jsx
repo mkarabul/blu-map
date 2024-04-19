@@ -10,6 +10,9 @@ function SocialPage() {
   const [locationFilter, setLocationFilter] = useState({});
   const [seasonFilter, setSeasonFilter] = useState({});
 
+  const [locationInterests, setLocationInterests] = useState({});
+  const [checkedCities, setCheckedCities] = useState([]);
+
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
@@ -66,11 +69,21 @@ function SocialPage() {
         <LocationInterests
           posts={posts}
           setLocationFilter={setLocationFilter}
+          locationInterests={locationInterests}
+          setLocationInterests={setLocationInterests}
+          checkedCities={checkedCities}
+          setCheckedCities={setCheckedCities}
         />
 
         {/* Middle Column: Posts */}
         <div className="flex-1 justify-center mt-0">
-          <LocationFinder />
+          <LocationFinder
+            locationInterests={locationInterests}
+            checkedCities={checkedCities}
+            setCheckedCities={setCheckedCities}
+            locationFilter={locationFilter}
+            setLocationFilter={setLocationFilter}
+          />
           <ListPosts posts={filteredPosts} />
         </div>
 
