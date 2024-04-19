@@ -1,10 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { SidebarButton } from "./components/SidebarButton";
 import ListPosts from "./components/ListPosts";
-import { SidebarSection } from "./components/SidebarSection";
-import PreferencesModal from "./components/PreferencesModal";
-import TripDetailsModal from "./components/TripDetailsModal";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import LocationInterests from "./components/LocationInterests";
 import SeasonalPreferences from "./components/SeasonalPreferences";
@@ -15,6 +11,8 @@ function SocialPage() {
   const [isPreferencesModalOpen, setIsPreferencesModalOpen] = useState(false);
   const [isTripDetailsModalOpen, setIsTripDetailsModalOpen] = useState(false);
   const [lastChangerLocation, setLastChangerLocation] = useState(true);
+  const [locationFilter, setLocationFilter] = useState({});
+  const [seasonFilter, setSeasonFilter] = useState({});
 
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
@@ -99,20 +97,55 @@ function SocialPage() {
   //   </div>
   // );
 
+  useEffect(() => {
+    const allUncheckedSeason = Object.values(seasonFilter).every(
+      (val) => val === false
+    );
+
+    if (Object.keys(locationFilter).length === 0 && allUncheckedSeason) {
+      setFilteredPosts(posts);
+    } else {
+      const filtered = posts.filter((post) => {
+        const postLocation = post.city;
+
+        const postMonth = new Date(post.tripDate).toLocaleString("default", {
+          month: "long",
+        });
+        console.log(locationFilter);
+        const locationMatches =
+          Object.keys(locationFilter).length === 0
+            ? true
+            : locationFilter.hasOwnProperty(postLocation);
+
+        const allUncheckedSeason = Object.values(seasonFilter).every(
+          (val) => val === false
+        );
+        console.log(seasonFilter);
+        const seasonMatches = allUncheckedSeason
+          ? true
+          : seasonFilter.hasOwnProperty(postMonth);
+
+        return locationMatches && seasonMatches;
+      });
+
+      setFilteredPosts(filtered);
+    }
+  }, [locationFilter, seasonFilter, posts]);
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col md:flex-row mt-20">
-        <LocationInterests posts={posts} setFilteredPosts={setFilteredPosts} />
+        <LocationInterests
+          posts={posts}
+          setLocationFilter={setLocationFilter}
+        />
 
         {/* Middle Column: Posts */}
         <div className="flex-1 justify-center mt-0">
           <ListPosts posts={filteredPosts} />
         </div>
 
-        <SeasonalPreferences
-          posts={posts}
-          setFilteredPosts={setFilteredPosts}
-        />
+        <SeasonalPreferences posts={posts} setSeasonFilter={setSeasonFilter} />
       </div>
     </div>
   );

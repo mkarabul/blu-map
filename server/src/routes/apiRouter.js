@@ -33,6 +33,5 @@ router.use("/follow", followSystemRoutes);
 router.use("/follow-request", followRequestRoutes);
 router.use("/block", blockRoutes);
 router.use("/friend", friendRoutes);
-router.use("/preferences", preferenceRoutes);
 
 module.exports = router;

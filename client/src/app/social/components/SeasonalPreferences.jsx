@@ -7,50 +7,16 @@ const seasons = {
   Winter: ["December", "January", "February"],
 };
 
-function SeasonalPreferences({ posts, setFilteredPosts }) {
-  const [checkedSeasons, setCheckedSeasons] = useState({
-    Spring: false,
-    Summer: false,
-    Autumn: false,
-    Winter: false,
-    March: false,
-    April: false,
-    May: false,
-    June: false,
-    July: false,
-    August: false,
-    September: false,
-    October: false,
-    November: false,
-    December: false,
-    January: false,
-    February: false,
-  });
+function SeasonalPreferences({ posts, setSeasonFilter }) {
+  const [checkedSeasons, setCheckedSeasons] = useState([]);
 
   useEffect(() => {
-    const allUnchecked = Object.values(checkedSeasons).every(
-      (val) => val === false
-    );
-
-    if (allUnchecked) {
-      setFilteredPosts(posts);
-    } else {
-      const filtered = posts.filter((post) => {
-        const postMonth = new Date(post.tripDate).toLocaleString("default", {
-          month: "long",
-        });
-        console.log(postMonth);
-        return Object.entries(checkedSeasons).some(([key, isChecked]) => {
-          if (seasons[key]) {
-            return isChecked && seasons[key].includes(postMonth);
-          } else {
-            return isChecked && key === postMonth;
-          }
-        });
-      });
-      setFilteredPosts(filtered);
-    }
-  }, [checkedSeasons, posts]);
+    const seasonFilter = checkedSeasons.reduce((acc, season) => {
+      acc[season] = true;
+      return acc;
+    }, {});
+    setSeasonFilter(seasonFilter);
+  }, [checkedSeasons]);
 
   return (
     <div className="md:fixed pb-32 md:right-4 lg:right-8 md:top-4 md:w-1/5 p-4 md:h-screen overflow-auto hidden md:block mt-14 shadow-2xl">
@@ -64,18 +30,21 @@ function SeasonalPreferences({ posts, setFilteredPosts }) {
             <button
               className="btn btn-outline w-full rounded-full flex justify-between items-center mt-2"
               onClick={() => {
-                setCheckedSeasons((prevState) => ({
-                  ...prevState,
-                  [month]: !prevState[month],
-                }));
+                if (checkedSeasons.includes(month)) {
+                  setCheckedSeasons(
+                    checkedSeasons.filter((item) => item !== month)
+                  );
+                } else {
+                  setCheckedSeasons([...checkedSeasons, month]);
+                }
               }}
             >
               <span>{month}</span>
               <input
                 type="checkbox"
                 className="ml-2"
-                checked={checkedSeasons[month]}
-                onChange={(e) => e.stopPropagation()}
+                checked={checkedSeasons.includes(month)}
+                readOnly
               />
             </button>
           ))}

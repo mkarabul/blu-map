@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-function LocationInterests({ posts, setFilteredPosts }) {
+function LocationInterests({ posts, setLocationFilter }) {
   const [isOpen, setIsOpen] = useState(false);
   const [locationInterests, setLocationInterests] = useState({});
 
   const toggleOpen = () => setIsOpen(!isOpen);
 
-  const [checkedCities, setCheckedCities] = useState({});
+  const [checkedCities, setCheckedCities] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,22 +37,15 @@ function LocationInterests({ posts, setFilteredPosts }) {
   }, [posts]);
 
   useEffect(() => {
-    const allUnchecked = Object.values(checkedCities).every(
-      (val) => val === false
-    );
-
-    if (allUnchecked) {
-      setFilteredPosts(posts);
-    } else {
-      const filtered = posts.filter(
-        (post) => checkedCities[post.city] === true
-      );
-      setFilteredPosts(filtered);
-    }
-  }, [checkedCities, posts]);
+    const locationFilter = checkedCities.reduce((acc, city) => {
+      acc[city] = true;
+      return acc;
+    }, {});
+    setLocationFilter(locationFilter);
+  }, [checkedCities]);
 
   return (
-    <div className="md:fixed md:left-4 lg:left-8 md:top-4 md:w-1/5 p-4 md:h-screen overflow-auto hidden md:block mt-14 shadow-2xl">
+    <div className="md:fixed pb-32 md:left-4 lg:left-8 md:top-4 md:w-1/5 p-4 md:h-screen overflow-auto hidden md:block mt-14 shadow-2xl">
       <h2 className="font-bold text-xl mb-4">Location Preferences</h2>
 
       {Object.keys(locationInterests).map((country) => (
@@ -66,25 +59,27 @@ function LocationInterests({ posts, setFilteredPosts }) {
               >
                 <button
                   className="btn btn-outline w-full rounded-full flex justify-between items-center"
-                  onClick={() =>
-                    setCheckedCities({
-                      ...checkedCities,
-                      [city]: !checkedCities[city],
-                    })
-                  }
+                  onClick={() => {
+                    if (checkedCities.includes(city)) {
+                      setCheckedCities(
+                        checkedCities.filter((item) => item !== city)
+                      );
+                    } else {
+                      setCheckedCities([...checkedCities, city]);
+                    }
+                  }}
                 >
                   <span>{city}</span>
                   <input
                     type="checkbox"
                     className="ml-2"
-                    checked={checkedCities[city] || false}
+                    checked={checkedCities.includes(city)}
                     readOnly
                   />
                 </button>
               </div>
             ))}
           </div>
-          {/* <hr className="border-t mx-auto w-full my-2" /> */}
         </div>
       ))}
     </div>
