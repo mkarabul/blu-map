@@ -248,6 +248,7 @@ const ChartsPage = ({ themeClasses }) => {
         <div className='bg-white shadow rounded p-6'>
           <h3 className='text-xl font-semibold mb-2 text-black'>User Creation Time Series</h3>
           <div style={{ height: '300px', width: '100%' }}>
+            
             <Line data={getTimeSeriesData()} options={xyChartOptions} />
           </div>
         </div>
