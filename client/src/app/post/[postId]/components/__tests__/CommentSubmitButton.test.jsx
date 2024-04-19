@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 
-import CommentSection from "../CommentSection";
+import CommentSection from "../NewCommentSection";
 
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 
