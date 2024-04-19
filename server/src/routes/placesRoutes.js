@@ -7,9 +7,8 @@ const express = require("express");
 
 const router = express.Router();
 
-router.get(
-  "/",
-  PlacesController.getPlaces
-);
+router.get("/", PlacesController.getPlaces);
+
+router.post("/city", PlacesController.getCity);
 
 module.exports = router;

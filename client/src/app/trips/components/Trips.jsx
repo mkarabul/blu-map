@@ -39,8 +39,10 @@ const Trips = () => {
     }
   };
 
-  const openModal = (uuid) => {
+  const openModal = (uuid, city, country) => {
     setTripId(uuid);
+    setCountry(country);
+    setCity(city);
     document.getElementById("my_modal_4").showModal();
   };
 
@@ -51,13 +53,7 @@ const Trips = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (
-      title === "" ||
-      city === "" ||
-      country == "" ||
-      description === "" ||
-      tripDate === ""
-    ) {
+    if (title === "" || description === "" || tripDate === "") {
       setEmptyFieldError("Please fill out all fields.");
       return;
     }
@@ -146,7 +142,7 @@ const Trips = () => {
                 className="w-full px-3 py-2 border rounded mt-1"
               />
             </label>
-            <label className="block mb-2">
+            {/* <label className="block mb-2">
               City:
               <input
                 type="text"
@@ -167,7 +163,7 @@ const Trips = () => {
                 }}
                 className="w-full px-3 py-2 border rounded mt-1"
               />
-            </label>
+            </label> */}
             <label className="block mb-2">
               Description:
               <textarea

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import ListPosts from "./components/ListPosts";
 import LocationInterests from "./components/LocationInterests";
 import SeasonalPreferences from "./components/SeasonalPreferences";
+import LocationFinder from "./components/LocationFinder";
 
 function SocialPage() {
   const [theme, setTheme] = useState("dark");
@@ -69,6 +70,7 @@ function SocialPage() {
 
         {/* Middle Column: Posts */}
         <div className="flex-1 justify-center mt-0">
+          <LocationFinder />
           <ListPosts posts={filteredPosts} />
         </div>
 
