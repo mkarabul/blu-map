@@ -4,6 +4,8 @@ import ProfilePhotoUpload from "../ProfilePhotoUpload";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import "@testing-library/jest-dom";
 
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
 describe("ProfilePhotoUpload", () => {
   it("renders the component without crashing", () => {
     render(
