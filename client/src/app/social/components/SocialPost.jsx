@@ -140,6 +140,7 @@ export default function SocialPost({
                 userDisliked ? "bg-red-500 text-white" : ""
               }`}
               onClick={addDislike}
+              data-testid="dislike-button"
             >
               <FontAwesomeIcon icon={faThumbsDown} />
               <p> {dislikes} </p>
