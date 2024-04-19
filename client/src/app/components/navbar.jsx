@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faUsers, faUser } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { getSession } from "@auth0/nextjs-auth0";
 
@@ -73,7 +73,7 @@ const UserDropdown = () => {
         id="dropdown-button"
       >
         <div className="w-10 rounded-full top-5">
-          <img alt="Tailwind CSS Navbar component" src="/default-pfp.png" />
+          <FontAwesomeIcon icon={faUser} className="w-10 h-10" />{" "}
         </div>
       </div>
       <ul
