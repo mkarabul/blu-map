@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const generateUserName = require("../config/usernameGenerator");
 
 const User = sequelize.define("User", {
   // id: {
@@ -18,6 +19,7 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
+    defaultValue: generateUserName,
   },
   profileName: {
     type: DataTypes.STRING,
