@@ -139,8 +139,6 @@ const UserController = {
     try {
       const { sub: userId, email } = req.user;
 
-      const userName = generateUsername("", 3);
-
       if (!userId || !email) {
         return res.status(400).json({ error: "Missing required fields" });
       }
@@ -148,7 +146,6 @@ const UserController = {
       const user = await User.create({
         userId,
         email,
-        userName,
       });
 
       res.status(201).json({ message: "User created successfully", user });
