@@ -10,6 +10,8 @@ export default function Notifications() {
   const [friendRequests, setFriendRequests] = useState([]);
   const [confirmationMessage, setConfirmationMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [notifications, setNotificationData] = useState([]);
+
 
   const { user } = useUser();
 
@@ -22,6 +24,7 @@ export default function Notifications() {
             const { userName } = await userNameResponse.json();
             await fetchConnections(userName);
             await fetchFriendRequests(userName);
+            await fetchNotificaitons();
           }
         } catch (error) {
           console.error("Error fetching user name:", error);
@@ -31,6 +34,18 @@ export default function Notifications() {
 
     fetchUserNameAndConnections();
   }, [user]);
+
+  const fetchNotificaitons = async () => {
+    try {
+      const response = await fetch(`/api/admin/notifications/get`);
+      if (response.ok) {
+        const data = await response.json();
+        setNotificationData(data);
+      }
+    } catch (error) {
+      console.error("Error fetching friend requests:", error);
+    }
+  } 
 
   const fetchConnections = async (userName) => {
     try {
@@ -80,7 +95,7 @@ export default function Notifications() {
   return (
     <div className={`container mx-auto px-8 my-8`}>
       <h1 className="text-center text-4xl font-bold mb-4">Notifications</h1>
-
+  
       <button
         className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
         onClick={() => setShowModal(true)}
@@ -101,54 +116,75 @@ export default function Notifications() {
           </div>
         </div>
       )}
-      <div className="space-y-4">
-        {confirmationMessage !== "" && (
-          <div className="text-green-500 text-center">
-            {confirmationMessage}
-          </div>
-        )}
-        {errorMessage !== "" && (
-          <div className="text-red-500 text-center">{errorMessage}</div>
-        )}
-        <h2 className="text-2xl font-semibold">Connections</h2>
-        <div>
-          {friendRequests.length > 0 && (
-            <div>
-              <p>You have {friendRequests.length} friend requests.</p>
-              <div className="block p-4 border-2 border-gray-200 rounded shadow">
-                {friendRequests.map((friendRequest, index) => (
-                  <FriendNotification
-                    key={index}
-                    userName={friendRequest.userName}
-                    onResponse={handleFriendRequestResponse}
-                    setConfirmationMessage={setConfirmationMessage}
-                    setErrorMessage={setErrorMessage}
-                  />
-                ))}
+  
+      {/* Add margin-top to create space */}
+      <div className="mt-8">
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-4">
+            {notifications.map((notification, index) => (
+              <div
+                key={index}
+                className="block p-4 border-2 border-gray-200 rounded shadow"
+              >
+                <h2 className="text-lg font-semibold mb-2">{notification.header}</h2>
+                <p className="text-sm text-gray-500">
+                  Notification on{" "}
+                  {new Date(notification.createdAt).toLocaleDateString()}
+                </p>
+                <p className="text-sm">{notification.description}</p>
               </div>
+            ))}
+          </div>
+  
+          {confirmationMessage !== "" && (
+            <div className="text-green-500 text-center">
+              {confirmationMessage}
             </div>
           )}
-        </div>
-        <div className="grid grid-cols-1 gap-4">
-          {connections.map((connection, index) => (
-            <div
-              key={index}
-              className="block p-4 border-2 border-gray-200 rounded shadow"
-            >
-              {/* Display who started following whom */}
-              {connection.type === "follower" ? (
-                <p>{connection.userName} started following you.</p>
-              ) : (
-                <p>You started following {connection.followingUserName}.</p>
-              )}
-              <p className="text-sm text-gray-500">
-                Connected on{" "}
-                {new Date(connection.createdAt).toLocaleDateString()}
-              </p>
-            </div>
-          ))}
+          {errorMessage !== "" && (
+            <div className="text-red-500 text-center">{errorMessage}</div>
+          )}
+          <h2 className="text-2xl font-semibold">Connections</h2>
+          <div>
+            {friendRequests.length > 0 && (
+              <div>
+                <p>You have {friendRequests.length} friend requests.</p>
+                <div className="block p-4 border-2 border-gray-200 rounded shadow">
+                  {friendRequests.map((friendRequest, index) => (
+                    <FriendNotification
+                      key={index}
+                      userName={friendRequest.userName}
+                      onResponse={handleFriendRequestResponse}
+                      setConfirmationMessage={setConfirmationMessage}
+                      setErrorMessage={setErrorMessage}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            {connections.map((connection, index) => (
+              <div
+                key={index}
+                className="block p-4 border-2 border-gray-200 rounded shadow"
+              >
+                {/* Display who started following whom */}
+                {connection.type === "follower" ? (
+                  <p>{connection.userName} started following you.</p>
+                ) : (
+                  <p>You started following {connection.followingUserName}.</p>
+                )}
+                <p className="text-sm text-gray-500">
+                  Connected on{" "}
+                  {new Date(connection.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
+  
 }

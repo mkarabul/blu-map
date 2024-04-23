@@ -38,8 +38,8 @@ export default function SearchButton() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center relative">
-      <div className="relative mb-4">
+    <div className="relative">
+      <div className="relative mb-4 flex">
         <input
           type="text"
           value={searchTerm}
@@ -47,7 +47,7 @@ export default function SearchButton() {
             setSearchTerm(e.target.value);
           }}
           placeholder="Search for friends"
-          className="border-2 border-gray-300 bg-white h-10 px-5 pr-10 rounded-lg text-sm focus:outline-none"
+          className="border-2 border-gray-300 bg-white h-10 px-5 pr-10 rounded-lg text-sm focus:outline-none w-full"
         />
         <button
           onClick={() => {
@@ -59,20 +59,25 @@ export default function SearchButton() {
           X
         </button>
       </div>
-      {friends.map((friend) => (
-        <div className="flex items-center space-x-4 mb-4">
-          <Link href={`/profile/${friend.userName}`}>
-            <div className="flex items-center space-x-4">
-              <img
-                src="/default-pfp.png"
-                alt="User Profile"
-                className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
-              />
-              <span>{friend.userName}</span>
-            </div>
-          </Link>
-        </div>
-      ))}
+      <div className="flex flex-col items-start">
+        {friends.map((friend) => (
+          <div
+            key={friend.userName}
+            className="flex items-center space-x-4 mb-4"
+          >
+            <Link href={`/profile/${friend.userName}`}>
+              <div className="flex items-center space-x-4">
+                <img
+                  src={friend.userPhoto || "/default-pfp.png"}
+                  alt="User Profile"
+                  className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
+                />
+                <span>{friend.userName}</span>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

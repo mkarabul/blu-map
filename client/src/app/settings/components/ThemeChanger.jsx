@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useState, useEffect } from "react";
 import Option from "./Option";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";

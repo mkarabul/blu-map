@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faUsers, faUser } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { getSession } from "@auth0/nextjs-auth0";
 
@@ -9,7 +9,7 @@ export default async function Navbar() {
   const user = session?.user;
 
   return (
-    <header className="navbar bg-base-200 w-100vw">
+    <header className="navbar bg-base-200 w-100vw z-50 relative">
       {/* Left Section */}
       <div className="left-section flex-1">
         <Link className="btn btn-ghost text-xl" href="/">
@@ -20,12 +20,12 @@ export default async function Navbar() {
           />
           Blu-Map
         </Link>
-        <input
+        {/* <input
           type="text"
           placeholder="Search"
           style={{ width: "25rem" }}
           className="input input-bordered w-full md:w-auto"
-        />
+        /> */}
       </div>
 
       {/* Right Section */}
@@ -73,7 +73,7 @@ const UserDropdown = () => {
         id="dropdown-button"
       >
         <div className="w-10 rounded-full top-5">
-          <img alt="Tailwind CSS Navbar component" src="/default-pfp.png" />
+          <FontAwesomeIcon icon={faUser} className="w-10 h-10" />{" "}
         </div>
       </div>
       <ul
@@ -104,6 +104,11 @@ const UserDropdown = () => {
             href="/notifications"
           >
             Notifications
+          </Link>
+        </li>
+        <li>
+          <Link id="tutorial-link" className="justify-between" href="/tutorial">
+            Tutorial
           </Link>
         </li>
         <li>

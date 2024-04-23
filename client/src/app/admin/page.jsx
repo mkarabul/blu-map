@@ -5,6 +5,7 @@ import SearchPage from './components/SearchPage';
 import ChartsPage from './components/Charts';
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Footer from '../components/footer';
+import NotificationsPage from './components/NotificationPage'; 
 
 const HomePage = () => {
   const [activePage, setActivePage] = useState('charts');
@@ -80,11 +81,19 @@ const HomePage = () => {
           >
             Search
           </button>
+          <button
+            className={`px-4 py-2 rounded-full ${activePage === 'search' ? 'bg-gray-700' : 'bg-gray-900'} hover:bg-gray-600`}
+            onClick={() => setActivePage('notifications')}
+          >
+            Notifications
+          </button>
         </div>
       </nav>
       <div>
         {activePage === 'charts' && <ChartsPage />}
         {activePage === 'search' && <SearchPage />}
+        {activePage === 'notifications' && <NotificationsPage />}
+
       </div>
       <Footer />
     </div>

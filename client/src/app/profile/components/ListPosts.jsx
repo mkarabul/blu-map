@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import ProfilePost from "./ProfilePost";
 import SocialPost from "../../social/components/SocialPost";
@@ -17,14 +17,14 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
       setIsLoadingPrivacy(true);
       const response = await fetch(`/api/admin`);
       const usersData = await response.json();
-      const userProfile = usersData.find(user => user.userName === userName);
-      
+      const userProfile = usersData.find((user) => user.userName === userName);
+
       if (userProfile) {
         setIsProfilePrivate(!userProfile.isPublic);
       }
       setIsLoadingPrivacy(false);
     };
-    
+
     const checkFollowingStatus = async () => {
       setIsLoadingFollowing(true);
       const userID = user?.sub;
@@ -38,7 +38,9 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
 
       const response = await fetch(`/api/follow/followers/${userName}`);
       const data = await response.json();
-      const isUserFollowing = data.some(follower => follower.userName === currUserName);
+      const isUserFollowing = data.some(
+        (follower) => follower.userName === currUserName
+      );
       setIsFollowing(isUserFollowing);
       setIsLoadingFollowing(false);
     };
@@ -54,14 +56,20 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
 
   useEffect(() => {
     if (!isLoadingPrivacy && !isLoadingFollowing) {
-      if (isOwner || (!isProfilePrivate || (isProfilePrivate && isFollowing))) {
+      if (isOwner || !isProfilePrivate || (isProfilePrivate && isFollowing)) {
         setFilteredPosts(posts);
       } else {
         setFilteredPosts([]);
       }
     }
-
-  }, [posts, isOwner, isProfilePrivate, isFollowing, isLoadingPrivacy, isLoadingFollowing]);
+  }, [
+    posts,
+    isOwner,
+    isProfilePrivate,
+    isFollowing,
+    isLoadingPrivacy,
+    isLoadingFollowing,
+  ]);
 
   const isLoading = isLoadingPosts || isLoadingPrivacy || isLoadingFollowing;
 
@@ -75,7 +83,7 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
         <h3 className="text-center">This profile is private.</h3>
       ) : (
         <>
-          {filteredPosts.map((post) => (
+          {filteredPosts.map((post) =>
             isOwner ? (
               <ProfilePost
                 key={post.uuid}
@@ -92,6 +100,9 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
                 userName={post.userName}
                 tripId={post.tripId}
                 images={post.images}
+                userPhoto={post.userPhoto}
+                city={post.city}
+                country={post.country}
               />
             ) : (
               <SocialPost
@@ -108,9 +119,13 @@ const ListPosts = ({ posts, isLoading: isLoadingPosts, isOwner, userName }) => {
                 tripId={post.tripId}
                 clickable={true}
                 images={post.images}
+                userPhoto={post.userPhoto}
+                isSocialPage={false}
+                city={post.city}
+                country={post.country}
               />
             )
-          ))}
+          )}
           {filteredPosts.length === 0 && (
             <h3 className="text-center">
               No posts found. Create one in your trips page!

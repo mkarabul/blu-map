@@ -1,5 +1,6 @@
 const chartOptions = {
   responsive: true,
+  // maintainAspectRatio: true,
   animation: {
     duration: 2000,
     easing: 'easeInOutCubic',

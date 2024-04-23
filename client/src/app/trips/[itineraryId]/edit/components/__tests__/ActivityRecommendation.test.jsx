@@ -5,6 +5,8 @@ import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { act } from "react-dom/test-utils";
 import "@testing-library/jest-dom";
 
+jest.spyOn(global.console, "error").mockImplementation(() => jest.fn());
+
 describe("ActivityRecommendation", () => {
   it("renders without errors", () => {
     act(() => {

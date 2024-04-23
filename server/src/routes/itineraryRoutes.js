@@ -44,4 +44,18 @@ router.delete(
   ItineraryController.deleteItinerary
 );
 
+router.post(
+  "/:id/copy",
+  checkJwt,
+  getUserInfoMiddleware,
+  ItineraryController.copyItinerary
+);
+
+router.get(
+  "/:userId/last-itinerary-details",
+  checkJwt,
+  getUserInfoMiddleware,
+  ItineraryController.getLastItineraryDetails
+);
+
 module.exports = router;

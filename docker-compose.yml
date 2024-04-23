@@ -31,6 +31,7 @@ services:
       - BUCKET_REGION=${BUCKET_REGION}
       - ACCESS_KEY=${ACCESS_KEY}
       - SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
     ports:
       - 5000:5000
     depends_on:

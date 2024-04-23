@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp,
@@ -11,14 +11,20 @@ import {
   faCommentDots,
   faArrowRight,
   faArrowLeft,
+  faMapMarkerAlt,
+  faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import ShareButton from "../../profile/components/ShareButton";
 import Link from "next/link";
 import { RepSystem } from "./RepSystem";
+import CopyPost from "./CopyPost";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function SocialPost({
   uuid,
   header,
+  city,
+  country,
   description,
   tripDate,
   userName,
@@ -27,7 +33,10 @@ export default function SocialPost({
   tripId,
   clickable,
   images,
+  userPhoto,
+  isSocialPage,
 }) {
+  const { user } = useUser();
   const { likes, dislikes, addLike, addDislike, userLiked, userDisliked } =
     RepSystem(initialLikes, initialDislikes, uuid);
 
@@ -46,14 +55,20 @@ export default function SocialPost({
   };
 
   return (
-    <div className="card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5">
+    <div
+      className={
+        isSocialPage && user
+          ? "card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5"
+          : "card w-full sm:w-11/12 md:w-1/2 bg-white border mx-auto mt-5 mb-5"
+      }
+    >
       <div className="card-body p-5">
         {/* user profile icon */}
         <div className="flex justify-between mb-4">
           <Link href={`/profile/${userName}`}>
             <div className="flex items-center space-x-4">
               <img
-                src="/default-pfp.png"
+                src={userPhoto || "/default-pfp.png"}
                 alt="User Profile"
                 className="rounded-full border-4 border-white shadow-lg h-20 w-20 md:h-15 md:w-15"
               />
@@ -104,8 +119,20 @@ export default function SocialPost({
               {header}
             </div>
             <div className="text-xl text-gray-700 my-2">{description}</div>
-            <div className="text-lg font-medium text-gray-600 my-2">
-              Date: {tripDate}
+            {city &&
+            city !== "" &&
+            city !== "Unknown" &&
+            country &&
+            country !== "" &&
+            country !== "Unknown" ? (
+              <div className="flex items-center my-2">
+                <FontAwesomeIcon icon={faMapMarkerAlt} />
+                <span className="ml-2 text-lg text-gray-600">{`${city}, ${country}`}</span>
+              </div>
+            ) : null}
+            <div className="flex items-center my-2">
+              <FontAwesomeIcon icon={faCalendarAlt} />
+              <span className="ml-2 text-lg text-gray-600">{tripDate}</span>
             </div>
           </Link>
         ) : (
@@ -114,8 +141,20 @@ export default function SocialPost({
               {header}
             </div>
             <div className="text-xl text-gray-700 my-2">{description}</div>
-            <div className="text-lg font-medium text-gray-600 my-2">
-              Date: {tripDate}
+            {city &&
+            city !== "" &&
+            city !== "Unknown" &&
+            country &&
+            country !== "" &&
+            country !== "Unknown" ? (
+              <div className="flex items-center my-2">
+                <FontAwesomeIcon icon={faMapMarkerAlt} />
+                <span className="ml-2 text-lg text-gray-600">{`${city}, ${country}`}</span>
+              </div>
+            ) : null}
+            <div className="flex items-center my-2">
+              <FontAwesomeIcon icon={faCalendarAlt} />
+              <span className="ml-2 text-lg text-gray-600">{tripDate}</span>
             </div>
           </>
         )}
@@ -123,51 +162,52 @@ export default function SocialPost({
         {/* Buttons on the bottom of a post */}
         <div className="flex flex-col md:flex-row justify-start items-center mt-4">
           <div className="flex flex-grow space-x-2 mb-2 md:mb-0">
-            <button
-              className={`btn btn-outline rounded-full ${
-                userLiked ? "bg-green-500 text-white" : ""
-              }`}
-              onClick={addLike}
-            >
-              <FontAwesomeIcon icon={faThumbsUp} />
-              <p> {likes} </p>
-            </button>
-            <button
-              className={`btn btn-outline rounded-full ${
-                userDisliked ? "bg-red-500 text-white" : ""
-              }`}
-              onClick={addDislike}
-            >
-              <FontAwesomeIcon icon={faThumbsDown} />
-              <p> {dislikes} </p>
-            </button>
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faMapMarkedAlt} />
-            </button>
-            <button className="btn btn-outline rounded-full">
-              <FontAwesomeIcon icon={faPaperPlane} />
-            </button>
-            <Link href={`/trips/${tripId}`}>
-              <button className="btn btn-outline rounded-full">
-                <FontAwesomeIcon icon={faPlus} />
+            <div className="tooltip" data-tip="Like">
+              <button
+                className={`btn btn-outline rounded-full ${
+                  userLiked ? "bg-green-500 text-white" : ""
+                }`}
+                onClick={addLike}
+                data-testid="like-button"
+              >
+                <FontAwesomeIcon icon={faThumbsUp} />
+                <p> {likes} </p>
               </button>
-            </Link>
+            </div>
+            <div className="tooltip" data-tip="Dislike">
+              <button
+                className={`btn btn-outline rounded-full ${
+                  userDisliked ? "bg-red-500 text-white" : ""
+                }`}
+                onClick={addDislike}
+                data-testid="dislike-button"
+              >
+                <FontAwesomeIcon icon={faThumbsDown} />
+                <p> {dislikes} </p>
+              </button>
+            </div>
+
+            <CopyPost tripId={tripId} />
           </div>
 
           {/* Separate div for the last button (right-most) */}
           {clickable ? (
             <Link href={`/post/${uuid}`}>
               <div className="flex justify-end flex-grow">
-                <button className="btn btn-outline rounded-full">
-                  <FontAwesomeIcon icon={faCommentDots} />
-                </button>
+                <div className="tooltip" data-tip="Comments">
+                  <button className="btn btn-outline rounded-full">
+                    <FontAwesomeIcon icon={faCommentDots} />
+                  </button>
+                </div>
               </div>
             </Link>
           ) : (
             <div className="flex justify-end flex-grow">
-              <button className="btn btn-outline rounded-full">
-                <FontAwesomeIcon icon={faCommentDots} />
-              </button>
+              <div className="tooltip" data-tip="Comments">
+                <button className="btn btn-outline rounded-full">
+                  <FontAwesomeIcon icon={faCommentDots} />
+                </button>
+              </div>
             </div>
           )}
         </div>

@@ -15,6 +15,9 @@ const dislikeRoutes = require("./dislikeRoutes");
 const commentRoutes = require("./commentRoutes");
 const blockRoutes = require("./blockRoutes");
 const friendRoutes = require("./friendRoutes");
+const vertificationRoutes = require("./vertificationRoutes");
+const placesRoutes = require("./placesRoutes");
+
 const router = express.Router();
 
 router.use("/users", userRoutes);
@@ -32,5 +35,8 @@ router.use("/follow", followSystemRoutes);
 router.use("/follow-request", followRequestRoutes);
 router.use("/block", blockRoutes);
 router.use("/friend", friendRoutes);
+router.use("/vertification", vertificationRoutes);
+
+router.use("/places", placesRoutes);
 
 module.exports = router;

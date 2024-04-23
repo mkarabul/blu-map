@@ -56,6 +56,22 @@ describe("Itinerary Routes", () => {
     const response = await request(app).delete(`/${createdId}`);
     expect(response.statusCode).toBe(204);
   });
+
+
+
+  test("POST /:id/copy", async () => {
+    const createItinerary = await request(app)
+      .post("/")
+      .send({ userId: "testUserIdCopy" });
+
+    const createdUuid = createItinerary.body.uuid;
+
+    const response = await request(app).post(`/${createdUuid}/copy`);
+    expect(response.statusCode).toBe(201);
+
+    await request(app).delete(`/${createdUuid}`);
+    await request(app).delete(`/${response.body.uuid}`);
+  });
 });
 
 describe("Fail cases Itinerary routes", () => {
