@@ -1,6 +1,6 @@
 # Blu-Map
 
-BluMap is a comprehensive travel planning web application that allows users to create, share, and browse travel itineraries. It leverages various modern web technologies to provide a seamless and engaging user experience.
+Blu-Map is a comprehensive travel planning web application that allows users to create, share, and browse travel itineraries. It leverages various modern web technologies to provide a seamless and engaging user experience.
 
 ![BluMap Landing Page](client/public/homepage-screenshot.png)
 
@@ -27,7 +27,7 @@ BluMap is a comprehensive travel planning web application that allows users to c
 
 ## Overview
 
-BluMap was developed over a span of four months using the SCRUM framework. The application features a robust and user-friendly interface that allows users to plan their trips efficiently. Key functionalities include itinerary creation, social sharing features, and personalized recommendations powered by Google Maps Places API.
+Blu-Map was developed over a span of four months using the SCRUM framework. The application features a robust and user-friendly interface that allows users to plan their trips efficiently. Key functionalities include itinerary creation, social sharing features, and personalized recommendations powered by Google Maps Places API.
 
 The backend is supported by PostgreSQL for data management, with Sequelize ORM facilitating database interactions. AWS S3 is used for storing user images, while Redis enhances performance through effective caching. Docker is employed for containerization, ensuring seamless deployment across different environments. GitHub workflows and Jest are used for continuous integration and automated testing, maintaining high code quality and reliability.
 
