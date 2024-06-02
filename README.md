@@ -1,4 +1,4 @@
-# BluMap
+# Blu-Map
 
 BluMap is a comprehensive travel planning web application that allows users to create, share, and browse travel itineraries. It leverages various modern web technologies to provide a seamless and engaging user experience.
 
